@@ -29,6 +29,7 @@
     <string name="title_home">Menu principal</string>
     <string name="subtitle_new_worker">Nuevo Trabajador</string>
     <string name="title_new_worker">Alta Trabajadores</string>
+    <string name="title_check_list_to_one">Pase de lista manual</string>
     <string name="input_bus_number">Ingresa el número del camión</string>
     <string name="employees_number_trip">Camion</string>
     <string name="empty_list_workers">La esta lista vacía, para agregar un trabajador, pulse el botón NUEVO en la parte superior.</string>
@@ -41,5 +42,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="check_list_put_user_number">Ingresa el número del empleado</string>
+    <string name="check_list_pick_date">Seleccione la fecha de asistencia</string>
+    <string name="checl_list_select">Selecciona una fecha</string>
 
 </resources>

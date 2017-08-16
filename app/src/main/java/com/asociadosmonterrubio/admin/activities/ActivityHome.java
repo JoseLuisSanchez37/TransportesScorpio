@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.asociadosmonterrubio.admin.R;
 import com.asociadosmonterrubio.admin.adapters.HomeAdapter;
 import com.asociadosmonterrubio.admin.firebase.FireBaseQuery;
+import com.google.firebase.storage.FirebaseStorage;
 
 public class ActivityHome extends AppCompatActivity {
 
@@ -29,9 +30,14 @@ public class ActivityHome extends AppCompatActivity {
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                Intent intent;
                 switch (position){
                     case 0:
-                        Intent intent = new Intent(ActivityHome.this, ActivityDisplayEmployees.class);
+                        intent = new Intent(ActivityHome.this, ActivityDisplayEmployees.class);
+                        startActivity(intent);
+                        break;
+                    case 1:
+                        intent = new Intent(ActivityHome.this, ActivityCheckList.class);
                         startActivity(intent);
                         break;
                 }
