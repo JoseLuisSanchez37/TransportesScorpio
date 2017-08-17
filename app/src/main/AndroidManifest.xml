@@ -37,7 +37,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.ActivityHome" />
-        <activity android:name=".activities.ActivityScanner"></activity>
+        <activity android:name=".activities.ActivityScanner" />
+        <activity android:name=".activities.ActivityCheckList" />
+        <activity android:name=".activities.ActivityLogin" />
     </application>
 
 </manifest>

@@ -69,17 +69,6 @@ public class FireBaseQuery {
         databaseReference.child("sedes").setValue(sedes);
     }
 
-    public static void pushUsuario(){
-        Usuario usuario = new Usuario();
-        usuario.nombre = "Jose Luis";
-        usuario.contrasena ="1234";
-        usuario.permisos = new ArrayList<String>();
-        usuario.sede = "Torreon";
-        usuario.email = "71luisanchez@gmail.com";
-        String usuarioRef = usuario.email.substring(0, usuario.email.indexOf("@"));
-        databaseReference.child("/usuarios/" + usuarioRef).setValue(usuario);
-    }
-
     public static void pushTemporadaCampo(){
         String sede = "Torreon"; // Este valor sera dinamico en base a la sede que tiene el usuario
         String nombreTemporada = "Enero - Marzo 2019";

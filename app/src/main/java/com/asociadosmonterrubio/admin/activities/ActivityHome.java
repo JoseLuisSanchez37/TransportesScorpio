@@ -11,8 +11,6 @@ import android.widget.Toast;
 
 import com.asociadosmonterrubio.admin.R;
 import com.asociadosmonterrubio.admin.adapters.HomeAdapter;
-import com.asociadosmonterrubio.admin.firebase.FireBaseQuery;
-import com.google.firebase.storage.FirebaseStorage;
 
 public class ActivityHome extends AppCompatActivity {
 

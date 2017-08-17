@@ -1,5 +1,7 @@
 package com.asociadosmonterrubio.admin.utils;
 
+import android.util.Log;
+
 import com.asociadosmonterrubio.admin.models.Usuario;
 import com.google.firebase.database.DataSnapshot;
 
@@ -7,15 +9,15 @@ import com.google.firebase.database.DataSnapshot;
  * Created by joseluissanchezcruz on 8/15/17.
  */
 
-public class UserInfo {
-    private static final UserInfo ourInstance = new UserInfo();
+public class SingletonUser {
+    private static final SingletonUser ourInstance = new SingletonUser();
     private Usuario usuario;
 
-    public static UserInfo getInstance() {
+    public static SingletonUser getInstance() {
         return ourInstance;
     }
 
-    private UserInfo() {
+    private SingletonUser() {
         usuario = new Usuario();
     }
 
@@ -24,6 +26,7 @@ public class UserInfo {
     }
 
     public void setUsuario(DataSnapshot dataSnapshot){
-        
+        this.usuario = dataSnapshot.getValue(Usuario.class);
+        Log.d("usuario", usuario.toString());
     }
 }
