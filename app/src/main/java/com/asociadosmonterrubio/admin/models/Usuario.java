@@ -12,6 +12,7 @@ public class Usuario {
     private String nombre;
     private String rol;
     private String sede;
+    private String campo;
     private ArrayList<String> campos;
 
     public Usuario(){
@@ -56,5 +57,13 @@ public class Usuario {
 
     public void setCampos(ArrayList<String> campos) {
         this.campos = campos;
+    }
+
+    public String getCampo() {
+        return campo;
+    }
+
+    public void setCampo(String campo) {
+        this.campo = campo;
     }
 }

@@ -28,6 +28,7 @@ public class FireBaseQuery {
     public static final String TEMPORADAS = "temporadas";
     public static final String IMAGENES = "imagenes";
     public static final String USUARIOS = "usuarios";
+    public static final String PASE_DE_LISTA = "pase_de_lista";
 
     public static DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private static StorageReference storageReference = FirebaseStorage.getInstance().getReference();
@@ -146,6 +147,12 @@ public class FireBaseQuery {
         String pathPaseDeLista = nodoRaizPaseDeLista + "/" + sede + "/" + nombreCampoSeleccionado;
         databaseReference.child(pathPaseDeLista).child(ID).setValue(employee.getActividad()); //actividad es el perfil del empleado "Jornalero, campero, etc.".
 
+    }
+
+    public static void pushAsistencia(){
+        for (int i = 0;  i < 2000; i++){
+            databaseReference.child("pase_de_lista/Torreon/Campo1/"+i).setValue("Jornalero");
+        }
     }
 
 }
