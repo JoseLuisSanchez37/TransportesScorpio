@@ -16,4 +16,11 @@
         <item name="colorAccent">@color/text_color_dark_gray</item>
     </style>
 
+    <!-- Style for edit text's login application -->
+    <style name="LoginEditTextTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorControlNormal">@android:color/white</item>
+        <item name="colorControlActivated">@android:color/white</item>
+        <item name="colorControlHighlight">@android:color/white</item>
+    </style>
+
 </resources>

@@ -4,8 +4,6 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
-import android.util.Log;
 
 import android.content.Intent;
 import android.view.View;
@@ -16,12 +14,14 @@ import android.widget.Toast;
 import com.asociadosmonterrubio.admin.R;
 import com.asociadosmonterrubio.admin.firebase.FireBaseQuery;
 import com.asociadosmonterrubio.admin.utils.SingletonUser;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -36,6 +36,7 @@ public class ActivityLogin extends AppCompatActivity {
     @Bind(R.id.btn_login) Button btn_login;
 
     private FirebaseAuth auth;
+    private ProgressDialog progressDialog;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,15 +56,16 @@ public class ActivityLogin extends AppCompatActivity {
 
     public void login() {
         if (!validate()) {
-            onLoginFailed();
+            onLoginFailed("Algunos campos estan vacios");
             return;
         }
 
         btn_login.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(this, R.style.AppTheme);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Iniciando Session...");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Iniciando sesion...");
         progressDialog.show();
 
         String email = edt_email.getText().toString();
@@ -77,9 +79,11 @@ public class ActivityLogin extends AppCompatActivity {
         moveTaskToBack(true);
     }
 
-    public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "Autenticación fallida. Intentelo nuevamente", Toast.LENGTH_LONG).show();
+    public void onLoginFailed(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         btn_login.setEnabled(true);
+        if (progressDialog != null)
+            progressDialog.dismiss();
     }
 
     public boolean validate() {
@@ -118,31 +122,31 @@ public class ActivityLogin extends AppCompatActivity {
         task.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                onLoginFailed();
-            }
-        });
-
-        /*task.addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    String email = auth.getCurrentUser().getEmail();
-                    if (!TextUtils.isEmpty(email)) {
-                        String emailWithoutDomain = email.substring(0, email.indexOf("@"));
-                        getUserInformation(emailWithoutDomain);
-                    }else
-                        Toast.makeText(ActivityLogin.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                FirebaseException firebaseException = ((FirebaseException)e);
+                if (firebaseException instanceof FirebaseAuthException) {
+                    String errorCode = ((FirebaseAuthException)e).getErrorCode();
+                    if (errorCode.equals("ERROR_USER_NOT_FOUND")) {
+                        onLoginFailed("El correo ingresado no es válido. Intentalo nuevamente.");
+                    } else if (errorCode.equals("ERROR_WRONG_PASSWORD")) {
+                        onLoginFailed("Tu contraseña es incorrecta. Intentalo nuevamente.");
+                    } else {
+                        onLoginFailed("Error desconocido");
+                    }
+                }else  if (firebaseException instanceof FirebaseNetworkException){
+                    onLoginFailed("Error de conexión. Comprueba tu conexión a internet");
                 } else {
-                    Toast.makeText(ActivityLogin.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                    onLoginFailed("Error desconocido");
                 }
             }
-        });*/
+        });
     }
 
     public void getUserInformation(String userName){
         FireBaseQuery.databaseReference.child(FireBaseQuery.USUARIOS).child(userName).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                if (progressDialog != null)
+                    progressDialog.dismiss();
                 SingletonUser.getInstance().setUsuario(dataSnapshot);
                 Intent intent = new Intent(ActivityLogin.this, ActivityHome.class);
                 startActivity(intent);
@@ -152,6 +156,9 @@ public class ActivityLogin extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 databaseError.getCode();
+                Toast.makeText(ActivityLogin.this, "Ocurrio un error al acceder a la base de datos", Toast.LENGTH_SHORT).show();
+                if (progressDialog != null)
+                    progressDialog.dismiss();
             }
         });
     }

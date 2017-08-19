@@ -39,7 +39,9 @@
         <activity android:name=".activities.ActivityHome" />
         <activity android:name=".activities.ActivityScanner" />
         <activity android:name=".activities.ActivityCheckList" />
-        <activity android:name=".activities.ActivityLogin" />
+        <activity
+            android:name=".activities.ActivityLogin"
+            android:theme="@style/NoActionBar" />
     </application>
 
 </manifest>

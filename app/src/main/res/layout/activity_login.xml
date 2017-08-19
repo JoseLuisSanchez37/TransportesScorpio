@@ -9,15 +9,24 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="56dp"
+        android:paddingTop="44dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Autotransportes Scorpio"
+            android:textColor="@android:color/white"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:textStyle="bold|italic"/>
+
         <ImageView
-            android:src="@drawable/bg_container"
+            android:src="@drawable/scorpio_splash"
             android:layout_width="wrap_content"
-            android:layout_height="72dp"
-            android:layout_marginBottom="24dp"
+            android:layout_height="150dp"
+            android:layout_marginBottom="30dp"
             android:layout_gravity="center_horizontal" />
 
         <!--  Email Label -->
@@ -26,15 +35,21 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:textColorHint="@android:color/white">
+            android:textColorHint="@android:color/white"
+            android:theme="@style/LoginEditTextTheme">
 
-            <EditText android:id="@+id/input_email"
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/input_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:hint="Email"
+                android:hint="Correo Electronico"
                 android:textColorHint="@android:color/white"
-                android:textColor="@android:color/white"/>
+                android:textColor="@android:color/white"
+                android:textColorHighlight="@android:color/white"
+                android:text="encargadotorreon@gmail.com"
+                android:backgroundTint="@android:color/white"
+                android:theme="@style/LoginEditTextTheme"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -44,15 +59,21 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:textColorHint="@android:color/white">
+            android:textColorHint="@android:color/white"
+            android:theme="@style/LoginEditTextTheme">
 
-            <EditText android:id="@+id/input_password"
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/input_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:hint="Password"
+                android:hint="Contraseña"
                 android:textColorHint="@android:color/white"
-                android:textColor="@android:color/white"/>
+                android:textColor="@android:color/white"
+                android:textColorHighlight="@android:color/white"
+                android:text="123456"
+                android:backgroundTint="@android:color/white"
+                android:theme="@style/LoginEditTextTheme"/>
 
         </android.support.design.widget.TextInputLayout>
 
