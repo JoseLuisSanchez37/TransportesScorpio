@@ -1,6 +1,7 @@
 package com.asociadosmonterrubio.admin.firebase;
 
 import com.asociadosmonterrubio.admin.models.Usuario;
+import com.asociadosmonterrubio.admin.utils.SingletonUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +30,7 @@ public class FireBaseQuery {
     public static final String IMAGENES = "imagenes";
     public static final String USUARIOS = "usuarios";
     public static final String PASE_DE_LISTA = "pase_de_lista";
+    public static final String ASISTENCIAS = "asistencias";
 
     public static DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private static StorageReference storageReference = FirebaseStorage.getInstance().getReference();
@@ -42,6 +44,15 @@ public class FireBaseQuery {
 
     public static StorageReference getReferenceForSaveUserImage(String pushId){
         return storageReference.child(IMAGENES.concat("/").concat(pushId));
+    }
+
+    public static void PushCheckList(String ID,String Perfil){
+        Calendar calendar = Calendar.getInstance();
+        String date = calendar.get(Calendar.YEAR)+"-"+calendar.get(Calendar.MONTH)+"-"+calendar.get(Calendar.DAY_OF_MONTH);
+        String campo = SingletonUser.getInstance().getUsuario().getCampo();
+        String sede = SingletonUser.getInstance().getUsuario().getSede();
+        String path = ASISTENCIAS + "/" +  sede + "/" + campo + "/" + date;
+        databaseReference.child(path).child(ID).setValue(Perfil);
     }
 
     public static void pushEmployeeToTrip(String busNumber, String userId, String userName) {
@@ -147,12 +158,6 @@ public class FireBaseQuery {
         String pathPaseDeLista = nodoRaizPaseDeLista + "/" + sede + "/" + nombreCampoSeleccionado;
         databaseReference.child(pathPaseDeLista).child(ID).setValue(employee.getActividad()); //actividad es el perfil del empleado "Jornalero, campero, etc.".
 
-    }
-
-    public static void pushAsistencia(){
-        for (int i = 0;  i < 2000; i++){
-            databaseReference.child("pase_de_lista/Torreon/Campo1/"+i).setValue("Jornalero");
-        }
     }
 
 }

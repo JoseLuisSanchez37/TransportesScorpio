@@ -25,6 +25,9 @@ public class ChekListCountrysideSingleton {
     public  void add(ChekListCountryside chekListCountryside){
         this.chekListCountryside.add(chekListCountryside);
     }
+    public void clear(){
+        this.chekListCountryside.clear();
+    }
 
     public  void setChekListCountryside(DataSnapshot dataSnapshot){
        // this.chekListCountryside = dataSnapshot.getValue(chekListCountryside); // .getValue(ChekListCountryside.class);

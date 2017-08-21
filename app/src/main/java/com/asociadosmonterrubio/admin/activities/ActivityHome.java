@@ -18,6 +18,7 @@ import com.asociadosmonterrubio.admin.adapters.HomeAdapter;
 import com.asociadosmonterrubio.admin.firebase.FireBaseQuery;
 import com.asociadosmonterrubio.admin.models.ChekListCountryside;
 import com.asociadosmonterrubio.admin.utils.ChekListCountrysideSingleton;
+import com.asociadosmonterrubio.admin.utils.SingletonEmployees;
 import com.asociadosmonterrubio.admin.utils.SingletonUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -136,6 +137,9 @@ public class ActivityHome extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
+            SingletonUser.getInstance().setUsuario(null);
+            ChekListCountrysideSingleton.getInstance().clear();
+
             Intent intent = new Intent(ActivityHome.this, ActivityLogin.class);
             startActivity(intent);
             return;

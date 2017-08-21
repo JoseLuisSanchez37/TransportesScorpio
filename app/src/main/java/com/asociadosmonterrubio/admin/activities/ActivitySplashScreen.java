@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.asociadosmonterrubio.admin.R;
+import com.asociadosmonterrubio.admin.firebase.FireBaseQuery;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class ActivitySplashScreen extends AppCompatActivity {
 
@@ -14,6 +16,8 @@ public class ActivitySplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        FirebaseDatabase.getInstance().getReference(FireBaseQuery.ASISTENCIAS).keepSynced(true);
         startDelay();
     }
 
