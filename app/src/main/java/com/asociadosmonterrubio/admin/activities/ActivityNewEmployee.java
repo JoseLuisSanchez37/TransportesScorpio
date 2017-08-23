@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -170,6 +171,10 @@ public class ActivityNewEmployee extends AppCompatActivity implements View.OnCli
         employee.setFecha_Nacimiento(edt_employee_date_birth.getText().toString());
         employee.setActividad(Employee.JORNALERO);
         employee.setCURP(edt_employee_curp.getText().toString());
+        employee.setEnganche("1000");
+        Calendar calendar = Calendar.getInstance();
+        String date = calendar.get(Calendar.YEAR)+"-"+calendar.get(Calendar.MONTH)+"-"+calendar.get(Calendar.DAY_OF_MONTH);
+        employee.setFechaSalida(date);
         return employee;
     }
 

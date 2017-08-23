@@ -20,6 +20,8 @@ public class Employee {
     private String Lugar_Nacimiento;
     private String Nombre;
     private Bitmap image;
+    private String enganche;
+    private String fechaSalida;
     private long ID;
 
     public Employee(){ }
@@ -110,5 +112,21 @@ public class Employee {
 
     public void setImage(Bitmap image) {
         this.image = image;
+    }
+
+    public String getEnganche() {
+        return enganche;
+    }
+
+    public void setEnganche(String enganche) {
+        this.enganche = enganche;
+    }
+
+    public String getFechaSalida() {
+        return fechaSalida;
+    }
+
+    public void setFechaSalida(String fechaSalida) {
+        this.fechaSalida = fechaSalida;
     }
 }

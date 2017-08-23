@@ -31,6 +31,7 @@ public class FireBaseQuery {
     public static final String USUARIOS = "usuarios";
     public static final String PASE_DE_LISTA = "pase_de_lista";
     public static final String ASISTENCIAS = "asistencias";
+    public static final String HISTORICO_TRBAJADORES = "historico_trabajadores";
 
     public static DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private static StorageReference storageReference = FirebaseStorage.getInstance().getReference();
@@ -53,6 +54,9 @@ public class FireBaseQuery {
         String sede = SingletonUser.getInstance().getUsuario().getSede();
         String path = ASISTENCIAS + "/" +  sede + "/" + campo + "/" + date;
         databaseReference.child(path).child(ID).setValue(Perfil);
+
+        String pathHistoric = HISTORICO_TRBAJADORES + "/" + sede + "/" + campo + "/" + ID + "/" + ASISTENCIAS + "/" + date;
+        databaseReference.child(pathHistoric).child(Perfil);
     }
 
     public static void pushEmployeeToTrip(String busNumber, String userId, String userName) {
