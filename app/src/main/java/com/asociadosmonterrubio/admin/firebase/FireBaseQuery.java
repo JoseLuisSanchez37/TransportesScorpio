@@ -1,19 +1,14 @@
 package com.asociadosmonterrubio.admin.firebase;
 
-import com.asociadosmonterrubio.admin.models.Usuario;
 import com.asociadosmonterrubio.admin.utils.SingletonUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import com.asociadosmonterrubio.admin.models.Employee;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -23,15 +18,15 @@ import com.google.firebase.storage.StorageReference;
 
 public class FireBaseQuery {
 
-    public static final String EMPLEADOS = "empleados";
-    public static final String CAMPOS = "campos";
-    public static final String SALIDAS = "salidasCopia";
-    public static final String TEMPORADAS = "temporadas";
-    public static final String IMAGENES = "imagenes";
-    public static final String USUARIOS = "usuarios";
-    public static final String PASE_DE_LISTA = "pase_de_lista";
-    public static final String ASISTENCIAS = "asistencias";
-    public static final String HISTORICO_TRBAJADORES = "historico_trabajadores";
+    public static final String EMPLEADOS        = "empleados";
+    public static final String CAMPOS           = "campos";
+    public static final String SALIDAS          = "salidas";
+    public static final String TEMPORADAS       = "temporadas";
+    public static final String IMAGENES         = "imagenes";
+    public static final String USUARIOS         = "usuarios";
+    public static final String PASE_DE_LISTA    = "pase_de_lista";
+    public static final String ASISTENCIAS      = "asistencias";
+    public static final String REGISTROS        = "registros";
 
     public static DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private static StorageReference storageReference = FirebaseStorage.getInstance().getReference();
@@ -49,13 +44,13 @@ public class FireBaseQuery {
 
     public static void PushCheckList(String ID,String Perfil){
         Calendar calendar = Calendar.getInstance();
-        String date = calendar.get(Calendar.YEAR)+"-"+calendar.get(Calendar.MONTH)+"-"+calendar.get(Calendar.DAY_OF_MONTH);
+        String date = calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH) +1)+"-"+calendar.get(Calendar.DAY_OF_MONTH);
         String campo = SingletonUser.getInstance().getUsuario().getCampo();
         String sede = SingletonUser.getInstance().getUsuario().getSede();
         String path = ASISTENCIAS + "/" +  sede + "/" + campo + "/" + date;
         databaseReference.child(path).child(ID).setValue(Perfil);
 
-        String pathHistoric = HISTORICO_TRBAJADORES + "/" + sede + "/" + campo + "/" + ID + "/" + ASISTENCIAS + "/" + date;
+        String pathHistoric = REGISTROS + "/" + sede + "/" + campo + "/" + ID + "/" + ASISTENCIAS + "/" + date;
         databaseReference.child(pathHistoric).child(Perfil);
     }
 
@@ -63,7 +58,7 @@ public class FireBaseQuery {
         HashMap<String, String> params = new HashMap<>();
         params.put("nombre", userName);
         Calendar calendar = Calendar.getInstance();
-        String date = calendar.get(Calendar.YEAR)+"-"+calendar.get(Calendar.MONTH)+"-"+calendar.get(Calendar.DAY_OF_MONTH);
+        String date = calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH) +1)+"-"+calendar.get(Calendar.DAY_OF_MONTH);
         databaseReference.child(SALIDAS)
                 .child(date)
                 .child(String.valueOf(busNumber))

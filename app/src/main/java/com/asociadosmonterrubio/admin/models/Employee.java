@@ -22,7 +22,6 @@ public class Employee {
     private Bitmap image;
     private String enganche;
     private String fechaSalida;
-    private long ID;
 
     public Employee(){ }
 
@@ -96,14 +95,6 @@ public class Employee {
 
     public void setNombre(String nombre) {
         Nombre = nombre;
-    }
-
-    public long getID() {
-        return ID;
-    }
-
-    public void setID(long ID) {
-        this.ID = ID;
     }
 
     public Bitmap getImage() {

@@ -3,7 +3,7 @@ package com.asociadosmonterrubio.admin.activities;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Handler;
+
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,7 +18,6 @@ import com.asociadosmonterrubio.admin.adapters.HomeAdapter;
 import com.asociadosmonterrubio.admin.firebase.FireBaseQuery;
 import com.asociadosmonterrubio.admin.models.ChekListCountryside;
 import com.asociadosmonterrubio.admin.utils.ChekListCountrysideSingleton;
-import com.asociadosmonterrubio.admin.utils.SingletonEmployees;
 import com.asociadosmonterrubio.admin.utils.SingletonUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
