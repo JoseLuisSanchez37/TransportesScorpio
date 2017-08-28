@@ -143,7 +143,7 @@ public class ActivityCheckList extends AppCompatActivity implements EditText.OnE
         if (!input.isEmpty()) {
             ChekListCountryside employee = isValidID(input);
             if (employee != null) {
-                FireBaseQuery.PushCheckList(input, employee.getPerfil());
+                FireBaseQuery.PushCheckList(input, employee.getPerfil(), calendar);
                 EditTextCodigoEmpleado.setOnEditorActionListener(null);
                 EditTextCodigoEmpleado.setText("");
                 EditTextCodigoEmpleado.setOnEditorActionListener(this);

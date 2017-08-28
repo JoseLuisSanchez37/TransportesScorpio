@@ -70,9 +70,8 @@ public class FireBaseQuery {
      * @param ID ID unico de trabajador, ya sea ID asignado por el sistem o por el campo
      * @param Perfil Perfil del trabajador, JORNALERO, CAMPERO, etc.
      */
-    public static void PushCheckList(String ID,String Perfil){
-        Calendar calendar = Calendar.getInstance();
-        String date = calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH) +1 )+"-"+calendar.get(Calendar.DAY_OF_MONTH);
+    public static void PushCheckList(String ID,String Perfil, Calendar calendarSelected){
+        String date = calendarSelected.get(Calendar.YEAR)+"-"+(calendarSelected.get(Calendar.MONTH) +1 )+"-"+calendarSelected.get(Calendar.DAY_OF_MONTH);
         String campo = SingletonUser.getInstance().getUsuario().getCampo();
         String sede = SingletonUser.getInstance().getUsuario().getSede();
 
@@ -112,7 +111,6 @@ public class FireBaseQuery {
      * @return referencia de base de datos de los pases de lista
      */
     public static DatabaseReference obtenerAsistencias(String date){
-        Calendar calendar = Calendar.getInstance();
         String campo = SingletonUser.getInstance().getUsuario().getCampo();
         String sede = SingletonUser.getInstance().getUsuario().getSede();
         String path = ASISTENCIAS + "/" +  sede + "/" + campo + "/" + date ;
