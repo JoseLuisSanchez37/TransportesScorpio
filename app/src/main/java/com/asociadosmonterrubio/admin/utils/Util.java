@@ -8,6 +8,8 @@ import android.util.Base64;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.asociadosmonterrubio.admin.barcode.Code128;
+
 import java.io.ByteArrayOutputStream;
 
 /**
@@ -35,5 +37,13 @@ public class Util {
         byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
+
+	public static Bitmap drawBarcode(String barcode, Context context) {
+		Code128 code = new Code128(context);
+		code.setData(barcode);
+        /*EAN13 ean13 = new EAN13();
+        ean13.setData(barcode);*/
+		return code.getBitmap(680, 300);
+	}
 
 }

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/new_game"
+    <item android:id="@+id/new_worker"
         android:title="Guardar"
         app:showAsAction="ifRoom" />
 </menu>

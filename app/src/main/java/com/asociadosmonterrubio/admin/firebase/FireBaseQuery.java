@@ -7,6 +7,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
 
 import com.asociadosmonterrubio.admin.models.Employee;
 import com.google.firebase.storage.FirebaseStorage;
@@ -18,51 +19,104 @@ import com.google.firebase.storage.StorageReference;
 
 public class FireBaseQuery {
 
-    public static final String EMPLEADOS        = "empleados";
-    public static final String CAMPOS           = "campos";
-    public static final String SALIDAS          = "salidas";
-    public static final String TEMPORADAS       = "temporadas";
-    public static final String IMAGENES         = "imagenes";
-    public static final String USUARIOS         = "usuarios";
-    public static final String PASE_DE_LISTA    = "pase_de_lista";
-    public static final String ASISTENCIAS      = "asistencias";
-    public static final String REGISTROS        = "registros";
+    /**
+     * ¡¡¡¡¡¡¡¡¡  ATTENTION  !!!!!!!
+     * THIS ASSIGNATION CAN NOT BE CHANGED BECAUSE THEY ARE PART OF FIREBASE'S STRUCTURE.
+     * PLEASE REFER TO THE OWN PROJECT TO MAKE CHANGES.
+     */
+    public static final String EMPLEADOS = "empleados";
+    public static final String CAMPOS = "campos";
+    public static final String SALIDAS = "salidas";
+	public static final String SALIDAS_COPIA = "salidasCopia";
+    public static final String TEMPORADAS = "temporadas";
+    public static final String IMAGENES = "imagenes";
+    public static final String USUARIOS = "usuarios";
+    public static final String PASE_DE_LISTA = "pase_de_lista";
+    public static final String ASISTENCIAS = "asistencias";
+    public static final String REGISTROS_TRABAJADORES = "registros_trabajadores";
+	public static final String TEMPORADA_CAMPO = "temporada_campo";
+	public static final String TEMPORADAS_SEDES = "temporadas_sedes";
+	public static final String ASIGNACION_EMPLEADOS_CAMPO = "asignacion_empleados_campo";
 
+
+    //Firebase references
     public static DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private static StorageReference storageReference = FirebaseStorage.getInstance().getReference();
 
+    /**
+     * Insertar un nuevo empleado a la base de datos
+     * @param employee Estructura del objecto Empleado
+     * @return El objeto empleado despues de realizar la inserción en la base de datos con el pushId asignado
+     */
     public static Employee pushNewEmployee(Employee employee){
+        Map<String, String> mapEmployee = FirebaseStructure.getMapEmployee(employee);
         DatabaseReference reference = databaseReference.child(EMPLEADOS).push();
-        reference.setValue(employee);
+        reference.setValue(mapEmployee);
         employee.setKey(reference.getKey());
         return employee;
     }
 
+    /**
+     * Obtener referencia de Firebase Storage para guardar la imagen del empleado
+     * @param pushId pushId del trabajador en donde se guardara su foto
+     * @return Referencia Firebase para consultar o modificar su registro
+     */
     public static StorageReference getReferenceForSaveUserImage(String pushId){
-        return storageReference.child(IMAGENES.concat("/").concat(pushId));
+        return storageReference.child(IMAGENES.concat("/").concat(pushId).concat(".jpg"));
     }
 
+    /**
+     * Pase de lista a un trabajador
+     * @param ID ID unico de trabajador, ya sea ID asignado por el sistem o por el campo
+     * @param Perfil Perfil del trabajador, JORNALERO, CAMPERO, etc.
+     */
     public static void PushCheckList(String ID,String Perfil){
         Calendar calendar = Calendar.getInstance();
-        String date = calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH) +1)+"-"+calendar.get(Calendar.DAY_OF_MONTH);
+        String date = calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH) +1 )+"-"+calendar.get(Calendar.DAY_OF_MONTH);
         String campo = SingletonUser.getInstance().getUsuario().getCampo();
         String sede = SingletonUser.getInstance().getUsuario().getSede();
-        String path = ASISTENCIAS + "/" +  sede + "/" + campo + "/" + date;
-        databaseReference.child(path).child(ID).setValue(Perfil);
 
-        String pathHistoric = REGISTROS + "/" + sede + "/" + campo + "/" + ID + "/" + ASISTENCIAS + "/" + date;
-        databaseReference.child(pathHistoric).child(Perfil);
+        String pathPaseDeListaPorCampo = ASISTENCIAS + "/" +  sede + "/" + campo + "/" + date;
+        String pathPaseDeListaPorEmpleado = REGISTROS_TRABAJADORES + "/" + sede + "/" + campo + "/" + ID + "/" + ASISTENCIAS + "/" + date;
+
+        databaseReference.child(pathPaseDeListaPorCampo).child(ID).setValue(Perfil);
+        databaseReference.child(pathPaseDeListaPorEmpleado).child(Perfil);
     }
 
-    public static void pushEmployeeToTrip(String busNumber, String userId, String userName) {
+    /**
+     * Asignar empleados a un camion
+     * @param busNumber numero del camoin
+     * @param pushId pushId del trabajador a agregar
+     * @param userName nombre del trabajador
+     */
+    public static void pushEmployeeToTrip(String busNumber, String pushId, String userName) {
         HashMap<String, String> params = new HashMap<>();
         params.put("nombre", userName);
         Calendar calendar = Calendar.getInstance();
-        String date = calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH) +1)+"-"+calendar.get(Calendar.DAY_OF_MONTH);
+        String date = calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH) +1 )+"-"+calendar.get(Calendar.DAY_OF_MONTH);
+        //Agregar id del empleado en referencias de salidas y salidasCopia
         databaseReference.child(SALIDAS)
                 .child(date)
                 .child(String.valueOf(busNumber))
-                .child(userId).setValue(params);
+                .child(pushId).setValue(params);
+		databaseReference.child(SALIDAS_COPIA)
+				.child(date)
+				.child(String.valueOf(busNumber))
+				.child(pushId).setValue(params);
+        //Agregar al atriubuto del empleado el numero del camion al que fue asignado.
+        databaseReference.child(EMPLEADOS).child(pushId).child(Employee._CAMION).setValue(busNumber);
+    }
+
+    /**
+     *  DatabaseReference para obtener los pase de lista del dia actual del pase.
+     * @return referencia de base de datos de los pases de lista
+     */
+    public static DatabaseReference obtenerAsistencias(String date){
+        Calendar calendar = Calendar.getInstance();
+        String campo = SingletonUser.getInstance().getUsuario().getCampo();
+        String sede = SingletonUser.getInstance().getUsuario().getSede();
+        String path = ASISTENCIAS + "/" +  sede + "/" + campo + "/" + date ;
+        return FireBaseQuery.databaseReference.child(path);
     }
 
     public static void pushPerfilTrabajadores(){

@@ -15,7 +15,10 @@ import android.widget.Toast;
 
 import com.asociadosmonterrubio.admin.R;
 import com.asociadosmonterrubio.admin.firebase.FireBaseQuery;
+import com.asociadosmonterrubio.admin.models.Usuario;
+import com.asociadosmonterrubio.admin.utils.Session;
 import com.asociadosmonterrubio.admin.utils.SingletonUser;
+import com.asociadosmonterrubio.admin.utils.UserPreferences;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -31,7 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 import butterknife.ButterKnife;
 import butterknife.Bind;
 
-public class ActivityLogin extends AppCompatActivity {
+public class ActivityLogin extends AppCompatActivity{
 
     @Bind(R.id.input_email) EditText edt_email;
     @Bind(R.id.input_password) EditText edt_password;
@@ -61,6 +64,17 @@ public class ActivityLogin extends AppCompatActivity {
                 login();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (Session.isSessionValid()){
+            SingletonUser.getInstance().setSavedUsuario(UserPreferences.getUserSession());
+            Intent intent = new Intent(ActivityLogin.this, ActivityHome.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     public void login() {
@@ -157,6 +171,8 @@ public class ActivityLogin extends AppCompatActivity {
                 if (progressDialog != null)
                     progressDialog.dismiss();
                 SingletonUser.getInstance().setUsuario(dataSnapshot);
+                Usuario usuario = SingletonUser.getInstance().getUsuario();
+                UserPreferences.saveUserSession(usuario);
                 Intent intent = new Intent(ActivityLogin.this, ActivityHome.class);
                 startActivity(intent);
                 finish();

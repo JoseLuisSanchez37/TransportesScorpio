@@ -27,4 +27,8 @@ public class SingletonEmployees {
         return employees;
     }
 
+    public void setEmployess(ArrayList<Employee> employess){
+        this.employees.addAll(employess);
+    }
+
 }

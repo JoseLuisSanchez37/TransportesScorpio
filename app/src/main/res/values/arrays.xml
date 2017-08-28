@@ -3,11 +3,15 @@
     <integer-array name="home_drawables">
         <item>@drawable/home_personal</item>
         <item>@drawable/home_check_list</item>
+        <item>@drawable/home_check_list</item>
+        <item>@drawable/home_check_list</item>
     </integer-array>
 
     <string-array name="home_names">
         <item>Alta Trabajador</item>
         <item>Pase de Lista</item>
+        <item>Ver lista de trabajadores</item>
+        <item>Generar credenciales</item>
     </string-array>
 
 </resources>

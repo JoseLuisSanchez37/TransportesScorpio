@@ -8,7 +8,31 @@ import android.graphics.Bitmap;
 
 public class Employee {
 
-    public static final String JORNALERO = "Jornalero";
+    /**
+     * ¡¡¡¡¡¡¡¡¡  ATTENTION  !!!!!!!
+     * THIS ASSIGNATION CAN NOT BE CHANGED BECAUSE THEY ARE PART OF FIREBASE'S STRUCTURE.
+     * PLEASE REFER TO THE OWN PROJECT TO MAKE CHANGES.
+     */
+    //Definition
+    public static final String _JORNALERO   = "Jornalero";
+    public static final String _MOD_SOLO    = "Solo";
+
+    //Attributes DON`T CHANGE THEM
+    public static final String _ACTIVIDAD   = "Actividad";
+    public static final String _APELLIDO_P  = "Apellido_Paterno";
+    public static final String _APELLID_M   = "Apellido_Materno";
+    public static final String _CURP        = "CURP";
+    public static final String _CAMION      = "Camion";
+    public static final String _CONTRATO    = "Contrato";
+    public static final String _ENGANCHE    = "Enganche";
+    public static final String _FECHA_NAC   = "Fecha_Nacimiento";
+    public static final String _LUGAR_NAC   = "Lugar_Nacimiento";
+    public static final String _NOMBRE      = "Nombre";
+    public static final String _FECHA_SAL   = "Fecha_Salida";
+    public static final String _CAMPOS      = "campos";
+    public static final String _PUSH_ID     = "pushId";
+    public static final String _SEDE        = "sede";
+    public static final String _MODALIDAD   = "Modalidad";
 
     private String key;
     private String Actividad;
@@ -22,6 +46,7 @@ public class Employee {
     private Bitmap image;
     private String enganche;
     private String fechaSalida;
+    private long ID;
 
     public Employee(){ }
 
@@ -95,6 +120,14 @@ public class Employee {
 
     public void setNombre(String nombre) {
         Nombre = nombre;
+    }
+
+    public long getID() {
+        return ID;
+    }
+
+    public void setID(long ID) {
+        this.ID = ID;
     }
 
     public Bitmap getImage() {

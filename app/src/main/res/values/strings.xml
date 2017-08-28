@@ -18,7 +18,7 @@
     <string name="employee_activity">Actividad</string>
     <string name="employee_travel">Viaje</string>
     <string name="employee_bus">Camion</string>
-    <string name="employee_curp">CURP</string>
+    <string name="employee_curp">CURP o CLABE</string>
 
     <string name="employee_departure">Salida</string>
     <string name="employee_arrive">Llegada</string>
@@ -27,9 +27,13 @@
 
     <!--String for display employees-->
     <string name="title_home">Menu principal</string>
-    <string name="subtitle_new_worker">Nuevo Trabajador</string>
+    <string name="title_generar_credenciales">Generar credenciales</string>
+    <string name="subtitle_new_worker_trip">Nuevo Trabajador a camion</string>
+    <string name="subtitle_new_worker_alone">Nuevo Trabajador solo</string>
+    <string name="subtitle_listado_empleados_campo">Trabajadores Campo:</string>
     <string name="title_new_worker">Alta Trabajadores</string>
     <string name="title_check_list_to_one">Pase de lista</string>
+    <string name="title_check_list_to_one_manual">Pase de lista Manual</string>
     <string name="input_bus_number">Ingresa el número del camión</string>
     <string name="employees_number_trip">Camion</string>
     <string name="empty_list_workers">La esta lista vacía, para agregar un trabajador, pulse el botón NUEVO en la parte superior.</string>
@@ -45,7 +49,9 @@
     <string name="check_list_put_user_number">Número de trabajador</string>
     <string name="check_list_total_check_list">Total de pase de lista:</string>
     <string name="check_list_total_checked_users_peer_day">Total de asistencias:</string>
-    <string name="check_list_pick_date">Seleccione la fecha de asistencia</string>
+    <string name="check_list_pick_date">Fecha de asistencia</string>
+    <string name="credenciales_viajes">Viajes</string>
     <string name="checl_list_select">Selecciona una fecha</string>
+    <string name="check_list_insert_row_manual">Pasar Lista</string>
 
 </resources>

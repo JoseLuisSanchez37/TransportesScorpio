@@ -1,7 +1,5 @@
 package com.asociadosmonterrubio.admin.utils;
 
-import android.util.Log;
-
 import com.asociadosmonterrubio.admin.models.ChekListCountryside;
 import com.google.firebase.database.DataSnapshot;
 

@@ -28,12 +28,15 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 import com.asociadosmonterrubio.admin.R;
+import com.asociadosmonterrubio.admin.models.Usuario;
 import com.asociadosmonterrubio.admin.utils.SingletonEmployees;
+import com.asociadosmonterrubio.admin.utils.SingletonUser;
 import com.asociadosmonterrubio.admin.utils.Util;
 import com.asociadosmonterrubio.admin.firebase.FireBaseQuery;
 import com.asociadosmonterrubio.admin.models.Employee;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -50,8 +53,14 @@ public class ActivityNewEmployee extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.layout_get_info_employee);
         ButterKnife.bind(this);
         btn_take_picture.setOnClickListener(this);
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setTitle(getString(R.string.subtitle_new_worker));
+        if (getSupportActionBar() != null) {
+            String currentRol = SingletonUser.getInstance().getUsuario().getRol();
+            if (currentRol.equals(Usuario.ROL_ADMIN) || currentRol.equals(Usuario.ROL_CORREDOR))
+                getSupportActionBar().setTitle(getString(R.string.subtitle_new_worker_trip));
+            else if (currentRol.equals(Usuario.ROL_ENCARGADO_CAMPO)){
+                getSupportActionBar().setTitle(getString(R.string.subtitle_new_worker_alone));
+            }
+        }
     }
 
     private void dispatchTakePictureIntent() {
@@ -71,7 +80,7 @@ public class ActivityNewEmployee extends AppCompatActivity implements View.OnCli
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.new_game:
+            case R.id.new_worker:
                 if (areFieldsCompleted()) {
                     progressDialog = ProgressDialog.show(this, "Guardando información", "Espere porfavor...", true, false);
                     Employee employee = getEmployee();
@@ -142,7 +151,9 @@ public class ActivityNewEmployee extends AppCompatActivity implements View.OnCli
         fields.add(edt_employee_last_name);
         fields.add(edt_employee_full_name);
         fields.add(edt_employee_origin);
-        fields.add(edt_employee_date_birth);
+        fields.add(edt_employee_date_birth_day);
+        fields.add(edt_employee_date_birth_month);
+        fields.add(edt_employee_date_birth_year);
         fields.add(edt_employee_activity);
         fields.add(edt_employee_curp);
 
@@ -154,6 +165,29 @@ public class ActivityNewEmployee extends AppCompatActivity implements View.OnCli
                 return false;
             }
         }
+
+        if (Integer.parseInt(edt_employee_date_birth_day.getText().toString()) > 31){
+            Toast.makeText(this, "El dia ingresado no es valido", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (edt_employee_date_birth_month.getText().toString().length() > 13){
+            Toast.makeText(this, "El mes ingresado no es valido", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        int year = Integer.parseInt(edt_employee_date_birth_year.getText().toString());
+
+        if (year < 1900 || year > 2010 ){
+            Toast.makeText(this, "El año ingresado no es valido", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (edt_employee_curp.getText().toString().length() < 18){
+            Toast.makeText(this, "La CLABE O CURP deben ser de 18 digitos", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
         if (this.picture_taken == null) {
             Toast.makeText(this, "Es necesario tomar la fotografia", Toast.LENGTH_SHORT).show();
             return false;
@@ -167,12 +201,16 @@ public class ActivityNewEmployee extends AppCompatActivity implements View.OnCli
         employee.setApellido_Paterno(edt_employee_first_name.getText().toString());
         employee.setApellido_Materno(edt_employee_last_name.getText().toString());
         employee.setLugar_Nacimiento(edt_employee_origin.getText().toString());
-        employee.setFecha_Nacimiento(edt_employee_date_birth.getText().toString());
-        employee.setActividad(Employee.JORNALERO);
+        String birthDay = edt_employee_date_birth_day.getText().toString() +"-"+
+                edt_employee_date_birth_month.getText().toString()+"-"+
+                edt_employee_date_birth_year.getText().toString();
+        employee.setFecha_Nacimiento(birthDay);
+        employee.setActividad(Employee._JORNALERO);
         employee.setCURP(edt_employee_curp.getText().toString());
         employee.setEnganche("1000");
+        employee.setContrato("90");
         Calendar calendar = Calendar.getInstance();
-        String date = calendar.get(Calendar.YEAR)+"-"+calendar.get(Calendar.MONTH)+"-"+calendar.get(Calendar.DAY_OF_MONTH);
+        String date = calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH) +1 )+"-"+calendar.get(Calendar.DAY_OF_MONTH);
         employee.setFechaSalida(date);
         return employee;
     }
@@ -182,8 +220,10 @@ public class ActivityNewEmployee extends AppCompatActivity implements View.OnCli
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             picture_taken.compress(Bitmap.CompressFormat.JPEG, 100, baos);
 
+            // Create file metadata including the content type
+            StorageMetadata metadata = new StorageMetadata.Builder().setContentType("image/jpg").build();
             StorageReference storageReference = FireBaseQuery.getReferenceForSaveUserImage(pushId);
-            UploadTask uploadTask = storageReference.putBytes(baos.toByteArray());
+            UploadTask uploadTask = storageReference.putBytes(baos.toByteArray(), metadata);
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull  Exception exception) {
@@ -216,7 +256,9 @@ public class ActivityNewEmployee extends AppCompatActivity implements View.OnCli
     @Bind(R.id.edt_employee_last_name) EditText edt_employee_last_name;
     @Bind(R.id.edt_employee_full_name) EditText edt_employee_full_name;
     @Bind(R.id.edt_employee_origin) EditText edt_employee_origin;
-    @Bind(R.id.edt_employee_date_birth) EditText edt_employee_date_birth;
+    @Bind(R.id.edt_employee_date_birth_day) EditText edt_employee_date_birth_day;
+    @Bind(R.id.edt_employee_date_birth_month) EditText edt_employee_date_birth_month;
+    @Bind(R.id.edt_employee_date_birth_year) EditText edt_employee_date_birth_year;
     @Bind(R.id.edt_employee_activity) EditText edt_employee_activity;
     @Bind(R.id.edt_employee_curp) EditText edt_employee_curp;
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/margin_4dp">
+
+        <TextView
+            android:id="@+id/txv_fecha_salida"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color_dark"
+            android:textSize="@dimen/text_size_22dp"
+            android:padding="@dimen/margin_12dp"
+            android:textStyle="bold"
+            android:text="0"/>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -26,7 +26,16 @@ public class SingletonUser {
     }
 
     public void setUsuario(DataSnapshot dataSnapshot){
-        this.usuario = dataSnapshot.getValue(Usuario.class);
+		if (dataSnapshot != null) {
+			this.usuario = dataSnapshot.getValue(Usuario.class);
+            Log.d("usuario", usuario.toString());
+		}else {
+			this.usuario = null;
+		}
+    }
+
+    public void setSavedUsuario(Usuario usuario){
+        this.usuario = usuario;
         Log.d("usuario", usuario.toString());
     }
 }

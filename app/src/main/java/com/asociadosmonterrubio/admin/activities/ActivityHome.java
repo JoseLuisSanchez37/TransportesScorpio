@@ -3,11 +3,13 @@ package com.asociadosmonterrubio.admin.activities;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -17,8 +19,11 @@ import com.asociadosmonterrubio.admin.R;
 import com.asociadosmonterrubio.admin.adapters.HomeAdapter;
 import com.asociadosmonterrubio.admin.firebase.FireBaseQuery;
 import com.asociadosmonterrubio.admin.models.ChekListCountryside;
+import com.asociadosmonterrubio.admin.models.Employee;
 import com.asociadosmonterrubio.admin.utils.ChekListCountrysideSingleton;
+import com.asociadosmonterrubio.admin.utils.SingletonEmployees;
 import com.asociadosmonterrubio.admin.utils.SingletonUser;
+import com.asociadosmonterrubio.admin.utils.UserPreferences;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -27,7 +32,6 @@ import java.util.ArrayList;
 public class ActivityHome extends AppCompatActivity {
 
     private boolean isPaseDeListaAvailable = true;
-    private boolean doubleBackToExitPressedOnce = false;
     ArrayList<String> campos;
     String sede;
     AlertDialog alertDialog1;
@@ -72,10 +76,36 @@ public class ActivityHome extends AppCompatActivity {
                             Toast.makeText(ActivityHome.this, "No se puede pasar lista ya que no cuenta con ningun campo asignado", Toast.LENGTH_LONG).show();
                         }
                         break;
+					case 2:
+						intent = new Intent(ActivityHome.this, ActivityListEmployeesField.class);
+						startActivity(intent);
+						break;
+					case 3:
+						intent = new Intent(ActivityHome.this, ActivityGenerateCredentials.class);
+						startActivity(intent);
+                        break;
                 }
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_exit, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.exit:
+                closeSession();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 
@@ -131,20 +161,15 @@ public class ActivityHome extends AppCompatActivity {
         alertDialog1.show();
     }
 
-
-
-    @Override
-    public void onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
-            SingletonUser.getInstance().setUsuario(null);
-            ChekListCountrysideSingleton.getInstance().clear();
-
-            Intent intent = new Intent(ActivityHome.this, ActivityLogin.class);
-            startActivity(intent);
-            return;
-        }
-
-        this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, getString(R.string.press_again_to_exit), Toast.LENGTH_SHORT).show();
+    private void closeSession(){
+        SingletonUser.getInstance().setUsuario(null);
+        UserPreferences.clearUserSession();
+        UserPreferences.savePreference(UserPreferences.LAST_SESSION_DATE, "");
+        SingletonEmployees.getInstance().setEmployess(new ArrayList<Employee>());
+        ChekListCountrysideSingleton.getInstance().clear();
+        Intent intent = new Intent(ActivityHome.this, ActivityLogin.class);
+        startActivity(intent);
+        finish();
     }
+
 }
