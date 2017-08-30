@@ -3,6 +3,9 @@ package com.asociadosmonterrubio.admin.activities;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,9 +27,16 @@ import com.asociadosmonterrubio.admin.utils.ChekListCountrysideSingleton;
 import com.asociadosmonterrubio.admin.utils.SingletonEmployees;
 import com.asociadosmonterrubio.admin.utils.SingletonUser;
 import com.asociadosmonterrubio.admin.utils.UserPreferences;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class ActivityHome extends AppCompatActivity {
@@ -81,8 +91,7 @@ public class ActivityHome extends AppCompatActivity {
 						startActivity(intent);
 						break;
 					case 3:
-						intent = new Intent(ActivityHome.this, ActivityGenerateCredentials.class);
-						startActivity(intent);
+                        seleccionaModoCredencial();
                         break;
                 }
             }
@@ -154,6 +163,34 @@ public class ActivityHome extends AppCompatActivity {
 
                 SingletonUser.getInstance().getUsuario().setCampo(CampoSeleccionado);
                 getEmpleadosPaseLista(CampoSeleccionado, sede);
+
+            }
+        });
+        alertDialog1 = builder.create();
+        alertDialog1.show();
+    }
+
+    public void seleccionaModoCredencial(){
+        String [] items = new String[2];
+        items[0] = "Por salidas";
+        items[1] = "Individual";
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Selecciona el modo de credencialización");
+        builder.setCancelable(false);
+        builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                alertDialog1.dismiss();
+                Intent intent;
+                switch (item){
+                    case 0:
+                        intent = new Intent(ActivityHome.this, ActivityGenerateCredentials.class);
+                        startActivity(intent);
+                        break;
+                    case 1:
+                        intent = new Intent(ActivityHome.this, ActivityGenerateCredentialsIndividual.class);
+                        startActivity(intent);
+                        break;
+                }
 
             }
         });

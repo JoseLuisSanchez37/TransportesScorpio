@@ -201,8 +201,8 @@ public class ActivityNewEmployee extends AppCompatActivity implements View.OnCli
         employee.setApellido_Paterno(edt_employee_first_name.getText().toString());
         employee.setApellido_Materno(edt_employee_last_name.getText().toString());
         employee.setLugar_Nacimiento(edt_employee_origin.getText().toString());
-        String birthDay = edt_employee_date_birth_day.getText().toString() +"-"+
-                edt_employee_date_birth_month.getText().toString()+"-"+
+        String birthDay = edt_employee_date_birth_day.getText().toString() +"/"+
+                edt_employee_date_birth_month.getText().toString()+"/"+
                 edt_employee_date_birth_year.getText().toString();
         employee.setFecha_Nacimiento(birthDay);
         employee.setActividad(Employee._JORNALERO);
@@ -221,9 +221,8 @@ public class ActivityNewEmployee extends AppCompatActivity implements View.OnCli
             picture_taken.compress(Bitmap.CompressFormat.JPEG, 100, baos);
 
             // Create file metadata including the content type
-            StorageMetadata metadata = new StorageMetadata.Builder().setContentType("image/jpg").build();
             StorageReference storageReference = FireBaseQuery.getReferenceForSaveUserImage(pushId);
-            UploadTask uploadTask = storageReference.putBytes(baos.toByteArray(), metadata);
+            UploadTask uploadTask = storageReference.putBytes(baos.toByteArray());
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull  Exception exception) {

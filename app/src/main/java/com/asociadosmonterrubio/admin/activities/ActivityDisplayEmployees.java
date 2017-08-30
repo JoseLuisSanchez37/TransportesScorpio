@@ -20,8 +20,13 @@ import android.widget.Toast;
 import com.asociadosmonterrubio.admin.R;
 import com.asociadosmonterrubio.admin.firebase.FireBaseQuery;
 import com.asociadosmonterrubio.admin.models.Employee;
+import com.asociadosmonterrubio.admin.models.Usuario;
 import com.asociadosmonterrubio.admin.utils.SingletonEmployees;
 import com.asociadosmonterrubio.admin.adapters.EmployeeAdapter;
+import com.asociadosmonterrubio.admin.utils.SingletonUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -39,21 +44,30 @@ public class ActivityDisplayEmployees extends AppCompatActivity {
 
     private boolean goBackDiscardChanges = false;
     private EmployeeAdapter employeeAdapter;
+    private String userRol = SingletonUser.getInstance().getUsuario().getRol();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_display_employees);
         ButterKnife.bind(this);
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setTitle(getString(R.string.title_new_worker));
+        if (getSupportActionBar() != null){
+            if (userRol.equals(Usuario.ROL_ENCARGADO_CAMPO))
+                getSupportActionBar().setTitle(getString(R.string.title_new_worker_solo));
+            else
+                getSupportActionBar().setTitle(getString(R.string.title_new_worker));
+        }
+
         init();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_display_employees, menu);
+        if (userRol.equals(Usuario.ROL_ENCARGADO_CAMPO))
+            inflater.inflate(R.menu.menu_asignar_solo_a_campo, menu);
+        else
+            inflater.inflate(R.menu.menu_display_employees, menu);
         return true;
     }
 
@@ -66,12 +80,18 @@ public class ActivityDisplayEmployees extends AppCompatActivity {
                 return true;
 
             case R.id.send_trip:
-                if (employeeAdapter.getEmployeesSelected().isEmpty()) {
+                if (employeeAdapter.getEmployeesSelected().isEmpty())
                     Toast.makeText(this, getString(R.string.empty_workers_selected), Toast.LENGTH_SHORT).show();
-                }else
-                    setNumberTrip();
+                else
+                   setNumberTrip();
                 return true;
 
+            case R.id.asignar_solos:
+                if (employeeAdapter.getEmployeesSelected().isEmpty())
+                    Toast.makeText(this, getString(R.string.empty_workers_selected), Toast.LENGTH_SHORT).show();
+                else
+                    asignarEmpleadoSoloACampo();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -128,6 +148,58 @@ public class ActivityDisplayEmployees extends AppCompatActivity {
             recycler_employees.setVisibility(View.VISIBLE);
             empty.setVisibility(View.GONE);
         }
+    }
+
+    private void asignarEmpleadoSoloACampo(){
+        String pathGetTemporadaActual = FireBaseQuery.TEMPORADAS_SEDES + "/" + SingletonUser.getInstance().getUsuario().getSede() + "/Temporada_Actual";
+        FireBaseQuery.databaseReference.child(pathGetTemporadaActual).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String pathEmployees = FireBaseQuery.ASIGNACION_EMPLEADOS_CAMPO + "/" +
+                        SingletonUser.getInstance().getUsuario().getSede() + "/" +
+                        dataSnapshot.getValue().toString() + "/" + //Esta es la temporada actual
+                        SingletonUser.getInstance().getUsuario().getCampo();
+
+                FireBaseQuery.databaseReference.child("index").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        long index = dataSnapshot.getValue(Long.class);
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+    }
+
+    private void setEmpleadoSoloACampo(String pathRoot, long currentIndex){
+        ArrayList<String> employeesSelected = employeeAdapter.getEmployeesSelected();
+        ArrayList<Employee> employees = SingletonEmployees.getInstance().getEmployees();
+        for (String key : employeesSelected){
+            for (Employee employee : employees) {
+                if (employee.getKey().equals(key)) {
+                    currentIndex = currentIndex+1;
+                    FireBaseQuery.pushEmployeeSoloToField(pathRoot, employee, currentIndex);
+                    employees.remove(employee);
+                    break;
+                }
+            }
+        }
+        employeeAdapter.updateEmployees(SingletonEmployees.getInstance().getEmployees());
+        refreshList();
     }
 
     private void setTrip(String busNumber){

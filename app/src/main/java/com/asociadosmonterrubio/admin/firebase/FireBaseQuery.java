@@ -62,7 +62,7 @@ public class FireBaseQuery {
      * @return Referencia Firebase para consultar o modificar su registro
      */
     public static StorageReference getReferenceForSaveUserImage(String pushId){
-        return storageReference.child(IMAGENES.concat("/").concat(pushId).concat(".jpg"));
+        return storageReference.child(IMAGENES.concat("/").concat(pushId));
     }
 
     /**
@@ -104,6 +104,14 @@ public class FireBaseQuery {
 				.child(pushId).setValue(params);
         //Agregar al atriubuto del empleado el numero del camion al que fue asignado.
         databaseReference.child(EMPLEADOS).child(pushId).child(Employee._CAMION).setValue(busNumber);
+    }
+
+    public static void pushEmployeeSoloToField(String pathRoot, Employee employee, long ID){
+        Map<String, String> mapEmployeeAssigment = FirebaseStructure.getMapEmployee(employee);
+        mapEmployeeAssigment.put(Employee._PUSH_ID, employee.getKey());
+        mapEmployeeAssigment.put(Employee._SEDE, SingletonUser.getInstance().getUsuario().getSede());
+        databaseReference.child(pathRoot).child(String.valueOf(ID)).setValue(mapEmployeeAssigment);
+        databaseReference.child(pathRoot).child(String.valueOf(ID)).child("campos").child(SingletonUser.getInstance().getUsuario().getCampo()).setValue(true);
     }
 
     /**

@@ -38,14 +38,14 @@
         </activity>
         <activity android:name="com.asociadosmonterrubio.admin.activities.ActivityHome"/>
         <activity android:name="com.asociadosmonterrubio.admin.activities.ActivityCheckList"/>
-        <activity android:name="com.asociadosmonterrubio.admin.activities.ActivityCheckListManual"/>
+
         <activity
             android:name="com.asociadosmonterrubio.admin.activities.ActivityLogin"
             android:theme="@style/NoActionBar"/>
         <activity android:name="com.asociadosmonterrubio.admin.activities.ActivityListEmployeesField">
         </activity>
         <activity android:name="com.asociadosmonterrubio.admin.activities.ActivityGenerateCredentials"/>
-
+        <activity android:name="com.asociadosmonterrubio.admin.activities.ActivityGenerateCredentialsIndividual"/>
     </application>
 
 </manifest>

@@ -107,7 +107,7 @@ public class ActivityGenerateCredentials extends AppCompatActivity implements Ad
 		progressDialog.setIndeterminate(true);
 		progressDialog.setCancelable(false);
 
-		loadEmployeesFromField();
+        loadEmployeesFromField();
 	}
 
 	private void loadEmployeesFromField(){
@@ -154,13 +154,19 @@ public class ActivityGenerateCredentials extends AppCompatActivity implements Ad
 				employee.put("NombreCompleto", nombreCompleto);
 				employee.put("pushId", childrenData.get("pushId"));
 				employee.put("Fecha_Salida", childrenData.get("Fecha_Salida"));
+				employee.put("Lugar_Nacimiento", childrenData.get("Lugar_Nacimiento"));
 
+				//Cuando un empleado proviene de un campo especial, este numero es indispensable
 				if (childrenData.containsKey("IDExterno")){
 					employee.put("IDExterno", childrenData.get("IDExterno"));
 				}
 
-				//Getting fecha de salida
+				//Este atributo nos indica si un empleado es solo, esta nos servira como referencia para determinar la fecha de inicio y fin
+				if (childrenData.containsKey("Modalidad")){
+					employee.put("Modalidad", childrenData.get("Modalidad"));
+				}
 
+				//Getting fecha de salida
 				boolean isFechaAdded = false;
 				for (String fechaSalida : fechasSalidas){
 					if (employee.get("Fecha_Salida").equals(fechaSalida)){
@@ -251,7 +257,7 @@ public class ActivityGenerateCredentials extends AppCompatActivity implements Ad
 				imagenes.put(pushId, bitmap);
 				if (imagenes.size() == empleadosEncontrados.size()){
 					progressDialog.setMessage("Generando PDF...");
-					PDFGenerator pdfGenerator = new PDFGenerator(document, ActivityGenerateCredentials.this, fechaSeleccionada);
+					PDFGenerator pdfGenerator = new PDFGenerator(document, ActivityGenerateCredentials.this, fechaSeleccionada, empleadosEncontrados, imagenes);
 					pdfGenerator.makeCredentials();
 					progressDialog.dismiss();
 				}
@@ -263,7 +269,7 @@ public class ActivityGenerateCredentials extends AppCompatActivity implements Ad
 				imagenes.put(pushId, null);
 				if (imagenes.size() == empleadosEncontrados.size()){
 					progressDialog.setMessage("Generando PDF...");
-					PDFGenerator pdfGenerator = new PDFGenerator(document, ActivityGenerateCredentials.this, fechaSeleccionada);
+					PDFGenerator pdfGenerator = new PDFGenerator(document, ActivityGenerateCredentials.this, fechaSeleccionada, empleadosEncontrados,imagenes);
 					pdfGenerator.makeCredentials();
 					progressDialog.dismiss();
 				}

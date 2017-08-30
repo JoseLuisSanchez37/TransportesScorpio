@@ -31,7 +31,8 @@
     <string name="subtitle_new_worker_trip">Nuevo Trabajador a camion</string>
     <string name="subtitle_new_worker_alone">Nuevo Trabajador solo</string>
     <string name="subtitle_listado_empleados_campo">Trabajadores Campo:</string>
-    <string name="title_new_worker">Alta Trabajadores</string>
+    <string name="title_new_worker">Alta Trabajadores a Salida</string>
+    <string name="title_new_worker_solo">Alta Trabajadores Solos</string>
     <string name="title_check_list_to_one">Pase de lista</string>
     <string name="title_check_list_to_one_manual">Pase de lista Manual</string>
     <string name="input_bus_number">Ingresa el número del camión</string>
