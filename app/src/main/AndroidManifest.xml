@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.asociadosmonterrubiotest.admin">
+          package="com.asociadosmonterrubio.admin">
 
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -13,21 +13,21 @@
         android:required="true"/>
 
     <application
-        android:name="com.asociadosmonterrubiotest.admin.utils.AppController"
+        android:name="com.asociadosmonterrubio.admin.utils.AppController"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.asociadosmonterrubiotest.admin.activities.ActivityNewEmployee"
+            android:name="com.asociadosmonterrubio.admin.activities.ActivityNewEmployee"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"/>
         <activity
-            android:name="com.asociadosmonterrubiotest.admin.activities.ActivityDisplayEmployees"
+            android:name="com.asociadosmonterrubio.admin.activities.ActivityDisplayEmployees"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"/>
         <activity
-            android:name="com.asociadosmonterrubiotest.admin.activities.ActivitySplashScreen"
+            android:name="com.asociadosmonterrubio.admin.activities.ActivitySplashScreen"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar">
             <intent-filter>
@@ -36,16 +36,16 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.asociadosmonterrubiotest.admin.activities.ActivityHome"/>
-        <activity android:name="com.asociadosmonterrubiotest.admin.activities.ActivityCheckList"/>
+        <activity android:name="com.asociadosmonterrubio.admin.activities.ActivityHome"/>
+        <activity android:name="com.asociadosmonterrubio.admin.activities.ActivityCheckList"/>
 
         <activity
-            android:name="com.asociadosmonterrubiotest.admin.activities.ActivityLogin"
+            android:name="com.asociadosmonterrubio.admin.activities.ActivityLogin"
             android:theme="@style/NoActionBar"/>
-        <activity android:name="com.asociadosmonterrubiotest.admin.activities.ActivityListEmployeesField">
+        <activity android:name="com.asociadosmonterrubio.admin.activities.ActivityListEmployeesField">
         </activity>
-        <activity android:name="com.asociadosmonterrubiotest.admin.activities.ActivityGenerateCredentials"/>
-        <activity android:name="com.asociadosmonterrubiotest.admin.activities.ActivityGenerateCredentialsIndividual"/>
+        <activity android:name="com.asociadosmonterrubio.admin.activities.ActivityGenerateCredentials"/>
+        <activity android:name="com.asociadosmonterrubio.admin.activities.ActivityGenerateCredentialsIndividual"/>
     </application>
 
 </manifest>
