@@ -20,6 +20,15 @@
             android:text="0"/>
 
         <TextView
+            android:id="@+id/employee_id_external"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="15"
+            android:textColor="@color/text_color_dark"
+            android:textSize="@dimen/text_size_14dp"
+            android:text="0"/>
+
+        <TextView
             android:id="@+id/employee_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
     android:background="@color/red">
 
@@ -9,7 +10,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="44dp"
+        android:paddingTop="20dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp">
 
@@ -26,7 +27,7 @@
             android:src="@drawable/scorpio_splash"
             android:layout_width="wrap_content"
             android:layout_height="150dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="20dp"
             android:layout_gravity="center_horizontal" />
 
         <!--  Email Label -->
@@ -76,6 +77,14 @@
                 android:theme="@style/LoginEditTextTheme"/>
 
         </android.support.design.widget.TextInputLayout>
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/checkbox_save_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recordar credenciales"
+            android:textColor="@color/white"
+            app:buttonTint="@color/white"/>
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_login"
