@@ -45,13 +45,15 @@ public class ActivitySplashScreen extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= 23) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE);
-            else
+            else {
                 isStorageEnabled = true;
-
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
-            else
-                isCameraEnabled = true;
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
+                else {
+                    isCameraEnabled = true;
+                    initLogin();
+                }
+            }
         }else {
             initLogin();
         }
@@ -63,24 +65,34 @@ public class ActivitySplashScreen extends AppCompatActivity {
             case REQUEST_STORAGE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED)
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE);
-                else
+                else {
                     isStorageEnabled = true;
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
+                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
+                    else {
+                        isCameraEnabled = true;
+                    }
+                }
 
                 break;
 
             case REQUEST_CAMERA:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED)
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
-                else
+                else {
                     isCameraEnabled = true;
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
+                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
+                    else {
+                        isCameraEnabled = true;
+                    }
+                }
                 break;
 
         }
 
-        if (isCameraEnabled && isStorageEnabled){
+        if (isCameraEnabled && isStorageEnabled)
             initLogin();
-        }
-
     }
 
     private void initLogin(){
