@@ -4,7 +4,7 @@
         <item>@drawable/home_personal</item>
         <item>@drawable/home_check_list</item>
         <item>@drawable/home_check_list</item>
-        <item>@drawable/home_check_list</item>
+        <item>@drawable/id_card</item>
     </integer-array>
 
     <string-array name="home_names">

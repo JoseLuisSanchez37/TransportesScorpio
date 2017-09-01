@@ -170,14 +170,14 @@ public class ActivityNewEmployee extends AppCompatActivity implements View.OnCli
             return false;
         }
 
-        if (edt_employee_date_birth_month.getText().toString().length() > 13){
+        if (Integer.parseInt(edt_employee_date_birth_month.getText().toString()) > 13){
             Toast.makeText(this, "El mes ingresado no es valido", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         int year = Integer.parseInt(edt_employee_date_birth_year.getText().toString());
 
-        if (year < 1900 || year > 2010 ){
+        if (year < 1930 || year > 2010 ){
             Toast.makeText(this, "El año ingresado no es valido", Toast.LENGTH_SHORT).show();
             return false;
         }

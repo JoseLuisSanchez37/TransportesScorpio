@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.asociadosmonterrubio.admin.R;
+import com.asociadosmonterrubio.admin.models.Usuario;
+import com.asociadosmonterrubio.admin.utils.SingletonUser;
 
 
 /**
@@ -48,14 +50,22 @@ public class HomeAdapter extends BaseAdapter {
             viewHolder.img_icon = (ImageView) convertView.findViewById(R.id.img_icon);
             viewHolder.txv_icon = (TextView) convertView.findViewById(R.id.txv_icon);
             convertView.setTag(viewHolder);
-        }else
+        }else {
+            convertView.setVisibility(View.VISIBLE);
             viewHolder = (ViewHolder) convertView.getTag();
+        }
 
         TypedArray drawables = context.getResources().obtainTypedArray(R.array.home_drawables);
         String[] names = context.getResources().getStringArray(R.array.home_names);
         viewHolder.img_icon.setBackgroundResource(drawables.getResourceId(position, 0));
         viewHolder.txv_icon.setText(names[position]);
         drawables.recycle();
+
+        if (SingletonUser.getInstance().getUsuario().getRol().equals(Usuario.ROL_CORREDOR)){
+            if (position > 0) //Mostramos solo el primer item de "Alta de trabajadores"
+                convertView.setVisibility(View.GONE);
+        }
+
         return convertView;
     }
 

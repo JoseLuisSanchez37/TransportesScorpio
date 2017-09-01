@@ -12,7 +12,9 @@
         android:layout_height="wrap_content"
         android:paddingTop="20dp"
         android:paddingLeft="24dp"
-        android:paddingRight="24dp">
+        android:paddingRight="24dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <TextView
             android:layout_width="match_parent"
@@ -50,7 +52,9 @@
                 android:textColorHighlight="@android:color/white"
                 android:text=""
                 android:backgroundTint="@android:color/white"
-                android:theme="@style/LoginEditTextTheme"/>
+                android:theme="@style/LoginEditTextTheme"
+                android:nextFocusUp="@id/input_email"
+                android:nextFocusLeft="@id/input_email"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -74,7 +78,9 @@
                 android:textColorHighlight="@android:color/white"
                 android:text=""
                 android:backgroundTint="@android:color/white"
-                android:theme="@style/LoginEditTextTheme"/>
+                android:theme="@style/LoginEditTextTheme"
+                android:nextFocusUp="@id/input_password"
+                android:nextFocusLeft="@id/input_password"/>
 
         </android.support.design.widget.TextInputLayout>
 

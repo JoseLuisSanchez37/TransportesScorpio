@@ -1,6 +1,7 @@
 package com.asociadosmonterrubio.admin.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.view.View;
+import android.view.inputmethod.InputContentInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -69,16 +72,18 @@ public class ActivityLogin extends AppCompatActivity{
         });
 
         checkbox_save_login.setChecked(UserPreferences.getPreferenceb(UserPreferences.LOGIN_SAVE_CREDEN));
-        if (checkbox_save_login.isChecked()) {
-            checkbox_save_login.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    UserPreferences.savePreference(UserPreferences.LOGIN_SAVE_CREDEN, isChecked);
-                }
-            });
-        }else {
+        checkbox_save_login.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                UserPreferences.savePreference(UserPreferences.LOGIN_SAVE_CREDEN, isChecked);
+            }
+        });
 
+        if (UserPreferences.getPreferenceb(UserPreferences.LOGIN_SAVE_CREDEN)){
+            edt_email.setText(UserPreferences.getPreference(UserPreferences.LOGIN_EMAIL));
+            edt_password.setText(UserPreferences.getPreference(UserPreferences.LOGIN_PASS));
         }
+
     }
 
     @Override
@@ -188,7 +193,7 @@ public class ActivityLogin extends AppCompatActivity{
                 SingletonUser.getInstance().setUsuario(dataSnapshot);
                 Usuario usuario = SingletonUser.getInstance().getUsuario();
                 UserPreferences.saveUserSession(usuario);
-                saveCredentials(userName, edt_password.getText().toString());
+                saveCredentials();
                 Intent intent = new Intent(ActivityLogin.this, ActivityHome.class);
                 startActivity(intent);
                 finish();
@@ -204,9 +209,11 @@ public class ActivityLogin extends AppCompatActivity{
         });
     }
 
-    public void saveCredentials(String userName, String password){
-        if(checkbox_save_login.isChecked()){
-            UserPreferences.savePreference(UserPreferences.LOGIN_EMAIL, userName);
+    public void saveCredentials(){
+        if(UserPreferences.getPreferenceb(UserPreferences.LOGIN_SAVE_CREDEN)){
+            String email = edt_email.getText().toString();
+            String password = edt_password.getText().toString();
+            UserPreferences.savePreference(UserPreferences.LOGIN_EMAIL, email);
             UserPreferences.savePreference(UserPreferences.LOGIN_PASS, password);
         }else {
             UserPreferences.savePreference(UserPreferences.LOGIN_EMAIL, "");

@@ -284,7 +284,8 @@
                     android:scrollHorizontally="true"
                     android:imeOptions="actionDone"
                     android:background="@drawable/bg_edt_employee"
-                    android:hint="18 digitos"/>
+                    android:hint="18 digitos"
+                    android:digits="@string/digits"/>
 
             </LinearLayout>
 

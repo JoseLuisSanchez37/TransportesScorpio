@@ -55,4 +55,6 @@
     <string name="checl_list_select">Selecciona una fecha</string>
     <string name="check_list_insert_row_manual">Pasar Lista</string>
 
+    <string name="digits">ABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789</string>
+
 </resources>
