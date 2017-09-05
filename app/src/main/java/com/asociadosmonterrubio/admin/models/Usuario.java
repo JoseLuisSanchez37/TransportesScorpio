@@ -10,7 +10,7 @@ public class Usuario {
 
     public static final String ROL_ADMIN            = "Admin";
     public static final String ROL_ENCARGADO_CAMPO  = "encargadoDeCampo";
-    public static final String ROL_CORREDOR         = "corredor";
+    public static final String ROL_CORREDOR         = "Corredor";
     public static final String ROL_SUPERVISOR       = "supervisor";
 
     private String email;

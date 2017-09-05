@@ -63,11 +63,15 @@ public class UserPreferences {
         usuario.setRol(getPreference(SESSION_ROL));
         usuario.setSede(getPreference(SESSION_SEDE));
         String strcampos = getPreference(SESSION_CAMPOS);
-        strcampos = strcampos.replace("[", "");
-        strcampos = strcampos.replace("]", "");
-        strcampos = strcampos.replace(" ", "");
-        String[] arrayCampos = strcampos.split(",");
-        ArrayList<String> list_campos = new ArrayList<>(Arrays.asList(arrayCampos));
+        ArrayList<String> list_campos;
+        if (!strcampos.equals("[]")) {
+            strcampos = strcampos.replace("[", "");
+            strcampos = strcampos.replace("]", "");
+            strcampos = strcampos.replace(" ", "");
+            String[] arrayCampos = strcampos.split(",");
+            list_campos = new ArrayList<>(Arrays.asList(arrayCampos));
+        }else
+            list_campos = new ArrayList<>();
         usuario.setCampos(list_campos);
         return usuario;
     }

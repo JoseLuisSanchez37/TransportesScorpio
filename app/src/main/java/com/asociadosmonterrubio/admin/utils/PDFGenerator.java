@@ -244,6 +244,7 @@ public class PDFGenerator {
                 init_image_x += INIT_BORDE_X + FINAL_BORDE_X;
                 init_campo_x += INIT_BORDE_X + FINAL_BORDE_X;
                 init_nombre_x += INIT_BORDE_X + FINAL_BORDE_X;
+                init_lugar_nac_x += INIT_BORDE_X + FINAL_BORDE_X;
                 init_fecha_inicio_x += INIT_BORDE_X + FINAL_BORDE_X;
                 init_fecha_fin_x += INIT_BORDE_X + FINAL_BORDE_X;
                 init_barcode_x += INIT_BORDE_X + FINAL_BORDE_X;

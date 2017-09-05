@@ -106,6 +106,7 @@ public class ActivityGenerateCredentials extends AppCompatActivity implements Ad
 
 	}
 
+	@SuppressWarnings("unchecked")
 	ValueEventListener loadUsuarios = new ValueEventListener() {
 		@Override
 		public void onDataChange(DataSnapshot dataSnapshot) {
