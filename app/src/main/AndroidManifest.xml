@@ -1,51 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.asociadosmonterrubio.admin">
+    package="com.asociadosmonterrubio.admin">
 
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="true"/>
+        android:required="true" />
 
     <application
-        android:name="com.asociadosmonterrubio.admin.utils.AppController"
+        android:name=".utils.AppController"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.asociadosmonterrubio.admin.activities.ActivityNewEmployee"
+            android:name=".activities.ActivityNewEmployee"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.asociadosmonterrubio.admin.activities.ActivityDisplayEmployees"
+            android:name=".activities.ActivityDisplayEmployees"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.asociadosmonterrubio.admin.activities.ActivitySplashScreen"
+            android:name=".activities.ActivitySplashScreen"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.asociadosmonterrubio.admin.activities.ActivityHome"/>
-        <activity android:name="com.asociadosmonterrubio.admin.activities.ActivityCheckList"/>
-
+        <activity android:name=".activities.ActivityHome" />
+        <activity android:name=".activities.ActivityCheckList" />
         <activity
-            android:name="com.asociadosmonterrubio.admin.activities.ActivityLogin"
-            android:theme="@style/NoActionBar"/>
-        <activity android:name="com.asociadosmonterrubio.admin.activities.ActivityListEmployeesField">
-        </activity>
-        <activity android:name="com.asociadosmonterrubio.admin.activities.ActivityGenerateCredentials"/>
-        <activity android:name="com.asociadosmonterrubio.admin.activities.ActivityGenerateCredentialsIndividual"/>
+            android:name=".activities.ActivityLogin"
+            android:theme="@style/NoActionBar" />
+        <activity android:name=".activities.ActivityListEmployeesField"></activity>
+        <activity android:name=".activities.ActivityGenerateCredentials" />
+        <activity android:name=".activities.ActivityGenerateCredentialsIndividual" />
+        <activity android:name=".activities.ActivityGirosPrestamos"></activity>
     </application>
 
 </manifest>

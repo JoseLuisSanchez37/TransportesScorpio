@@ -84,6 +84,9 @@ public class ActivityHome extends AppCompatActivity {
 					case 3:
                         seleccionaModoCredencial();
                         break;
+                    case 4:
+                        seleccionaTipoPrestamo();
+                        break;
                 }
             }
         });
@@ -167,7 +170,7 @@ public class ActivityHome extends AppCompatActivity {
         items[1] = "Individual";
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Selecciona el modo de credencialización");
-        builder.setCancelable(false);
+        builder.setCancelable(true);
         builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 alertDialog1.dismiss();
@@ -179,6 +182,34 @@ public class ActivityHome extends AppCompatActivity {
                         break;
                     case 1:
                         intent = new Intent(ActivityHome.this, ActivityGenerateCredentialsIndividual.class);
+                        startActivity(intent);
+                        break;
+                }
+
+            }
+        });
+        alertDialog1 = builder.create();
+        alertDialog1.show();
+    }
+
+    public void seleccionaTipoPrestamo(){
+        String [] items = new String[2];
+        items[0] = "Giros";
+        items[1] = "Prestamos";
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Selecciona:");
+        builder.setCancelable(true);
+        builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                alertDialog1.dismiss();
+                Intent intent = new Intent(ActivityHome.this, ActivityGirosPrestamos.class);
+                switch (item){
+                    case 0:
+                        intent.putExtra("tipo", "Giros");
+                        startActivity(intent);
+                        break;
+                    case 1:
+                        intent.putExtra("tipo", "Prestamos");
                         startActivity(intent);
                         break;
                 }

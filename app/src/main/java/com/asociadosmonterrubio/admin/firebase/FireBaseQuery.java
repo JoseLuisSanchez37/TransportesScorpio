@@ -82,6 +82,16 @@ public class FireBaseQuery {
         databaseReference.child(pathPaseDeListaPorEmpleado).setValue(Perfil);
     }
 
+    public static void pushGirosPrestamos(String ID, String fecha, String cantidad, String tipo){
+
+        String campo = SingletonUser.getInstance().getUsuario().getCampo();
+        String sede = SingletonUser.getInstance().getUsuario().getSede();
+
+        String path =  REGISTROS_TRABAJADORES + "/" + sede + "/" + campo + "/" + ID + "/" + tipo.toLowerCase() + "/" + fecha;
+
+        databaseReference.child(path).setValue(cantidad);
+    }
+
     /**
      * Asignar empleados a un camion
      * @param busNumber numero del camoin

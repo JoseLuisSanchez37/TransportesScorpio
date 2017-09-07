@@ -5,7 +5,7 @@
 
     <!--Strings for new employee-->
 
-    <string name="app_name">Scorpio</string>
+    <string name="app_name">Scorpio Pruebas</string>
     <string name="employee_key">ID</string>
     <string name="employee_season">Temporada</string>
     <string name="employee_full_name">Nombre(s)</string>
@@ -54,6 +54,11 @@
     <string name="credenciales_viajes">Viajes</string>
     <string name="checl_list_select">Selecciona una fecha</string>
     <string name="check_list_insert_row_manual">Pasar Lista</string>
+
+    <string name="loans_id">ID Trabajador</string>
+    <string name="loans_date">Fecha de aplicación</string>
+    <string name="loans_import">Cantidad $</string>
+    <string name="loans_insert">Registrar</string>
 
     <string name="digits">ABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789</string>
 
