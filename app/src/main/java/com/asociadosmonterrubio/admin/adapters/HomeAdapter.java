@@ -61,6 +61,7 @@ public class HomeAdapter extends BaseAdapter {
         viewHolder.txv_icon.setText(names[position]);
         drawables.recycle();
 
+        
         if (SingletonUser.getInstance().getUsuario().getRol().equals(Usuario.ROL_CORREDOR)){
             if (position > 0) //Mostramos solo el primer item de "Alta de trabajadores"
                 convertView.setVisibility(View.GONE);

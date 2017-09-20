@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -36,10 +37,13 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
 public class ActivityGenerateCredentials extends AppCompatActivity implements AdapterView.OnItemClickListener{
+
+	private static final int MAX_REQUEST_IN_QUEUE = 100;
 
 	private PdfDocument document;
 
@@ -56,6 +60,11 @@ public class ActivityGenerateCredentials extends AppCompatActivity implements Ad
 	private String fechaSeleccionada;
 	public ArrayList<Map<String, String>> empleadosEncontrados;
 
+	public ArrayList<List<Map<String, String>>> chunkEmpleadosEncontrados;
+    private int currentIndexChunk = 0;
+    private int totalIndexChunkSize = -1;
+    private List<Map<String, String>> currentChunkList;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -70,6 +79,7 @@ public class ActivityGenerateCredentials extends AppCompatActivity implements Ad
 		imagenes = new HashMap<>();
 		employees = new ArrayList<>();
 		fechasSalidas = new ArrayList<>();
+		chunkEmpleadosEncontrados = new ArrayList<>();
 
 		progressDialog = new ProgressDialog(this);
 		progressDialog.setMessage("Descargando...");
@@ -189,7 +199,19 @@ public class ActivityGenerateCredentials extends AppCompatActivity implements Ad
 		dialogo1.setPositiveButton("Generar credenciales", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialogo1, int id) {
 				dialogo1.dismiss();
-				generarCredenciales();
+
+                progressDialog = new ProgressDialog(ActivityGenerateCredentials.this);
+				progressDialog.setMessage("Descargando fotografias...");
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                progressDialog.setProgress(0);
+
+				Thread thread = new Thread(new Runnable() {
+					@Override
+					public void run() {
+						generarCredenciales();
+					}
+				});
+				thread.start();
 			}
 		});
 		dialogo1.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -201,8 +223,6 @@ public class ActivityGenerateCredentials extends AppCompatActivity implements Ad
 	}
 
 	public void generarCredenciales() {
-		progressDialog.setMessage("Descargando fotografias...");
-		progressDialog.show();
 
 		//Obtenemos los empleados dados de alta en esa fecha.
 		this.empleadosEncontrados = new ArrayList<>();
@@ -210,11 +230,49 @@ public class ActivityGenerateCredentials extends AppCompatActivity implements Ad
 			if(empleado.get("Fecha_Salida").equals(this.fechaSeleccionada))
 				empleadosEncontrados.add(empleado);
 		}
-		//Obtener la imagen de cada de ellos
-		for (Map<String, String> empleadoEncontrado : empleadosEncontrados){
-			downloadImageFromStorage(empleadoEncontrado.get("pushId"));
-		}
 
+        progressDialog.setMax(empleadosEncontrados.size());
+
+		runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.show();
+            }
+        });
+
+		if (empleadosEncontrados.size() > MAX_REQUEST_IN_QUEUE){
+			float chunks = (float)empleadosEncontrados.size()/MAX_REQUEST_IN_QUEUE;
+			float residuo = chunks % 1;
+            int finalChunks = (int) chunks;
+			if (residuo > 0)
+                finalChunks += 1;
+
+            totalIndexChunkSize = finalChunks;
+
+            int fromIndex;
+            int toIndex = 0;
+            for (int i = 1; i <= finalChunks; i++){
+                fromIndex = toIndex;
+                toIndex += MAX_REQUEST_IN_QUEUE;
+                if (i == finalChunks)
+                    chunkEmpleadosEncontrados.add(empleadosEncontrados.subList(fromIndex, empleadosEncontrados.size()));
+                else
+                    chunkEmpleadosEncontrados.add(empleadosEncontrados.subList(fromIndex, toIndex));
+            }
+
+            //Obtener la imagen de cada de ellos
+            currentChunkList = chunkEmpleadosEncontrados.get(currentIndexChunk);
+            for (Map<String, String> empleadoEncontrado : currentChunkList) {
+                downloadImageFromStorage(empleadoEncontrado.get("pushId"));
+            }
+
+		}else {
+
+            //Obtener la imagen de cada de ellos
+            for (Map<String, String> empleadoEncontrado : empleadosEncontrados) {
+                downloadImageFromStorage(empleadoEncontrado.get("pushId"));
+            }
+        }
 	}
 
 	private void downloadImageFromStorage(final String pushId){
@@ -226,24 +284,102 @@ public class ActivityGenerateCredentials extends AppCompatActivity implements Ad
 			public void onSuccess(byte[] bytes) {
 				Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 				imagenes.put(pushId, bitmap);
-				if (imagenes.size() == empleadosEncontrados.size()){
-					progressDialog.setMessage("Generando PDF...");
-					PDFGenerator pdfGenerator = new PDFGenerator(document, ActivityGenerateCredentials.this, fechaSeleccionada, empleadosEncontrados, imagenes);
-					pdfGenerator.makeCredentials();
-					progressDialog.dismiss();
-				}
+                progressDialog.setProgress(imagenes.size());
+                if (totalIndexChunkSize == -1) {
+                    if (imagenes.size() == empleadosEncontrados.size()) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressDialog.setMessage("Generando PDF...");
+                                PDFGenerator pdfGenerator = new PDFGenerator(document, ActivityGenerateCredentials.this, fechaSeleccionada, empleadosEncontrados, imagenes);
+                                pdfGenerator.makeCredentials();
+                                progressDialog.dismiss();
+                                onBackPressed();
+                            }
+                        });
+                    }
+                }else {
+                    if ((currentIndexChunk + 1) < totalIndexChunkSize){
+                        int currentSize = 0;
+                        for (int i = 0; i < totalIndexChunkSize; i++){
+                            if (i <= currentIndexChunk)
+                                currentSize += chunkEmpleadosEncontrados.get(i).size();
+                        }
+
+                        if (imagenes.size() == currentSize){
+                            currentIndexChunk++;
+                            //Obtener la imagen de cada de ellos
+                            currentChunkList = chunkEmpleadosEncontrados.get(currentIndexChunk);
+                            for (Map<String, String> empleadoEncontrado : currentChunkList) {
+                                downloadImageFromStorage(empleadoEncontrado.get("pushId"));
+                            }
+                        }
+                    }else {
+                        if (imagenes.size() == empleadosEncontrados.size()) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressDialog.setMessage("Generando PDF...");
+                                    PDFGenerator pdfGenerator = new PDFGenerator(document, ActivityGenerateCredentials.this, fechaSeleccionada, empleadosEncontrados, imagenes);
+                                    pdfGenerator.makeCredentials();
+                                    progressDialog.dismiss();
+                                    onBackPressed();
+                                }
+                            });
+                        }
+                    }
+                }
 			}
 		}).addOnFailureListener(new OnFailureListener() {
 			@Override
 			public void onFailure(@NonNull Exception exception) {
 				// Handle any errors
 				imagenes.put(pushId, null);
-				if (imagenes.size() == empleadosEncontrados.size()){
-					progressDialog.setMessage("Generando PDF...");
-					PDFGenerator pdfGenerator = new PDFGenerator(document, ActivityGenerateCredentials.this, fechaSeleccionada, empleadosEncontrados,imagenes);
-					pdfGenerator.makeCredentials();
-					progressDialog.dismiss();
-				}
+                progressDialog.setProgress(imagenes.size());
+                if (totalIndexChunkSize == -1) {
+                    if (imagenes.size() == empleadosEncontrados.size()) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressDialog.setMessage("Generando PDF...");
+                                PDFGenerator pdfGenerator = new PDFGenerator(document, ActivityGenerateCredentials.this, fechaSeleccionada, empleadosEncontrados, imagenes);
+                                pdfGenerator.makeCredentials();
+                                progressDialog.dismiss();
+                                onBackPressed();
+                            }
+                        });
+                    }
+                }else {
+                    if ((currentIndexChunk + 1) < totalIndexChunkSize){
+                        int currentSize = 0;
+                        for (int i = 0; i < totalIndexChunkSize; i++){
+                            if (i <= currentIndexChunk)
+                                currentSize += chunkEmpleadosEncontrados.get(i).size();
+                        }
+
+                        if (imagenes.size() == currentSize){
+                            currentIndexChunk++;
+                            //Obtener la imagen de cada de ellos
+                            currentChunkList = chunkEmpleadosEncontrados.get(currentIndexChunk);
+                            for (Map<String, String> empleadoEncontrado : currentChunkList) {
+                                downloadImageFromStorage(empleadoEncontrado.get("pushId"));
+                            }
+                        }
+                    }else {
+                        if (imagenes.size() == empleadosEncontrados.size()) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressDialog.setMessage("Generando PDF...");
+                                    PDFGenerator pdfGenerator = new PDFGenerator(document, ActivityGenerateCredentials.this, fechaSeleccionada, empleadosEncontrados, imagenes);
+                                    pdfGenerator.makeCredentials();
+                                    progressDialog.dismiss();
+                                    onBackPressed();
+                                }
+                            });
+                        }
+                    }
+                }
 			}
 		});
 
