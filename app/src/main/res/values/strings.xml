@@ -5,7 +5,7 @@
 
     <!--Strings for new employee-->
 
-    <string name="app_name">Scorpio Pruebas</string>
+    <string name="app_name">Scorpio</string>
     <string name="employee_key">ID</string>
     <string name="employee_season">Temporada</string>
     <string name="employee_full_name">Nombre(s)</string>
