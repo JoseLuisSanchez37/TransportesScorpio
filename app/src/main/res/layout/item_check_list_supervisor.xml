@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_4dp"
+    android:layout_margin="@dimen/margin_10dp"
+    android:background="@drawable/bg_edt_employee">
+
+    <TextView
+        android:id="@+id/txv_nombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_16dp"
+        android:textColor="@android:color/black"
+        android:padding="@dimen/margin_4dp"
+        android:text="ALFREDO LARA HERNANDEZ"
+        android:layout_marginBottom="@dimen/margin_4dp"/>
+
+    <TextView
+        android:id="@+id/txv_origen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_14dp"
+        android:textColor="@android:color/black"
+        android:padding="@dimen/margin_4dp"
+        android:text="HUEJUTLA DE REYES, HIDALGO"
+        android:layout_marginBottom="@dimen/margin_4dp"/>
+
+    <TextView
+        android:id="@+id/txv_fecha_nac"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_12dp"
+        android:textColor="@android:color/black"
+        android:padding="@dimen/margin_4dp"
+        android:text="2017-04-02"
+        android:layout_marginBottom="@dimen/margin_4dp"/>
+
+</LinearLayout>

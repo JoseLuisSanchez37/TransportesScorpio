@@ -27,6 +27,7 @@
 
     <!--String for display employees-->
     <string name="title_home">Menu principal</string>
+    <string name="title_supervisor_salidas">Consultar Salidas</string>
     <string name="title_generar_credenciales">Generar credenciales</string>
     <string name="subtitle_new_worker_trip">Nuevo Trabajador a camion</string>
     <string name="subtitle_new_worker_alone">Nuevo Trabajador solo</string>

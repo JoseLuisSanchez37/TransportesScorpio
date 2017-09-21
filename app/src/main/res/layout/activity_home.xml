@@ -11,4 +11,5 @@
     android:gravity="center"
     android:background="@color/white"
     android:paddingTop="@dimen/margin_4dp"
-    android:paddingRight="@dimen/margin_4dp"/>
+    android:paddingEnd="@dimen/margin_4dp"
+    android:paddingStart="0dp"/>

@@ -20,6 +20,7 @@ import com.asociadosmonterrubio.admin.adapters.HomeAdapter;
 import com.asociadosmonterrubio.admin.firebase.FireBaseQuery;
 import com.asociadosmonterrubio.admin.models.ChekListCountryside;
 import com.asociadosmonterrubio.admin.models.Employee;
+import com.asociadosmonterrubio.admin.models.Usuario;
 import com.asociadosmonterrubio.admin.utils.ChekListCountrysideSingleton;
 import com.asociadosmonterrubio.admin.utils.SingletonEmployees;
 import com.asociadosmonterrubio.admin.utils.SingletonUser;
@@ -66,15 +67,22 @@ public class ActivityHome extends AppCompatActivity {
                 Intent intent;
                 switch (position){
                     case 0:
-                        intent = new Intent(ActivityHome.this, ActivityDisplayEmployees.class);
+						if (SingletonUser.getInstance().getUsuario().getRol().equals(Usuario.ROL_SUPERVISOR))
+							intent = new Intent(ActivityHome.this, ActivitySupervisorCheckList.class);
+						else
+							intent = new Intent(ActivityHome.this, ActivityDisplayEmployees.class);
                         startActivity(intent);
                         break;
                     case 1:
-                        if (isPaseDeListaAvailable) {
-                            intent = new Intent(ActivityHome.this, ActivityCheckList.class);
-                            startActivity(intent);
-                        }else {
-                            Toast.makeText(ActivityHome.this, "No se puede pasar lista ya que no cuenta con ningun campo asignado", Toast.LENGTH_LONG).show();
+                        if (SingletonUser.getInstance().getUsuario().getRol().equals(Usuario.ROL_SUPERVISOR))
+                            Toast.makeText(ActivityHome.this, "En desarrollo...", Toast.LENGTH_SHORT).show();
+                        else {
+                            if (isPaseDeListaAvailable) {
+                                intent = new Intent(ActivityHome.this, ActivityCheckList.class);
+                                startActivity(intent);
+                            } else {
+                                Toast.makeText(ActivityHome.this, "No se puede pasar lista ya que no cuenta con ningun campo asignado", Toast.LENGTH_LONG).show();
+                            }
                         }
                         break;
 					case 2:

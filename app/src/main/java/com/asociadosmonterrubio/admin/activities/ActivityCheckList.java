@@ -66,6 +66,12 @@ public class ActivityCheckList extends AppCompatActivity implements EditText.OnE
             }
             String total_asistencias = String.valueOf(lista_asistencias.size());
             tv_total_asistencias.setText(total_asistencias);
+
+			// AQUI HACER LA LOGICA DE MANDAR A INSERTAR A TODOS
+			// LOS EMPLEADOS COMO FALTA PARA ESTE DIA, UNICAMENTE CUANDO SE TENGA UNA SOLA ASISTENCIA.
+			if (lista_asistencias.size() == 1){
+
+			}
         }
 
         @Override

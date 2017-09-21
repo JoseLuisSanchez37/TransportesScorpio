@@ -177,7 +177,7 @@ public class ActivityDisplayEmployees extends AppCompatActivity {
     private void asignarEmpleadoSoloACampo(){
         final String pathEmployees = FireBaseQuery.ASIGNACION_EMPLEADOS_CAMPO + "/" +
                 SingletonUser.getInstance().getUsuario().getSede() + "/" +
-                temporadaActual + "/" + //Esta es la temporada actual
+                temporadaActual + "/" + //<--Esta es la temporada actual
                 SingletonUser.getInstance().getUsuario().getCampo();
 
         FireBaseQuery.databaseReference.child("index").addValueEventListener(new ValueEventListener() {

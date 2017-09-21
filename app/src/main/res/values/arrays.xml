@@ -16,4 +16,14 @@
         <item>Giros/Prestamos</item>
     </string-array>
 
+    <integer-array name="home_drawables_supervisor">
+        <item>@drawable/ic_supervisor_check_list</item>
+        <item>@drawable/home_personal</item>
+    </integer-array>
+
+    <string-array name="home_names_supervisor">
+        <item>Consultar salidas</item>
+        <item>Consultar empleado</item>
+    </string-array>
+
 </resources>

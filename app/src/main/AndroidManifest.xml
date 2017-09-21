@@ -41,10 +41,11 @@
         <activity
             android:name=".activities.ActivityLogin"
             android:theme="@style/NoActionBar" />
-        <activity android:name=".activities.ActivityListEmployeesField"></activity>
+        <activity android:name=".activities.ActivityListEmployeesField"/>
         <activity android:name=".activities.ActivityGenerateCredentials" />
         <activity android:name=".activities.ActivityGenerateCredentialsIndividual" />
-        <activity android:name=".activities.ActivityGirosPrestamos"></activity>
+        <activity android:name=".activities.ActivityGirosPrestamos"/>
+	<activity android:name=".activities.ActivitySupervisorCheckList"/>
     </application>
 
 </manifest>
