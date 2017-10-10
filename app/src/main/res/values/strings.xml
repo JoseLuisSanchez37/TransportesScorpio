@@ -35,6 +35,7 @@
     <string name="title_new_worker">Altas a Salida</string>
     <string name="title_new_worker_solo">Altas Solos</string>
     <string name="title_check_list_to_one">Pase de lista</string>
+    <string name="title_quit_employee">Baja de trabajador</string>
     <string name="title_check_list_to_one_manual">Pase de lista Manual</string>
     <string name="input_bus_number">Ingresa el número del camión</string>
     <string name="employees_number_trip">Camion</string>
