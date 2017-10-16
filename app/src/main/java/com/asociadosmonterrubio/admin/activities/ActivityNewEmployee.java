@@ -170,7 +170,7 @@ public class ActivityNewEmployee extends AppCompatActivity implements View.OnCli
             return false;
         }
 
-        if (Integer.parseInt(edt_employee_date_birth_month.getText().toString()) > 13){
+        if (Integer.parseInt(edt_employee_date_birth_month.getText().toString()) > 12){
             Toast.makeText(this, "El mes ingresado no es valido", Toast.LENGTH_SHORT).show();
             return false;
         }

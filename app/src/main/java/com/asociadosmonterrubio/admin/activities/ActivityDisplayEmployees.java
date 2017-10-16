@@ -1,6 +1,7 @@
 package com.asociadosmonterrubio.admin.activities;
 
 
+import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,17 +29,16 @@ import com.asociadosmonterrubio.admin.adapters.EmployeeAdapter;
 import com.asociadosmonterrubio.admin.utils.SingletonUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import br.com.forusers.heinsinputdialogs.HeinsInputDialog;
-import br.com.forusers.heinsinputdialogs.interfaces.OnInputLongListener;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
-public class ActivityDisplayEmployees extends AppCompatActivity {
+public class ActivityDisplayEmployees extends AppCompatActivity implements DialogConfirmTrip.ConfirmTrip{
 
     @Bind(R.id.checkbox_select_all) CheckBox checkbox_select_all;
     @Bind(R.id.empty) TextView empty;
@@ -54,7 +54,7 @@ public class ActivityDisplayEmployees extends AppCompatActivity {
     //La temporada nos indica el nombre de la temporada actual.
     private String temporadaActual = "";
     private boolean isCampoEspecial = false;
-
+    private DatabaseReference databaseReferenceIndex;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -152,16 +152,9 @@ public class ActivityDisplayEmployees extends AppCompatActivity {
     }
 
     private void setNumberTrip(){
-        HeinsInputDialog dialog = new HeinsInputDialog(this);
-        dialog.setPositiveButton(new OnInputLongListener() {
-            @Override
-            public boolean onInputLong(AlertDialog dialog, Long busNumber) {
-                setTrip(String.valueOf(busNumber));
-                return false;
-            }
-        });
-        dialog.setTitle(getString(R.string.input_bus_number));
-        dialog.show();
+        DialogConfirmTrip dialogConfirmTrip = new DialogConfirmTrip();
+        dialogConfirmTrip.setCallback(this);
+        dialogConfirmTrip.show(getFragmentManager(), DialogConfirmTrip.class.getSimpleName());
     }
 
     public void refreshList(){
@@ -175,24 +168,10 @@ public class ActivityDisplayEmployees extends AppCompatActivity {
     }
 
     private void asignarEmpleadoSoloACampo(){
-        final String pathEmployees = FireBaseQuery.ASIGNACION_EMPLEADOS_CAMPO + "/" +
-                SingletonUser.getInstance().getUsuario().getSede() + "/" +
-                temporadaActual + "/" + //<--Esta es la temporada actual
-                SingletonUser.getInstance().getUsuario().getCampo();
-
-        FireBaseQuery.databaseReference.child("index").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                long index = dataSnapshot.getValue(Long.class);
-                setEmpleadoSoloACampo(pathEmployees, index);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(ActivityDisplayEmployees.this, "Ocurrio un error al obtener el index", Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        if (progressDialog != null && !progressDialog.isShowing())
+            progressDialog.show();
+        databaseReferenceIndex = FireBaseQuery.databaseReference.child(FireBaseQuery.INDEX);
+        databaseReferenceIndex.addValueEventListener(indexValueEventListener);
     }
 
     private void obtenerTemporada(){
@@ -252,20 +231,22 @@ public class ActivityDisplayEmployees extends AppCompatActivity {
                 }
             }
         }
-        FireBaseQuery.databaseReference.child("index").setValue(currentIndex);
+        databaseReferenceIndex.setValue(currentIndex);
         employeeAdapter.updateEmployees(SingletonEmployees.getInstance().getEmployees());
         employeesSelected.clear();
         refreshList();
+        if (progressDialog != null && progressDialog.isShowing())
+            progressDialog.dismiss();
         Toast.makeText(this, "LOS EMPLEADOS SOLOS SE HAN ASIGNADO CORRECTAMENTE",Toast.LENGTH_SHORT).show();
     }
 
-    private void setTrip(String busNumber){
+    private void setTrip(String busNumber, String departureDate){
         ArrayList<String> employeesSelected = employeeAdapter.getEmployeesSelected();
         ArrayList<Employee> employees = SingletonEmployees.getInstance().getEmployees();
         for (String key : employeesSelected){
             for (Employee employee : employees) {
                 if (employee.getKey().equals(key)) {
-                    FireBaseQuery.pushEmployeeToTrip(busNumber, key, employee.getNombre());
+                    FireBaseQuery.pushEmployeeToTrip(busNumber, key, employee.getNombre(), departureDate);
                     employees.remove(employee);
                     break;
                 }
@@ -294,4 +275,28 @@ public class ActivityDisplayEmployees extends AppCompatActivity {
 
     }
 
+    ValueEventListener indexValueEventListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            databaseReferenceIndex.removeEventListener(this);
+            String pathEmployees = FireBaseQuery.ASIGNACION_EMPLEADOS_CAMPO + "/" +
+                    SingletonUser.getInstance().getUsuario().getSede() + "/" +
+                    temporadaActual + "/" + //<--Esta es la temporada actual
+                    SingletonUser.getInstance().getUsuario().getCampo();
+
+            long index = dataSnapshot.getValue(Long.class);
+            setEmpleadoSoloACampo(pathEmployees, index);
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            Toast.makeText(ActivityDisplayEmployees.this, "Ocurrio un error al obtener el index", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    @Override
+    public void OnConfirm(DialogFragment dialogFragment, String numberBus, String departureDate) {
+        dialogFragment.dismiss();
+        setTrip(numberBus, departureDate);
+    }
 }

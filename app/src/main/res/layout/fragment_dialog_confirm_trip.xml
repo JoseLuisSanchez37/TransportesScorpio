@@ -1,0 +1,82 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_vertical_margin">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_16dp"
+        android:textColor="@android:color/black"
+        android:gravity="center_horizontal"
+        android:text="CONFIRME LOS SIGUIENTES DATOS"
+        android:layout_marginBottom="@dimen/margin_10dp"/>
+
+    <EditText
+        android:id="@+id/edt_trip_number_bus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:maxLength="5"
+        android:hint="INGRESA EL NUMERO DEL CAMION"
+        android:textSize="@dimen/text_size_16dp"
+        android:layout_marginBottom="@dimen/margin_20dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_18dp"
+        android:textColor="@android:color/black"
+        android:text="De clic en la fecha si desea cambiarla"
+        android:layout_marginBottom="@dimen/margin_4dp"/>
+
+    <EditText
+        android:id="@+id/edt_trip_departure_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="SELECCIONA LA FECHA DE SALIDA"
+        android:textSize="@dimen/text_size_16dp"
+        android:layout_marginBottom="@dimen/margin_22dp"
+        android:clickable="true"
+        android:editable="false"
+        android:focusable="false"
+        android:cursorVisible="false"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dp"
+            android:layout_weight="50"
+            android:layout_height="wrap_content"
+            android:text="Cancelar"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="@dimen/margin_6dp"
+            android:layout_marginBottom="@dimen/margin_6dp"
+            android:paddingLeft="@dimen/margin_6dp"
+            android:paddingRight="@dimen/margin_6dp"
+            android:layout_gravity="center"
+            android:background="@color/red" />
+
+        <Button
+            android:id="@+id/btn_confirm_trip"
+            android:layout_width="0dp"
+            android:layout_weight="50"
+            android:layout_height="wrap_content"
+            android:text="Confirmar"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="@dimen/margin_6dp"
+            android:layout_marginBottom="@dimen/margin_6dp"
+            android:paddingLeft="@dimen/margin_6dp"
+            android:paddingRight="@dimen/margin_6dp"
+            android:layout_gravity="center"
+            android:background="@color/red" />
+
+    </LinearLayout>
+
+</LinearLayout>

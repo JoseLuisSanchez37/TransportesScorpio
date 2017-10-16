@@ -37,7 +37,9 @@ public class FireBaseQuery {
 	public static final String TEMPORADA_CAMPO = "temporada_campo";
 	public static final String TEMPORADAS_SEDES = "temporadas_sedes";
 	public static final String ASIGNACION_EMPLEADOS_CAMPO = "asignacion_empleados_campo";
-
+	public static final String MOTIVOS_BAJA = "motivos_baja";
+	public static final String BAJAS_PENDIENTES = "bajas_pendientes";
+    public static final String INDEX = "index";
 
     //Firebase references
     public static DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -97,23 +99,26 @@ public class FireBaseQuery {
      * @param busNumber numero del camoin
      * @param pushId pushId del trabajador a agregar
      * @param userName nombre del trabajador
+     * @param departureDate fecha de salida del camion
      */
-    public static void pushEmployeeToTrip(String busNumber, String pushId, String userName) {
+    public static void pushEmployeeToTrip(String busNumber, String pushId, String userName, String departureDate) {
         HashMap<String, String> params = new HashMap<>();
         params.put("nombre", userName);
-        Calendar calendar = Calendar.getInstance();
-        String date = calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH) +1 )+"-"+calendar.get(Calendar.DAY_OF_MONTH);
+        //Calendar calendar = Calendar.getInstance();
+        //String date = calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH) +1 )+"-"+calendar.get(Calendar.DAY_OF_MONTH);
         //Agregar id del empleado en referencias de salidas y salidasCopia
         databaseReference.child(SALIDAS)
-                .child(date)
+                .child(departureDate)
                 .child(String.valueOf(busNumber))
                 .child(pushId).setValue(params);
 		databaseReference.child(SALIDAS_COPIA)
-				.child(date)
+				.child(departureDate)
 				.child(String.valueOf(busNumber))
 				.child(pushId).setValue(params);
-        //Agregar al atriubuto del empleado el numero del camion al que fue asignado.
+        //Agregar al atributo del empleado el numero del camion al que fue asignado.
         databaseReference.child(EMPLEADOS).child(pushId).child(Employee._CAMION).setValue(busNumber);
+        //Agregar fecha de salida a empleado
+        databaseReference.child(EMPLEADOS).child(pushId).child(Employee._FECHA_SAL).setValue(departureDate);
     }
 
     public static void pushEmployeeSoloToField(String pathRoot, Employee employee, long ID, boolean isCampoEspecial){
@@ -240,5 +245,20 @@ public class FireBaseQuery {
         databaseReference.child(pathPaseDeLista).child(ID).setValue(employee.getActividad()); //actividad es el perfil del empleado "Jornalero, campero, etc.".
 
     }
+
+    public static void pushReasonsToFire(){
+		ArrayList<String> motivos = new ArrayList<>();
+        motivos.add("Consumo de drogas");
+        motivos.add("Faltista");
+        motivos.add("Enfermedad");
+        motivos.add("Grillero");
+        databaseReference.child(MOTIVOS_BAJA).setValue(motivos);
+	}
+
+	public static void pushFire(Map<String, String> params){
+		DatabaseReference ref = databaseReference.child(BAJAS_PENDIENTES).child(params.get("ID"));
+		params.remove("ID");
+		ref.setValue(params);
+	}
 
 }
