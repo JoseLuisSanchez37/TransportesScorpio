@@ -45,7 +45,7 @@ public class ActivityListEmployeesField extends AppCompatActivity {
 	@SuppressWarnings("unchecked")
 	private void loadEmployeesFromField(){
 		String pathGetTemporadaActual = FireBaseQuery.TEMPORADAS_SEDES + "/" + SingletonUser.getInstance().getUsuario().getSede() + "/Temporada_Actual";
-		FireBaseQuery.databaseReference.child(pathGetTemporadaActual).addListenerForSingleValueEvent(new ValueEventListener() {
+		FireBaseQuery.databaseReference.child(pathGetTemporadaActual).addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
 				String pathEmployees = FireBaseQuery.ASIGNACION_EMPLEADOS_CAMPO + "/" +
@@ -53,7 +53,7 @@ public class ActivityListEmployeesField extends AppCompatActivity {
  						dataSnapshot.getValue().toString() + "/" + //Esta es la temporada actual
 						SingletonUser.getInstance().getUsuario().getCampo();
 
-				FireBaseQuery.databaseReference.child(pathEmployees).addListenerForSingleValueEvent(new ValueEventListener() {
+				FireBaseQuery.databaseReference.child(pathEmployees).addValueEventListener(new ValueEventListener() {
 					@Override
 					public void onDataChange(DataSnapshot dataSnapshot) {
 						for (DataSnapshot children : dataSnapshot.getChildren()){

@@ -46,7 +46,8 @@
         <activity android:name=".activities.ActivityGenerateCredentialsIndividual" />
         <activity android:name=".activities.ActivityGirosPrestamos" />
         <activity android:name=".activities.ActivitySupervisorCheckList" />
-        <activity android:name=".activities.ActivityQuitEmployee"></activity>
+        <activity android:name=".activities.ActivityQuitEmployee"/>
+        <activity android:name=".activities.ActivityUploadImage"/>
     </application>
 
 </manifest>
