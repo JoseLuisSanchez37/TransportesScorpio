@@ -170,8 +170,10 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/text_color_dark"
                     android:textStyle="bold"
-                    android:minLines="2"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:inputType="textCapCharacters"
+                    android:scrollHorizontally="true"
                     android:imeOptions="actionNext"
                     android:background="@drawable/bg_edt_employee"/>
 

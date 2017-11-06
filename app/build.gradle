@@ -4,11 +4,11 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
     defaultConfig {
-        applicationId "com.asociadosmonterrubio.admin"
+        applicationId "com.asociadosmonterrubio.admin.test"
         minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
-        versionName "2.1 PRODUCCION"
+        versionName "2.2 TEST"
     }
     buildTypes {
         release {

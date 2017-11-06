@@ -48,6 +48,7 @@
         <activity android:name=".activities.ActivitySupervisorCheckList" />
         <activity android:name=".activities.ActivityQuitEmployee"/>
         <activity android:name=".activities.ActivityUploadImage"/>
+        <activity android:name=".activities.ActivityUpdateInfoEmployee"/>
     </application>
 
 </manifest>

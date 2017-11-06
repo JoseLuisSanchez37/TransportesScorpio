@@ -5,12 +5,12 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,46 +20,61 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.Calendar;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
 import com.asociadosmonterrubio.admin.R;
-import com.asociadosmonterrubio.admin.models.Usuario;
-import com.asociadosmonterrubio.admin.utils.SingletonEmployees;
-import com.asociadosmonterrubio.admin.utils.SingletonUser;
-import com.asociadosmonterrubio.admin.utils.Util;
 import com.asociadosmonterrubio.admin.firebase.FireBaseQuery;
-import com.asociadosmonterrubio.admin.models.Employee;
+import com.asociadosmonterrubio.admin.utils.Util;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-public class ActivityNewEmployee extends AppCompatActivity implements View.OnClickListener{
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
+
+public class ActivityUpdateInfoEmployee extends AppCompatActivity implements View.OnClickListener{
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     public Bitmap picture_taken = null;
     private ProgressDialog progressDialog;
+    private Map<String, String> employeeSelected;
+    private String currentFieldPath;
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_get_info_employee);
+        setContentView(R.layout.layout_update_info_employee);
         ButterKnife.bind(this);
         btn_take_picture.setOnClickListener(this);
+        employeeSelected = (Map<String, String>) getIntent().getExtras().getSerializable("employeeData");
+        currentFieldPath = getIntent().getExtras().getString("path");
+
         if (getSupportActionBar() != null) {
-            String currentRol = SingletonUser.getInstance().getUsuario().getRol();
-            if (currentRol.equals(Usuario.ROL_ADMIN) || currentRol.equals(Usuario.ROL_CORREDOR))
-                getSupportActionBar().setTitle(getString(R.string.subtitle_new_worker_trip));
-            else if (currentRol.equals(Usuario.ROL_ENCARGADO_CAMPO)){
-                getSupportActionBar().setTitle(getString(R.string.subtitle_new_worker_alone));
-            }
+            String ID = !employeeSelected.get("IDExterno").isEmpty() ? employeeSelected.get("IDExterno") : employeeSelected.get("ID");
+            String subtitle = getString(R.string.subtitle_update_worker) + " " + ID;
+            getSupportActionBar().setTitle(subtitle);
         }
+        fillEmployeeData();
+    }
+
+    private void fillEmployeeData(){
+        edt_employee_activity.setText(employeeSelected.get("Actividad"));
+        edt_employee_activity.setEnabled(false);
+        edt_employee_curp.setText(employeeSelected.get("CURP"));
+        edt_employee_full_name.setText(employeeSelected.get("Nombre"));
+        edt_employee_first_name.setText(employeeSelected.get("Apellido_Paterno"));
+        edt_employee_last_name.setText(employeeSelected.get("Apellido_Materno"));
+        edt_employee_origin.setText(employeeSelected.get("Lugar_Nacimiento"));
+        String[] fechaNacimiento = employeeSelected.get("Fecha_Nacimiento").split("/");
+        edt_employee_date_birth_day.setText(fechaNacimiento[0]);
+        edt_employee_date_birth_month.setText(fechaNacimiento[1]);
+        edt_employee_date_birth_year.setText(fechaNacimiento[2]);
     }
 
     private void dispatchTakePictureIntent() {
@@ -72,21 +87,21 @@ public class ActivityNewEmployee extends AppCompatActivity implements View.OnCli
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_new_employee, menu);
+        inflater.inflate(R.menu.menu_update_info_user, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.new_worker:
+            case R.id.update_worker:
                 if (areFieldsCompleted()) {
                     progressDialog = ProgressDialog.show(this, "Guardando información", "Espere porfavor...", true, false);
-                    Employee employee = getEmployee();
-                    employee = FireBaseQuery.pushNewEmployee(employee);
-                    employee.setImage(picture_taken);
-                    SingletonEmployees.getInstance().add(employee);
-                    upLoadImage(employee.getKey());
+                    FireBaseQuery.updateInfoEmployee(currentFieldPath, getInfoEmployeeToUpdate());
+                    if (picture_taken != null)
+                        upLoadImage(employeeSelected.get("pushId"));
+                    else
+                        onBack();
                 }
                 return true;
 
@@ -188,30 +203,21 @@ public class ActivityNewEmployee extends AppCompatActivity implements View.OnCli
             return false;
         }
 
-        if (this.picture_taken == null) {
-            Toast.makeText(this, "Es necesario tomar la fotografia", Toast.LENGTH_SHORT).show();
-            return false;
-        }
         return true;
     }
 
-    public Employee getEmployee(){
-        Employee employee = new Employee();
-        employee.setNombre(edt_employee_full_name.getText().toString());
-        employee.setApellido_Paterno(edt_employee_first_name.getText().toString());
-        employee.setApellido_Materno(edt_employee_last_name.getText().toString());
-        employee.setLugar_Nacimiento(edt_employee_origin.getText().toString());
+    private Map<String, String> getInfoEmployeeToUpdate(){
         String birthDay = edt_employee_date_birth_day.getText().toString() +"/"+
                 edt_employee_date_birth_month.getText().toString()+"/"+
                 edt_employee_date_birth_year.getText().toString();
-        employee.setFecha_Nacimiento(birthDay);
-        employee.setActividad(Employee._JORNALERO);
-        employee.setCURP(edt_employee_curp.getText().toString());
-        employee.setEnganche("1000");
-        employee.setContrato("90");
-        Calendar calendar = Calendar.getInstance();
-        String date = calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH) +1 )+"-"+calendar.get(Calendar.DAY_OF_MONTH);
-        employee.setFechaSalida(date);
+
+        Map<String, String> employee = new HashMap<>();
+        employee.put("Nombre", edt_employee_full_name.getText().toString());
+        employee.put("Apellido_Paterno", edt_employee_first_name.getText().toString());
+        employee.put("Apellido_Materno", edt_employee_last_name.getText().toString());
+        employee.put("Fecha_Nacimiento", birthDay);
+        employee.put("Lugar_Nacimiento", edt_employee_origin.getText().toString());
+        employee.put("CURP", edt_employee_curp.getText().toString());
         return employee;
     }
 

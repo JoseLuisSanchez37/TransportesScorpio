@@ -59,6 +59,18 @@ public class FireBaseQuery {
     }
 
     /**
+     * Actualiza la informacion de un empleado tales como el nombre, apellidos, fotografia, etc.
+     * No se actualizan los ids externos o tipo de perfil
+     * @param path ruta del id del empleado a actualizar
+     * @param info datos del empleado a actualizar
+     */
+    public static void updateInfoEmployee(String path, Map<String, String> info){
+        DatabaseReference reference =  databaseReference.child(path);
+        for (Map.Entry<String,String> data : info.entrySet())
+            reference.child(data.getKey()).setValue(data.getValue());
+    }
+
+    /**
      * Obtener referencia de Firebase Storage para guardar la imagen del empleado
      * @param pushId pushId del trabajador en donde se guardara su foto
      * @return Referencia Firebase para consultar o modificar su registro

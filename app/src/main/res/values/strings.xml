@@ -18,7 +18,7 @@
     <string name="employee_activity">Actividad</string>
     <string name="employee_travel">Viaje</string>
     <string name="employee_bus">Camion</string>
-    <string name="employee_curp">CURP o CLABE</string>
+    <string name="employee_curp">CURP o \n CLABE</string>
 
     <string name="employee_departure">Salida</string>
     <string name="employee_arrive">Llegada</string>
@@ -31,6 +31,7 @@
     <string name="title_generar_credenciales">Generar credenciales</string>
     <string name="subtitle_new_worker_trip">Nuevo Trabajador a camion</string>
     <string name="subtitle_new_worker_alone">Nuevo Trabajador solo</string>
+    <string name="subtitle_update_worker">Actualizar Info:</string>
     <string name="subtitle_listado_empleados_campo">Trabajadores Campo:</string>
     <string name="title_new_worker">Altas a Salida</string>
     <string name="title_new_worker_solo">Altas Solos</string>
