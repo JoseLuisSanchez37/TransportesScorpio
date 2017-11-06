@@ -6,6 +6,7 @@
         <item>@drawable/home_check_list</item>
         <item>@drawable/id_card</item>
         <item>@drawable/ic_cash</item>
+        <item>@drawable/ic_baja</item>
     </integer-array>
 
     <string-array name="home_names">
@@ -14,6 +15,7 @@
         <item>Ver lista de trabajadores</item>
         <item>Generar credenciales</item>
         <item>Giros/Prestamos</item>
+        <item>Bajas</item>
     </string-array>
 
     <integer-array name="home_drawables_supervisor">

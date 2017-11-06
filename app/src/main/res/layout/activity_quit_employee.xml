@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingTop="@dimen/margin_22dp"
-    android:paddingBottom="@dimen/margin_16dp"
+    android:paddingTop="@dimen/margin_10dp"
+    android:paddingBottom="@dimen/margin_10dp"
     android:paddingLeft="@dimen/margin_16dp"
     android:paddingRight="@dimen/margin_16dp">
 
@@ -19,6 +19,7 @@
         android:gravity="center_horizontal"/>
 
     <android.support.design.widget.TextInputEditText
+        android:id="@+id/edt_id_employee"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxLength="10"
@@ -26,14 +27,26 @@
         android:gravity="center_horizontal"
         android:textSize="20dp"
         android:padding="10dp"
+        android:hint="ID"
         android:layout_marginBottom="@dimen/margin_4dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/quit_choose_reason"
+        android:textSize="@dimen/text_size_16dp"
+        android:textColor="@color/text_color_dark"
+        android:textStyle="bold"
+        android:paddingTop="@dimen/margin_16dp"
+        android:gravity="center_horizontal"/>
 
     <Spinner
         android:id="@+id/spinner_motivos"
         android:text="Selecciona un motivo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_4dp"/>
+        android:layout_marginTop="@dimen/margin_8dp"
+        android:layout_marginBottom="@dimen/margin_8dp"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -42,20 +55,21 @@
         android:textSize="@dimen/text_size_16dp"
         android:textColor="@color/text_color_dark"
         android:textStyle="bold"
-        android:paddingTop="@dimen/margin_20dp"
+        android:paddingTop="@dimen/margin_14dp"
         android:gravity="center_horizontal"/>
 
     <android.support.design.widget.TextInputEditText
-        android:id="@+id/edt_id_empleado"
+        android:id="@+id/edt_notes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxLength="100"
-        android:inputType="number"
+        android:inputType="text"
         android:maxLines="2"
+        android:minLines="2"
         android:lines="2"
-        android:gravity="center_horizontal"
         android:textSize="20dp"
-        android:padding="10dp"
+        android:padding="8dp"
+        android:hint="Agregar nota u observación"
         android:layout_marginBottom="@dimen/margin_4dp" />
 
 </LinearLayout>

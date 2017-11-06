@@ -13,8 +13,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.asociadosmonterrubio.admin.BuildConfig;
 import com.asociadosmonterrubio.admin.R;
 import com.asociadosmonterrubio.admin.adapters.HomeAdapter;
 import com.asociadosmonterrubio.admin.firebase.FireBaseQuery;
@@ -31,6 +33,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class ActivityHome extends AppCompatActivity {
 
     private boolean isPaseDeListaAvailable = true;
@@ -44,6 +49,7 @@ public class ActivityHome extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        ButterKnife.bind(this);
         if (getSupportActionBar() != null)
             getSupportActionBar().setTitle(R.string.title_home);
 
@@ -54,10 +60,12 @@ public class ActivityHome extends AppCompatActivity {
         sede = SingletonUser.getInstance().getUsuario().getSede();
         if (campos.isEmpty()){
             isPaseDeListaAvailable = false;
+            showSessionInformation();
         }else if (campos.size() == 1){
             CampoSeleccionado = campos.get(0);
             SingletonUser.getInstance().getUsuario().setCampo(CampoSeleccionado);
             getEmpleadosPaseLista(CampoSeleccionado,sede);
+            showSessionInformation();
         }else {
             CreacionDeDialogo();
         }
@@ -95,6 +103,12 @@ public class ActivityHome extends AppCompatActivity {
                     case 4:
                         seleccionaTipoPrestamo();
                         break;
+                    case 5:
+                        if (CampoSeleccionado != null) {
+                            intent = new Intent(ActivityHome.this, ActivityQuitEmployee.class);
+                            startActivity(intent);
+                        }
+                        break;
                 }
             }
         });
@@ -127,7 +141,7 @@ public class ActivityHome extends AppCompatActivity {
         progressDialog.setIndeterminate(true);
         progressDialog.show();
 
-        FireBaseQuery.databaseReference.child(FireBaseQuery.PASE_DE_LISTA).child(sede).child(campo).addListenerForSingleValueEvent(new ValueEventListener() {
+        FireBaseQuery.databaseReference.child(FireBaseQuery.PASE_DE_LISTA).child(sede).child(campo).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds : dataSnapshot.getChildren())
@@ -144,7 +158,7 @@ public class ActivityHome extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                databaseError.getCode();
+                Log.d("onCancelled", databaseError.getMessage());
                 if (progressDialog != null)
                     progressDialog.dismiss();
             }
@@ -165,7 +179,7 @@ public class ActivityHome extends AppCompatActivity {
 
                 SingletonUser.getInstance().getUsuario().setCampo(CampoSeleccionado);
                 getEmpleadosPaseLista(CampoSeleccionado, sede);
-
+                showSessionInformation();
             }
         });
         alertDialog1 = builder.create();
@@ -238,5 +252,22 @@ public class ActivityHome extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    private void showSessionInformation(){
+        String campo = CampoSeleccionado != null ? CampoSeleccionado : "";
+        txv_info_user_field_selected.setText("Campo : ".concat(campo));
+        txv_info_user_name.setText("Nombre: ".concat(SingletonUser.getInstance().getUsuario().getNombre()));
+        txv_info_user_rol.setText("Rol: ".concat(SingletonUser.getInstance().getUsuario().getRol()));
+        txv_info_user_sede.setText("Sede: ".concat(SingletonUser.getInstance().getUsuario().getSede()));
+        txv_info_user_environment.setText("Ambiente: ".concat(BuildConfig.APPLICATION_ID.equalsIgnoreCase("com.asociadosmonterrubio.admin.test") ? "PRUEBAS" : "PRODUCCION"));
+        txv_info_user_app_version.setText("Version: ".concat(BuildConfig.VERSION_NAME));
+    }
+
+    @Bind(R.id.txv_info_user_name) TextView txv_info_user_name;
+    @Bind(R.id.txv_info_user_rol) TextView txv_info_user_rol;
+    @Bind(R.id.txv_info_user_field_selected) TextView txv_info_user_field_selected;
+    @Bind(R.id.txv_info_user_sede) TextView txv_info_user_sede;
+    @Bind(R.id.txv_info_user_app_version) TextView txv_info_user_app_version;
+    @Bind(R.id.txv_info_user_environment) TextView txv_info_user_environment;
 
 }

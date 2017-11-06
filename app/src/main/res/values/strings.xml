@@ -64,6 +64,7 @@
     <string name="loans_insert">Registrar</string>
 
     <string name="quit_id_trabajador">Número de trabajador</string>
+    <string name="quit_choose_reason">Selecciona el motivo de baja</string>
     <string name="quit_notas">Notas</string>
 
     <string name="digits">ABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789</string>

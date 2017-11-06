@@ -1,15 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/gridview"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:columnWidth="90dp"
-    android:numColumns="auto_fit"
-    android:verticalSpacing="5dp"
-    android:horizontalSpacing="5dp"
-    android:stretchMode="columnWidth"
-    android:gravity="center"
-    android:background="@color/white"
-    android:paddingTop="@dimen/margin_4dp"
-    android:paddingEnd="@dimen/margin_4dp"
-    android:paddingStart="0dp"/>
+    android:background="@color/white">
+
+    <GridView
+        android:id="@+id/gridview"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_0dp"
+        android:layout_weight="82"
+        android:columnWidth="90dp"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="5dp"
+        android:horizontalSpacing="5dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        android:background="@color/white"
+        android:paddingTop="@dimen/margin_4dp"
+        android:paddingEnd="@dimen/margin_4dp"
+        android:paddingStart="0dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_0dp"
+        android:layout_weight="18"
+        android:orientation="horizontal"
+        android:padding="@dimen/margin_4dp">
+
+        <LinearLayout
+            android:layout_width="@dimen/margin_0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="53"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txv_info_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Usuario:"
+                android:textSize="@dimen/text_size_14dp"
+                android:textColor="@color/text_color_dark_gray"/>
+
+            <TextView
+                android:id="@+id/txv_info_user_field_selected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Campo Seleccionado:"
+                android:textSize="@dimen/text_size_14dp"
+                android:textStyle="bold"
+                android:textColor="@color/text_color_dark_gray"/>
+
+            <TextView
+                android:id="@+id/txv_info_user_rol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rol:"
+                android:textSize="@dimen/text_size_14dp"
+                android:textColor="@color/text_color_dark_gray"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="@dimen/margin_0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="47"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txv_info_user_sede"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Usuario:"
+                android:textSize="@dimen/text_size_14dp"
+                android:textColor="@color/text_color_dark_gray"/>
+
+            <TextView
+                android:id="@+id/txv_info_user_environment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rol:"
+                android:textSize="@dimen/text_size_14dp"
+                android:textStyle="bold"
+                android:textColor="@color/text_color_dark_gray"/>
+
+            <TextView
+                android:id="@+id/txv_info_user_app_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Campo Seleccionado:"
+                android:textSize="@dimen/text_size_14dp"
+                android:textColor="@color/text_color_dark_gray"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
+

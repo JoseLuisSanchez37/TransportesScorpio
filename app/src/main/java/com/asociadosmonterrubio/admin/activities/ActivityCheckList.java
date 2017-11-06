@@ -17,6 +17,7 @@ import com.asociadosmonterrubio.admin.R;
 import com.asociadosmonterrubio.admin.firebase.FireBaseQuery;
 import com.asociadosmonterrubio.admin.models.ChekListCountryside;
 import com.asociadosmonterrubio.admin.utils.ChekListCountrysideSingleton;
+import com.asociadosmonterrubio.admin.utils.Util;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -147,7 +148,7 @@ public class ActivityCheckList extends AppCompatActivity implements EditText.OnE
     private void processCheckList(){
         String input = EditTextCodigoEmpleado.getText().toString();
         if (!input.isEmpty()) {
-            ChekListCountryside employee = isValidID(input);
+            ChekListCountryside employee = Util.isValidID(input);
             if (employee != null) {
                 FireBaseQuery.PushCheckList(input, employee.getPerfil(), calendar);
                 EditTextCodigoEmpleado.setOnEditorActionListener(null);
@@ -160,17 +161,6 @@ public class ActivityCheckList extends AppCompatActivity implements EditText.OnE
                 Toast.makeText(this, "Numero  de empleado no existe", Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    private ChekListCountryside isValidID(String ID){
-        ChekListCountryside employee = null;
-        Integer empleadoID = Integer.parseInt(ID);
-        ArrayList<ChekListCountryside> paseDeLista = ChekListCountrysideSingleton.getInstance().getChekListCountryside();
-        for (ChekListCountryside item : paseDeLista){
-            if (empleadoID == item.getIdEmpleado())
-                employee = item;
-        }
-        return employee;
     }
 
     private String getCurrentFormattedDate(){

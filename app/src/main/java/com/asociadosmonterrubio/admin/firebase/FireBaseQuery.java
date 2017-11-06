@@ -39,6 +39,7 @@ public class FireBaseQuery {
 	public static final String ASIGNACION_EMPLEADOS_CAMPO = "asignacion_empleados_campo";
 	public static final String MOTIVOS_BAJA = "motivos_baja";
 	public static final String BAJAS_PENDIENTES = "bajas_pendientes";
+    public static final String LISTA_NEGRA = "lista_negra";
     public static final String INDEX = "index";
 
     //Firebase references
@@ -272,5 +273,11 @@ public class FireBaseQuery {
 		params.remove("ID");
 		ref.setValue(params);
 	}
+
+	public static void sendEmployeePendingToBeFired(String employeeId, Map<String,String> data){
+        String campo = SingletonUser.getInstance().getUsuario().getCampo();
+        String sede = SingletonUser.getInstance().getUsuario().getSede();
+        databaseReference.child(BAJAS_PENDIENTES).child(sede).child(campo).child(employeeId).setValue(data);
+    }
 
 }

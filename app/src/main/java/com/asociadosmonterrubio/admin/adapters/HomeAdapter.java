@@ -21,9 +21,18 @@ import com.asociadosmonterrubio.admin.utils.SingletonUser;
 public class HomeAdapter extends BaseAdapter {
 
     private Context context;
+    private TypedArray drawables;
+    private String[] names;
 
     public HomeAdapter(Context context){
         this.context = context;
+        if (SingletonUser.getInstance().getUsuario().getRol().equals(Usuario.ROL_SUPERVISOR)) {
+            drawables = context.getResources().obtainTypedArray(R.array.home_drawables_supervisor);
+            names = context.getResources().getStringArray(R.array.home_names_supervisor);
+        }else {
+            drawables = context.getResources().obtainTypedArray(R.array.home_drawables);
+            names = context.getResources().getStringArray(R.array.home_names);
+        }
     }
 
     @Override
@@ -58,19 +67,8 @@ public class HomeAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-		TypedArray drawables;
-		String[] names;
-		if (SingletonUser.getInstance().getUsuario().getRol().equals(Usuario.ROL_SUPERVISOR)) {
-			drawables = context.getResources().obtainTypedArray(R.array.home_drawables_supervisor);
-			names = context.getResources().getStringArray(R.array.home_names_supervisor);
-		}else {
-			drawables = context.getResources().obtainTypedArray(R.array.home_drawables);
-			names = context.getResources().getStringArray(R.array.home_names);
-		}
-
         viewHolder.img_icon.setBackgroundResource(drawables.getResourceId(position, 0));
         viewHolder.txv_icon.setText(names[position]);
-        drawables.recycle();
 
         if (SingletonUser.getInstance().getUsuario().getRol().equals(Usuario.ROL_CORREDOR)){
             if (position > 0) //Mostramos solo el primer item de "Alta de trabajadores"
