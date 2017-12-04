@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
 import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.asociadosmonterrubio.admin.models.ChekListCountryside;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by joseluissanchezcruz on 3/20/17.
@@ -41,11 +43,16 @@ public class Util {
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
 
-    public static ChekListCountryside isValidID(String ID){
-        if (ID == null) return null;
+    /**
+     * Search an IDExternal
+     * @param IDExternal or special
+     * @return if is found return the object, null otherwise
+     */
+    public static ChekListCountryside isValidID(String IDExternal){
+        if (IDExternal == null) return null;
         int idEmpleado;
         try {
-            idEmpleado = Integer.parseInt(ID);
+            idEmpleado = Integer.parseInt(IDExternal);
         }catch (NumberFormatException ex){
             return null;
         }
@@ -59,6 +66,22 @@ public class Util {
             }
         }
         return employee;
+    }
+
+    /**
+     * Search by IDExternal and return its map data associated
+     * @param ID number of ID
+     * @param employees list of employees
+     * @return a map found null otherwise
+     */
+    public static Map<String, String> isValidID(String ID, ArrayList<Map<String, String>> employees){
+        if (TextUtils.isEmpty(ID)) return null;
+        for (Map<String, String> employee : employees){
+            if (employee.get("IDExternal").equals(ID)) {
+                return employee;
+            }
+        }
+        return null;
     }
 
 }
