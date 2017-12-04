@@ -77,7 +77,7 @@ public class Util {
     public static Map<String, String> isValidID(String ID, ArrayList<Map<String, String>> employees){
         if (TextUtils.isEmpty(ID)) return null;
         for (Map<String, String> employee : employees){
-            if (employee.get("IDExternal").equals(ID)) {
+            if (employee.get("IDExterno").equals(ID)) {
                 return employee;
             }
         }
