@@ -28,7 +28,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 import com.asociadosmonterrubio.admin.R;
+import com.asociadosmonterrubio.admin.models.BlackListUser;
 import com.asociadosmonterrubio.admin.models.Usuario;
+import com.asociadosmonterrubio.admin.utils.BlackListSingleton;
 import com.asociadosmonterrubio.admin.utils.SingletonEmployees;
 import com.asociadosmonterrubio.admin.utils.SingletonUser;
 import com.asociadosmonterrubio.admin.utils.Util;
@@ -145,6 +147,15 @@ public class ActivityNewEmployee extends AppCompatActivity implements View.OnCli
     }
 
     private boolean areFieldsCompleted(){
+
+        BlackListUser blackListUser = BlackListSingleton.getInstance().getBlackListUser(edt_employee_curp.getText().toString());
+        if (blackListUser != null){
+            BlackListMessageFragment dialog = new BlackListMessageFragment();
+            dialog.setBlackListUser(blackListUser);
+            dialog.show(getFragmentManager(), BlackListMessageFragment.class.getSimpleName());
+            return false;
+        }
+
         ArrayList<EditText> fields = new ArrayList<>();
         fields.add(edt_employee_first_name);
         fields.add(edt_employee_last_name);

@@ -20,9 +20,11 @@ import com.asociadosmonterrubio.admin.BuildConfig;
 import com.asociadosmonterrubio.admin.R;
 import com.asociadosmonterrubio.admin.adapters.HomeAdapter;
 import com.asociadosmonterrubio.admin.firebase.FireBaseQuery;
+import com.asociadosmonterrubio.admin.models.BlackListUser;
 import com.asociadosmonterrubio.admin.models.ChekListCountryside;
 import com.asociadosmonterrubio.admin.models.Employee;
 import com.asociadosmonterrubio.admin.models.Usuario;
+import com.asociadosmonterrubio.admin.utils.BlackListSingleton;
 import com.asociadosmonterrubio.admin.utils.ChekListCountrysideSingleton;
 import com.asociadosmonterrubio.admin.utils.SingletonEmployees;
 import com.asociadosmonterrubio.admin.utils.SingletonUser;
@@ -32,6 +34,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -61,6 +64,7 @@ public class ActivityHome extends AppCompatActivity {
         if (campos.isEmpty()){
             isPaseDeListaAvailable = false;
             showSessionInformation();
+            getBlackList();
         }else if (campos.size() == 1){
             CampoSeleccionado = campos.get(0);
             SingletonUser.getInstance().getUsuario().setCampo(CampoSeleccionado);
@@ -152,8 +156,7 @@ public class ActivityHome extends AppCompatActivity {
                     ChekListCountrysideSingleton.getInstance().add(listado);
                     Log.d("gettingCheckList", "ID: "+listado.getIdEmpleado() +"  -  "+ "PERFIL: " + listado.getPerfil());
                 }
-                if (progressDialog != null)
-                    progressDialog.dismiss();
+                getBlackList();
             }
 
             @Override
@@ -242,6 +245,7 @@ public class ActivityHome extends AppCompatActivity {
         alertDialog1.show();
     }
 
+
     private void closeSession(){
         SingletonUser.getInstance().setUsuario(null);
         UserPreferences.clearUserSession();
@@ -261,6 +265,26 @@ public class ActivityHome extends AppCompatActivity {
         txv_info_user_sede.setText("Sede: ".concat(SingletonUser.getInstance().getUsuario().getSede()));
         txv_info_user_environment.setText("Ambiente: ".concat(BuildConfig.APPLICATION_ID.equalsIgnoreCase("com.asociadosmonterrubio.admin.test") ? "PRUEBAS" : "PRODUCCION"));
         txv_info_user_app_version.setText("Version: ".concat(BuildConfig.VERSION_NAME));
+    }
+
+    private void getBlackList(){
+        FireBaseQuery.databaseReference.child(FireBaseQuery.LISTA_NEGRA).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
+                while(iterator.hasNext()){
+                    BlackListUser blackListUser = iterator.next().getValue(BlackListUser.class);
+                    BlackListSingleton.getInstance().addBlackListUser(blackListUser);
+                }
+                if (progressDialog != null) progressDialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                if (progressDialog != null) progressDialog.dismiss();
+                Toast.makeText(ActivityHome.this, "Ocurrio un error al descargar el pase de lista", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Bind(R.id.txv_info_user_name) TextView txv_info_user_name;

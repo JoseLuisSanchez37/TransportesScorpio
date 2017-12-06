@@ -1,0 +1,184 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/margin_8dp"
+    android:paddingRight="@dimen/margin_8dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/title_black_list_user_found"
+        android:textColor="@color/text_color_dark_gray"
+        android:padding="@dimen/margin_8dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_container"
+        android:layout_marginBottom="@dimen/margin_8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/black_list_full_name"
+            android:textColor="@color/text_color_light_gray"
+            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/margin_6dp"/>
+
+        <TextView
+            android:id="@+id/black_list_full_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color_dark_gray"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_16dp"
+            android:layout_marginEnd="@dimen/margin_6dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_container"
+        android:layout_marginBottom="@dimen/margin_8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/black_list_curp"
+            android:textColor="@color/text_color_light_gray"
+            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/margin_6dp"/>
+
+        <TextView
+            android:id="@+id/black_list_curp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color_dark_gray"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_16dp"
+            android:layout_marginEnd="@dimen/margin_6dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_container"
+        android:layout_marginBottom="@dimen/margin_8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/black_list_fecha_nac"
+            android:textColor="@color/text_color_light_gray"
+            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/margin_6dp"/>
+
+        <TextView
+            android:id="@+id/black_list_fecha_nac"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color_dark_gray"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_16dp"
+            android:layout_marginEnd="@dimen/margin_6dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_container"
+        android:layout_marginBottom="@dimen/margin_8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/black_list_lugar_nac"
+            android:textColor="@color/text_color_light_gray"
+            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/margin_6dp"/>
+
+        <TextView
+            android:id="@+id/black_list_lugar_nac"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color_dark_gray"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_16dp"
+            android:layout_marginEnd="@dimen/margin_6dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_container"
+        android:layout_marginBottom="@dimen/margin_8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/black_list_motivo"
+            android:textColor="@color/text_color_light_gray"
+            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/margin_6dp"/>
+
+        <TextView
+            android:id="@+id/black_list_motivo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color_dark_gray"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_16dp"
+            android:layout_marginEnd="@dimen/margin_6dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_container"
+        android:layout_marginBottom="@dimen/margin_8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/black_list_observaciones"
+            android:textColor="@color/text_color_dark_gray"
+            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/margin_6dp"/>
+
+        <TextView
+            android:id="@+id/black_list_observaciones"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color_dark_gray"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_16dp"
+            android:layout_marginEnd="@dimen/margin_6dp"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_accept"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Aceptar"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="@dimen/margin_6dp"
+        android:paddingLeft="@dimen/margin_6dp"
+        android:paddingRight="@dimen/margin_6dp"
+        android:layout_gravity="center"
+        android:background="@color/red" />
+
+</LinearLayout>

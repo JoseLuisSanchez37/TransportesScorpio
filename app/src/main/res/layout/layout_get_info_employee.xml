@@ -284,6 +284,7 @@
                     android:imeOptions="actionDone"
                     android:background="@drawable/bg_edt_employee"
                     android:hint="18 digitos"
+                    android:text="HRMRHL73071630H201"
                     android:digits="@string/digits"/>
 
             </LinearLayout>
