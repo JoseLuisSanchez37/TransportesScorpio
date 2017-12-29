@@ -51,7 +51,8 @@ public class ActivityGirosPrestamos extends AppCompatActivity implements View.On
                         calendar.get(Calendar.DAY_OF_MONTH))
                         .show();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(edt_loan_date.getWindowToken(), 0);
+                if (imm != null)
+                    imm.hideSoftInputFromWindow(edt_loan_date.getWindowToken(), 0);
 
                 break;
             case R.id.btn_insert_loan:

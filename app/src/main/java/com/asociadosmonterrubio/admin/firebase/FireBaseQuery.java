@@ -27,18 +27,18 @@ public class FireBaseQuery {
     public static final String EMPLEADOS = "empleados";
     public static final String CAMPOS = "campos";
     public static final String SALIDAS = "salidas";
-	public static final String SALIDAS_COPIA = "salidasCopia";
+	private static final String SALIDAS_COPIA = "salidasCopia";
     public static final String TEMPORADAS = "temporadas";
-    public static final String IMAGENES = "imagenes";
+    private static final String IMAGENES = "imagenes";
     public static final String USUARIOS = "usuarios";
     public static final String PASE_DE_LISTA = "pase_de_lista";
     public static final String ASISTENCIAS = "asistencias";
-    public static final String REGISTROS_TRABAJADORES = "registros_trabajadores";
+    private static final String REGISTROS_TRABAJADORES = "registros_trabajadores";
 	public static final String TEMPORADA_CAMPO = "temporada_campo";
 	public static final String TEMPORADAS_SEDES = "temporadas_sedes";
 	public static final String ASIGNACION_EMPLEADOS_CAMPO = "asignacion_empleados_campo";
 	public static final String MOTIVOS_BAJA = "motivos_baja";
-	public static final String BAJAS_PENDIENTES = "bajas_pendientes";
+	private static final String BAJAS_PENDIENTES = "bajas_pendientes";
     public static final String LISTA_NEGRA = "lista_negra";
     public static final String INDEX = "index";
 
@@ -97,11 +97,16 @@ public class FireBaseQuery {
         databaseReference.child(pathPaseDeListaPorEmpleado).setValue(Perfil);
     }
 
+    /**
+     * Save data in node sales and loans
+     * @param ID IDExterno
+     * @param fecha date when the sale has made
+     * @param cantidad quantity of the loan
+     * @param tipo kind of loan (sales and loans)
+     */
     public static void pushGirosPrestamos(String ID, String fecha, String cantidad, String tipo){
-
         String campo = SingletonUser.getInstance().getUsuario().getCampo();
         String sede = SingletonUser.getInstance().getUsuario().getSede();
-
         String path =  REGISTROS_TRABAJADORES + "/" + sede + "/" + campo + "/" + ID + "/" + tipo.toLowerCase() + "/" + fecha;
 
         databaseReference.child(path).setValue(cantidad);
@@ -134,6 +139,13 @@ public class FireBaseQuery {
         databaseReference.child(EMPLEADOS).child(pushId).child(Employee._FECHA_SAL).setValue(departureDate);
     }
 
+    /**
+     * Save user'sinformation in node "asignacion_empleados_campo"
+     * @param pathRoot string path
+     * @param employee Employee data
+     * @param ID IDExterno
+     * @param isCampoEspecial true if it is a field special
+     */
     public static void pushEmployeeSoloToField(String pathRoot, Employee employee, long ID, boolean isCampoEspecial){
         String campo = SingletonUser.getInstance().getUsuario().getCampo();
         String sede = SingletonUser.getInstance().getUsuario().getSede();
@@ -145,13 +157,22 @@ public class FireBaseQuery {
         databaseReference.child(pathRoot).child(String.valueOf(ID)).child("campos").child(SingletonUser.getInstance().getUsuario().getCampo()).setValue(true);
 
         //Si NO es un campo especial. Entonces insertamos tambien en el nodo de pase de lista.
-        if (!isCampoEspecial){
+        if (!isCampoEspecial)
             databaseReference.child(PASE_DE_LISTA).child(sede).child(campo).child(String.valueOf(ID)).setValue(employee.getActividad());
-        }
 
         //Eliminamos el empleado del nodo de Empleados.
         databaseReference.child(EMPLEADOS).child(employee.getKey()).removeValue();
+    }
 
+    /**
+     * Set employee to fire in database
+     * @param employeeId Id employee
+     * @param data information about others
+     */
+    public static void sendEmployeePendingToBeFired(String employeeId, Map<String,String> data){
+        String campo = SingletonUser.getInstance().getUsuario().getCampo();
+        String sede = SingletonUser.getInstance().getUsuario().getSede();
+        databaseReference.child(BAJAS_PENDIENTES).child(sede).child(campo).child(employeeId).setValue(data);
     }
 
     /**
@@ -165,6 +186,7 @@ public class FireBaseQuery {
         return FireBaseQuery.databaseReference.child(path);
     }
 
+    @Deprecated
     public static void pushPerfilTrabajadores(){
         ArrayList<String> perfilTrabajadores = new ArrayList<>();
         perfilTrabajadores.add("Jornalero");
@@ -173,6 +195,7 @@ public class FireBaseQuery {
         databaseReference.child("perfilTrabajadores").setValue(perfilTrabajadores);
     }
 
+    @Deprecated
     public static void pushSedes(){
         ArrayList<String> sedes = new ArrayList<>();
         sedes.add("Torreon");
@@ -180,6 +203,7 @@ public class FireBaseQuery {
         databaseReference.child("sedes").setValue(sedes);
     }
 
+    @Deprecated
     public static void pushTemporadaCampo(){
         String sede = "Torreon"; // Este valor sera dinamico en base a la sede que tiene el usuario
         String nombreTemporada = "Enero - Marzo 2019";
@@ -187,6 +211,24 @@ public class FireBaseQuery {
         databaseReference.child(path).setValue(true);
     }
 
+    @Deprecated
+    public static void pushReasonsToFire(){
+        ArrayList<String> motivos = new ArrayList<>();
+        motivos.add("Consumo de drogas");
+        motivos.add("Faltista");
+        motivos.add("Enfermedad");
+        motivos.add("Grillero");
+        databaseReference.child(MOTIVOS_BAJA).setValue(motivos);
+    }
+
+    @Deprecated
+    public static void pushFire(Map<String, String> params){
+        DatabaseReference ref = databaseReference.child(BAJAS_PENDIENTES).child(params.get("ID"));
+        params.remove("ID");
+        ref.setValue(params);
+    }
+
+    @Deprecated
     public static void pushAsignacionEmpleados(){
 
         /***
@@ -257,27 +299,6 @@ public class FireBaseQuery {
         String pathPaseDeLista = nodoRaizPaseDeLista + "/" + sede + "/" + nombreCampoSeleccionado;
         databaseReference.child(pathPaseDeLista).child(ID).setValue(employee.getActividad()); //actividad es el perfil del empleado "Jornalero, campero, etc.".
 
-    }
-
-    public static void pushReasonsToFire(){
-		ArrayList<String> motivos = new ArrayList<>();
-        motivos.add("Consumo de drogas");
-        motivos.add("Faltista");
-        motivos.add("Enfermedad");
-        motivos.add("Grillero");
-        databaseReference.child(MOTIVOS_BAJA).setValue(motivos);
-	}
-
-	public static void pushFire(Map<String, String> params){
-		DatabaseReference ref = databaseReference.child(BAJAS_PENDIENTES).child(params.get("ID"));
-		params.remove("ID");
-		ref.setValue(params);
-	}
-
-	public static void sendEmployeePendingToBeFired(String employeeId, Map<String,String> data){
-        String campo = SingletonUser.getInstance().getUsuario().getCampo();
-        String sede = SingletonUser.getInstance().getUsuario().getSede();
-        databaseReference.child(BAJAS_PENDIENTES).child(sede).child(campo).child(employeeId).setValue(data);
     }
 
 }

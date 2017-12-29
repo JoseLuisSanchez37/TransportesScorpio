@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "640578856627",
-    "firebase_url": "https://adminpersonaltest.firebaseio.com",
-    "project_id": "adminpersonaltest",
-    "storage_bucket": "adminpersonaltest.appspot.com"
+    "project_number": "401180139931",
+    "firebase_url": "https://admin-personal.firebaseio.com",
+    "project_id": "admin-personal",
+    "storage_bucket": "admin-personal.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:640578856627:android:a1ab9a07ef136ca0",
+        "mobilesdk_app_id": "1:401180139931:android:a33394cdbc8c9559",
         "android_client_info": {
-          "package_name": "com.asociadosmonterrubio.admin.test"
+          "package_name": "com.asociadosmonterrubio.admin"
         }
       },
       "oauth_client": [
         {
-          "client_id": "640578856627-40tipt3i4iq7iolfbqdpojl6h6a5a645.apps.googleusercontent.com",
+          "client_id": "401180139931-v9f15pvk2l3dtp1tqc5fchjfidt1kp67.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBxGHWy1numoZzNm9P7GroS_a-JAApCwks"
+          "current_key": "AIzaSyAWjHE0ROMs2Bqvg6_PXY9bogTfrGhHfKo"
         }
       ],
       "services": {

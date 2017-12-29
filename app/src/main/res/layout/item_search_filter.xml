@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_search"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/text_size_14dp"
+    android:textColor="@color/colorPrimaryText"
+    android:text="Jose Luis Sanchez Cruz -- ID: 45230"
+    android:paddingLeft="@dimen/margin_6dp"
+    android:paddingRight="@dimen/margin_6dp"
+    android:paddingBottom="@dimen/margin_2dp"
+    android:paddingTop="@dimen/margin_2dp">
+
+</TextView>

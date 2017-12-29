@@ -19,6 +19,7 @@
     <string name="employee_travel">Viaje</string>
     <string name="employee_bus">Camion</string>
     <string name="employee_curp">CURP o \n CLABE</string>
+    <string name="employee_departure_date">Fecha Salida</string>
 
     <string name="employee_departure">Salida</string>
     <string name="employee_arrive">Llegada</string>
@@ -75,5 +76,7 @@
     <string name="black_list_lugar_nac">Lugar de Nac.</string>
     <string name="black_list_motivo">Motivo</string>
     <string name="black_list_observaciones">Observaciones</string>
+    <string name="title_activity_search_employees">ActivitySearchEmployees</string>
+    <string name="hint_search_by">Buscar por ID, nombre o apellidos...</string>
 
 </resources>

@@ -43,6 +43,7 @@ import java.util.Map;
 
 public class ActivityGenerateCredentials extends AppCompatActivity implements AdapterView.OnItemClickListener{
 
+	//This value cannot be more than 120. See java thread maximum
 	private static final int MAX_REQUEST_IN_QUEUE = 100;
 
 	private PdfDocument document;
@@ -56,7 +57,6 @@ public class ActivityGenerateCredentials extends AppCompatActivity implements Ad
 	private ArrayList<String> fechasSalidas;
 
 	private ListView list_viajes;
-	private ListViajesAdapter viajesAdapter;
 	private String fechaSeleccionada;
 	public ArrayList<Map<String, String>> empleadosEncontrados;
 
@@ -138,14 +138,12 @@ public class ActivityGenerateCredentials extends AppCompatActivity implements Ad
 				employee.put("Lugar_Nacimiento", childrenData.get("Lugar_Nacimiento"));
 
 				//Cuando un empleado proviene de un campo especial, este numero es indispensable
-				if (childrenData.containsKey("IDExterno")){
+				if (childrenData.containsKey("IDExterno"))
 					employee.put("IDExterno", childrenData.get("IDExterno"));
-				}
 
 				//Este atributo nos indica si un empleado es solo, esta nos servira como referencia para determinar la fecha de inicio y fin
-				if (childrenData.containsKey("Modalidad")){
+				if (childrenData.containsKey("Modalidad"))
 					employee.put("Modalidad", childrenData.get("Modalidad"));
-				}
 
 				//Getting fecha de salida
 				boolean isFechaAdded = false;
@@ -155,19 +153,20 @@ public class ActivityGenerateCredentials extends AppCompatActivity implements Ad
 						break;
 					}
 				}
-				if (!isFechaAdded){
+
+				if (!isFechaAdded)
 					fechasSalidas.add(employee.get("Fecha_Salida"));
-				}
 
 				employees.add(employee);
 			}
+
 			if (progressDialog != null)
 				progressDialog.dismiss();
 
-			if (employees.isEmpty()){
+			if (employees.isEmpty())
 				Toast.makeText(ActivityGenerateCredentials.this, "La lista de empleados esta vacia", Toast.LENGTH_SHORT).show();
-			}else {
-				viajesAdapter = new ListViajesAdapter(ActivityGenerateCredentials.this, fechasSalidas);
+			else {
+				ListViajesAdapter viajesAdapter = new ListViajesAdapter(ActivityGenerateCredentials.this, fechasSalidas);
 				list_viajes.setAdapter(viajesAdapter);
 				list_viajes.setOnItemClickListener(ActivityGenerateCredentials.this);
 			}
@@ -185,9 +184,8 @@ public class ActivityGenerateCredentials extends AppCompatActivity implements Ad
 	public void onBackPressed() {
 		super.onBackPressed();
 		if (databaseReferenceEmpleados != null){
-			if (loadUsuarios != null){
+			if (loadUsuarios != null)
 				databaseReferenceEmpleados.removeEventListener(loadUsuarios);
-			}
 		}
 	}
 
@@ -262,16 +260,13 @@ public class ActivityGenerateCredentials extends AppCompatActivity implements Ad
 
             //Obtener la imagen de cada de ellos
             currentChunkList = chunkEmpleadosEncontrados.get(currentIndexChunk);
-            for (Map<String, String> empleadoEncontrado : currentChunkList) {
+            for (Map<String, String> empleadoEncontrado : currentChunkList)
                 downloadImageFromStorage(empleadoEncontrado.get("pushId"));
-            }
 
 		}else {
-
             //Obtener la imagen de cada de ellos
-            for (Map<String, String> empleadoEncontrado : empleadosEncontrados) {
+            for (Map<String, String> empleadoEncontrado : empleadosEncontrados)
                 downloadImageFromStorage(empleadoEncontrado.get("pushId"));
-            }
         }
 	}
 
@@ -310,9 +305,8 @@ public class ActivityGenerateCredentials extends AppCompatActivity implements Ad
                             currentIndexChunk++;
                             //Obtener la imagen de cada de ellos
                             currentChunkList = chunkEmpleadosEncontrados.get(currentIndexChunk);
-                            for (Map<String, String> empleadoEncontrado : currentChunkList) {
+                            for (Map<String, String> empleadoEncontrado : currentChunkList)
                                 downloadImageFromStorage(empleadoEncontrado.get("pushId"));
-                            }
                         }
                     }else {
                         if (imagenes.size() == empleadosEncontrados.size()) {
@@ -361,9 +355,8 @@ public class ActivityGenerateCredentials extends AppCompatActivity implements Ad
                             currentIndexChunk++;
                             //Obtener la imagen de cada de ellos
                             currentChunkList = chunkEmpleadosEncontrados.get(currentIndexChunk);
-                            for (Map<String, String> empleadoEncontrado : currentChunkList) {
+                            for (Map<String, String> empleadoEncontrado : currentChunkList)
                                 downloadImageFromStorage(empleadoEncontrado.get("pushId"));
-                            }
                         }
                     }else {
                         if (imagenes.size() == empleadosEncontrados.size()) {

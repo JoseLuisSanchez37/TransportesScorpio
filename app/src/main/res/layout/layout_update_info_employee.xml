@@ -63,6 +63,42 @@
             android:layout_marginBottom="@dimen/margin_8dp">
 
             <LinearLayout
+                android:id="@+id/layout_departure_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/margin_6dp"
+                android:layout_marginBottom="@dimen/margin_6dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/employee_departure_date"
+                    android:textColor="@color/text_color_dark_gray"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="@dimen/margin_6dp"/>
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edt_employee_departure_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="10"
+                    android:inputType="number"
+                    android:gravity="center_horizontal"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:editable="false"
+                    android:textSize="@dimen/text_size_20dp"
+                    android:cursorVisible="false"
+                    android:ellipsize="end"
+                    android:onClick="showTimePickerDialog"
+                    android:background="@drawable/bg_edt_employee"/>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"

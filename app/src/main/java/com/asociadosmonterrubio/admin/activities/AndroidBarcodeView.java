@@ -7,6 +7,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.support.annotation.Nullable;
+import android.util.AttributeSet;
 import android.view.View;
 
 public class AndroidBarcodeView extends View {
@@ -15,7 +17,19 @@ public class AndroidBarcodeView extends View {
     private int init_x;
     private int init_y;
 
-	public AndroidBarcodeView(Context context, String number, int init_x, int init_y) {
+    public AndroidBarcodeView(Context context) {
+        super(context);
+    }
+
+    public AndroidBarcodeView(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public AndroidBarcodeView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    public AndroidBarcodeView(Context context, String number, int init_x, int init_y) {
 	    super(context);
         this.number = number;
         this.init_x = init_x;

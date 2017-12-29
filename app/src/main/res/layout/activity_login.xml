@@ -50,11 +50,11 @@
                 android:textColorHint="@android:color/white"
                 android:textColor="@android:color/white"
                 android:textColorHighlight="@android:color/white"
-                android:text="cardiel200907@hotmail.com"
                 android:backgroundTint="@android:color/white"
                 android:theme="@style/LoginEditTextTheme"
                 android:nextFocusUp="@id/input_email"
-                android:nextFocusLeft="@id/input_email"/>
+                android:nextFocusLeft="@id/input_email"
+                android:text="cardiel200907@hotmail.com"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -76,11 +76,11 @@
                 android:textColorHint="@android:color/white"
                 android:textColor="@android:color/white"
                 android:textColorHighlight="@android:color/white"
-                android:text="nazario123"
                 android:backgroundTint="@android:color/white"
                 android:theme="@style/LoginEditTextTheme"
                 android:nextFocusUp="@id/input_password"
-                android:nextFocusLeft="@id/input_password"/>
+                android:nextFocusLeft="@id/input_password"
+                android:text="nazario123"/>
 
         </android.support.design.widget.TextInputLayout>
 

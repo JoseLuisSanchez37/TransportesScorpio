@@ -25,6 +25,8 @@ import java.util.Map;
 
 public class PDFGenerator {
 
+    private static final int MAX_CREDENTIALS_PEER_PAGE = 7;
+
     //image
     private static final int INIT_IMAGE_X = 15;
     private static final int INIT_IMAGE_Y = 35;
@@ -116,15 +118,15 @@ public class PDFGenerator {
         int init_barcode_x = INIT_BARCODE_X;
         int init_barcode_y = INIT_BARCODE_Y;
 
-        //number of jump lines
+        //number of skip lines
         int numberCredentials = 0;
 
         for (int i = 0; i < empleadosEncontrados.size(); i++){
 
-            Boolean isSalto;
+            boolean isSkip;
             if (numberCredentials > 1) {
-                isSalto = ((numberCredentials % 2) == 0);
-                if (isSalto) {
+                isSkip = ((numberCredentials % 2) == 0);
+                if (isSkip) {
                     init_image_y += INIT_BORDE_Y + FINAL_BORDE_Y;
                     init_campo_y += INIT_BORDE_Y + FINAL_BORDE_Y;
                     init_nombre_y += INIT_BORDE_Y + FINAL_BORDE_Y;
@@ -159,35 +161,37 @@ public class PDFGenerator {
 
                     init_borde_x += INIT_BORDE_X + FINAL_BORDE_X;
                     final_borde_x += INIT_BORDE_X + FINAL_BORDE_X;
-
                 }
             }
 
-            //Image
             Map<String, String> employee = empleadosEncontrados.get(i);
+
+            //Setting image
             Bitmap imageEmployee = imagenes.get(employee.get("pushId"));
             if (imageEmployee != null) {
                 Bitmap resized = Bitmap.createScaledBitmap(imageEmployee, 90, 100, true);
-
-                //Setting image
                 canvas.drawBitmap(resized, init_image_x, init_image_y, null);
             }
 
+            //Getting fecha de salida
             String[] fechaSalida = employee.get("Fecha_Salida").split("-");
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.YEAR, Integer.parseInt(fechaSalida[0]));
             calendar.set(Calendar.MONTH, (Integer.parseInt(fechaSalida[1]) -1));
             calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(fechaSalida[2]));
 
-            //Agregar 2 dias cuando es un empleado que llego por camion, para un empleado solo es un 1 dia
-            if (employee.containsKey("Modalidad") && employee.get("Modalidad").equalsIgnoreCase("Solo")) {
+            //Para la fecha de inicio: Fecha de Inicio = Fecha de salida + N dias dependiendo el tipo de salida, Camion, Solo, Renovacion
+            //Agregar 2 dias cuando es un empleado que llego por camión
+            //Agregar 1 dias cuando es un empleado renovacion y cuando es solo
+            if (employee.containsKey("Modalidad") && (employee.get("Modalidad").equalsIgnoreCase("Solo") || employee.get("Modalidad").equalsIgnoreCase("Renovacion")))
                 calendar.add(Calendar.DAY_OF_MONTH, 1);
-            }else
-                calendar.add(Calendar.DAY_OF_MONTH, 2);
+            else
+                calendar.add(Calendar.DAY_OF_MONTH, 2); //Por camion
+
             String fechaInicio = calendar.get(Calendar.YEAR) + "-" +(calendar.get(Calendar.MONTH) +1) +"-"+calendar.get(Calendar.DAY_OF_MONTH);
 
-            //Agregar 90 dias que es la duracion del contrato
-            calendar.add(Calendar.DAY_OF_MONTH, 90);
+            //Agregar duracion en dias del contrato. Fecha de Fin : Fecha de Inicio + N dias de duración del contrato. Si no tiene el valor, se agrega el valor de 90 por default
+            calendar.add(Calendar.DAY_OF_MONTH, employee.containsKey("Contrato") ? Integer.parseInt(employee.get("Contrato")) : 90);
             String fechaFin = calendar.get(Calendar.YEAR) + "-" +(calendar.get(Calendar.MONTH) +1) +"-"+calendar.get(Calendar.DAY_OF_MONTH);
 
             //Setting field CAMPO
@@ -214,9 +218,9 @@ public class PDFGenerator {
             if (lenght > 22){
                 lugar = employee.get("Lugar_Nacimiento");
                 lugar = lugar.substring(0, 22);
-            }else {
+            }else
                 lugar = employee.get("Lugar_Nacimiento");
-            }
+
             canvas.drawText("LUGAR: "+lugar, init_lugar_nac_x, init_lugar_nac_y, paintLugarNacimiento);
 
             //Setting field FECHA_INICIO
@@ -257,7 +261,7 @@ public class PDFGenerator {
 
             }
 
-            if (numberCredentials == 7){
+            if (numberCredentials == MAX_CREDENTIALS_PEER_PAGE){
                 numberCredentials = 0;
                 //image
                 init_image_x = INIT_IMAGE_X;
@@ -298,9 +302,8 @@ public class PDFGenerator {
                 page = document.startPage(pageInfo);
                 canvas = page.getCanvas();
 
-            }else {
+            }else
                 numberCredentials++;
-            }
         }
 
         document.finishPage(page);

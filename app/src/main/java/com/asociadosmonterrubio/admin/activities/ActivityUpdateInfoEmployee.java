@@ -1,7 +1,9 @@
 package com.asociadosmonterrubio.admin.activities;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -15,9 +17,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.asociadosmonterrubio.admin.R;
@@ -30,6 +35,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,6 +50,8 @@ public class ActivityUpdateInfoEmployee extends AppCompatActivity implements Vie
     private ProgressDialog progressDialog;
     private Map<String, String> employeeSelected;
     private String currentFieldPath;
+    private Calendar calendar = Calendar.getInstance();
+    private boolean isRenovacion = false;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -52,7 +60,8 @@ public class ActivityUpdateInfoEmployee extends AppCompatActivity implements Vie
         setContentView(R.layout.layout_update_info_employee);
         ButterKnife.bind(this);
         btn_take_picture.setOnClickListener(this);
-        employeeSelected = (Map<String, String>) getIntent().getExtras().getSerializable("employeeData");
+        if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("employeeData"))
+            employeeSelected = (Map<String, String>) getIntent().getExtras().getSerializable("employeeData");
         currentFieldPath = getIntent().getExtras().getString("path");
 
         if (getSupportActionBar() != null) {
@@ -60,7 +69,21 @@ public class ActivityUpdateInfoEmployee extends AppCompatActivity implements Vie
             String subtitle = getString(R.string.subtitle_update_worker) + " " + ID;
             getSupportActionBar().setTitle(subtitle);
         }
+
+        checkIfUserHasDepartureDate();
         fillEmployeeData();
+    }
+
+    public void showTimePickerDialog(View v) {
+        new DatePickerDialog(this,
+                date,
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH))
+                .show();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null)
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
     private void fillEmployeeData(){
@@ -77,11 +100,26 @@ public class ActivityUpdateInfoEmployee extends AppCompatActivity implements Vie
         edt_employee_date_birth_year.setText(fechaNacimiento[2]);
     }
 
+    private void checkIfUserHasDepartureDate(){
+        if (employeeSelected != null && employeeSelected.containsKey("Modalidad") && employeeSelected.get("Modalidad").equalsIgnoreCase("Renovacion")) {
+            layout_departure_date.setVisibility(View.VISIBLE);
+            String[] departure_date = employeeSelected.get("Fecha_Salida").split("-");
+            int year = Integer.parseInt(departure_date[0]);
+            int month = Integer.parseInt(departure_date[1]);
+            int day = Integer.parseInt(departure_date[2]);
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month - 1);
+            calendar.set(Calendar.DAY_OF_MONTH, day);
+            edt_employee_departure_date.setText(getCurrentFormattedDate());
+            isRenovacion = true;
+        }else
+            layout_departure_date.setVisibility(View.GONE);
+    }
+
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null)
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
     }
 
     @Override
@@ -114,10 +152,12 @@ public class ActivityUpdateInfoEmployee extends AppCompatActivity implements Vie
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            if (imageBitmap != null) {
-                this.picture_taken = imageBitmap;
-                img_took.setImageBitmap(imageBitmap);
+            if (extras != null) {
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                if (imageBitmap != null) {
+                    this.picture_taken = imageBitmap;
+                    img_took.setImageBitmap(imageBitmap);
+                }
             }
         }
     }
@@ -136,7 +176,7 @@ public class ActivityUpdateInfoEmployee extends AppCompatActivity implements Vie
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case REQUEST_IMAGE_CAPTURE:
                 // If request is cancelled, the result arrays are empty.
@@ -149,9 +189,8 @@ public class ActivityUpdateInfoEmployee extends AppCompatActivity implements Vie
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA))
                         Toast.makeText(this, "Es necesario activar la camara para poder tomar fotos", Toast.LENGTH_LONG).show();
-                    }
                 }
             break;
 
@@ -218,6 +257,8 @@ public class ActivityUpdateInfoEmployee extends AppCompatActivity implements Vie
         employee.put("Fecha_Nacimiento", birthDay);
         employee.put("Lugar_Nacimiento", edt_employee_origin.getText().toString());
         employee.put("CURP", edt_employee_curp.getText().toString());
+        if (isRenovacion)
+            employee.put("Fecha_Salida", getCurrentFormattedDate());
         return employee;
     }
 
@@ -239,12 +280,27 @@ public class ActivityUpdateInfoEmployee extends AppCompatActivity implements Vie
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                    //TaskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                     onBack();
                 }
             });
         }
     }
+
+    private String getCurrentFormattedDate(){
+        return calendar.get(Calendar.YEAR) +"-"+ (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH);
+    }
+
+    DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, monthOfYear);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            edt_employee_departure_date.setText(getCurrentFormattedDate());
+        }
+    };
 
     private void onBack(){
         if (progressDialog != null && progressDialog.isShowing())
@@ -253,8 +309,9 @@ public class ActivityUpdateInfoEmployee extends AppCompatActivity implements Vie
         onBackPressed();
     }
 
-
+    @Bind(R.id.layout_departure_date) LinearLayout layout_departure_date;
     @Bind(R.id.btn_take_picture) Button btn_take_picture;
+    @Bind(R.id.edt_employee_departure_date) EditText edt_employee_departure_date;
     @Bind(R.id.img_took) ImageView img_took;
     @Bind(R.id.edt_employee_key) EditText edt_employee_id;
     @Bind(R.id.edt_employee_first_name) EditText edt_employee_first_name;

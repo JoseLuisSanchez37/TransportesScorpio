@@ -117,7 +117,7 @@ public class ActivityGenerateCredentialsIndividual extends AppCompatActivity{
 						usuario.getCampo();
 
 				databaseReferenceEmpleados = FireBaseQuery.databaseReference.child(pathEmployees);
-				databaseReferenceEmpleados.addValueEventListener(loadUsuarios);
+				databaseReferenceEmpleados.addValueEventListener(loadUsers);
 			}
 
 			@Override
@@ -131,7 +131,7 @@ public class ActivityGenerateCredentialsIndividual extends AppCompatActivity{
 	}
 
 	@SuppressWarnings("unchecked")
-	ValueEventListener loadUsuarios = new ValueEventListener() {
+	ValueEventListener loadUsers = new ValueEventListener() {
 		@Override
 		public void onDataChange(DataSnapshot dataSnapshot) {
 			for (DataSnapshot children : dataSnapshot.getChildren()){
@@ -150,6 +150,7 @@ public class ActivityGenerateCredentialsIndividual extends AppCompatActivity{
 				employee.put("pushId", childrenData.get("pushId"));
 				employee.put("Fecha_Salida", childrenData.get("Fecha_Salida"));
 				employee.put("Lugar_Nacimiento", childrenData.get("Lugar_Nacimiento"));
+				employee.put("Contrato", childrenData.get("Contrato"));
 
 				//Cuando un empleado proviene de un campo especial, este numero es indispensable
 				if (childrenData.containsKey("IDExterno")){
@@ -157,18 +158,17 @@ public class ActivityGenerateCredentialsIndividual extends AppCompatActivity{
 				}
 
 				//Este atributo nos indica si un empleado es solo, esta nos servira como referencia para determinar la fecha de inicio y fin
-				if (childrenData.containsKey("Modalidad")){
+				if (childrenData.containsKey("Modalidad"))
 					employee.put("Modalidad", childrenData.get("Modalidad"));
-				}
 
 				employees.add(employee);
 			}
 			if (progressDialog != null)
 				progressDialog.dismiss();
 
-			if (employees.isEmpty()){
+			if (employees.isEmpty())
 				Toast.makeText(ActivityGenerateCredentialsIndividual.this, "La lista de empleados esta vacia", Toast.LENGTH_SHORT).show();
-			}
+
 		}
 
 		@Override
@@ -183,9 +183,8 @@ public class ActivityGenerateCredentialsIndividual extends AppCompatActivity{
 	public void onBackPressed() {
 		super.onBackPressed();
 		if (databaseReferenceEmpleados != null){
-			if (loadUsuarios != null){
-				databaseReferenceEmpleados.removeEventListener(loadUsuarios);
-			}
+			if (loadUsers != null)
+				databaseReferenceEmpleados.removeEventListener(loadUsers);
 		}
 	}
 
@@ -213,10 +212,8 @@ public class ActivityGenerateCredentialsIndividual extends AppCompatActivity{
 		progressDialog.show();
 
 		//Obtener la imagen de cada de ellos
-		for (Map<String, String> empleadoEncontrado : empleadosEncontrados){
+		for (Map<String, String> empleadoEncontrado : empleadosEncontrados)
 			downloadImageFromStorage(empleadoEncontrado.get("pushId"));
-		}
-
 	}
 
 	private void downloadImageFromStorage(final String pushId){
@@ -262,31 +259,30 @@ public class ActivityGenerateCredentialsIndividual extends AppCompatActivity{
 	private void searchID(String isCampoActualEspecial){
         String number = edt_id_trabajador.getText().toString();
         if (isCampoActualEspecial.equals("true")){
-
-            boolean isEncontrado = false;
+			boolean isFound = false;
             for (Map<String, String> empleado : employees){
                 if (empleado.get("IDExterno").equals(number)){
                     empleadosEncontrados.add(empleado);
                     showConfirmation();
-                    isEncontrado = true;
+                    isFound = true;
                     break;
                 }
             }
 
-            if (!isEncontrado)
+            if (!isFound)
                 Toast.makeText(this, "ID NO ENCONTRADO", Toast.LENGTH_SHORT).show();
         }else {
-            boolean isEncontrado = false;
+            boolean isFound = false;
             for (Map<String, String> empleado : employees){
                 if (empleado.get("ID").equals(number)){
                     empleadosEncontrados.add(empleado);
                     showConfirmation();
-                    isEncontrado = true;
+                    isFound = true;
                     break;
                 }
             }
 
-            if (!isEncontrado)
+            if (!isFound)
                 Toast.makeText(this, "ID NO ENCONTRADO", Toast.LENGTH_SHORT).show();
         }
     }
