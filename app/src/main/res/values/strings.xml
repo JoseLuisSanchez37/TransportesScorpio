@@ -34,6 +34,7 @@
     <string name="subtitle_new_worker_alone">Nuevo Trabajador solo</string>
     <string name="subtitle_update_worker">Actualizar Info:</string>
     <string name="subtitle_listado_empleados_campo">Trabajadores Campo:</string>
+    <string name="subtitle_listado_empleados_impresion">Imprimir credenciales</string>
     <string name="title_new_worker">Altas a Salida</string>
     <string name="title_new_worker_solo">Altas Solos</string>
     <string name="title_check_list_to_one">Pase de lista</string>

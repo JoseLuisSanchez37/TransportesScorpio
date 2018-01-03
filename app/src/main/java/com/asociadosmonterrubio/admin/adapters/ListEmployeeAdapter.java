@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.asociadosmonterrubio.admin.R;
@@ -23,12 +24,18 @@ import java.util.Map;
 
 public class ListEmployeeAdapter extends BaseAdapter implements Filterable{
 
+    public static final int NONE = 0;
+    public static final int PRINTING_TOUCH_TO_ADD = 1;
+    public static final int PRINTING_TOUCH_TO_REMOVE = 2;
+
+    private int iconType;
     private Context context;
     private SearchFilter searchFilter;
 	private ArrayList<Map<String, String>> currentListEmployees, allEmployees;
 
-    public ListEmployeeAdapter(Context context, ArrayList<Map<String, String>> employees){
+    public ListEmployeeAdapter(Context context, ArrayList<Map<String, String>> employees, int iconType){
         this.context = context;
+        this.iconType = iconType;
         this.allEmployees = new ArrayList<>(employees);
 		this.currentListEmployees = new ArrayList<>(employees);
     }
@@ -57,9 +64,16 @@ public class ListEmployeeAdapter extends BaseAdapter implements Filterable{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
+        viewHolder = new ViewHolder();
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_list_employees, parent, false);
-            viewHolder = new ViewHolder();
+
+            if (iconType == PRINTING_TOUCH_TO_REMOVE || iconType == PRINTING_TOUCH_TO_ADD) {
+                convertView = LayoutInflater.from(context).inflate(R.layout.item_list_employees_with_printing, parent, false);
+                if (iconType == PRINTING_TOUCH_TO_REMOVE)
+                    viewHolder.btn_for_printing.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_delete_forever));
+            }else
+                convertView = LayoutInflater.from(context).inflate(R.layout.item_list_employees, parent, false);
+
             viewHolder.txv_id = (TextView) convertView.findViewById(R.id.employee_id);
             viewHolder.txv_id_externo = (TextView) convertView.findViewById(R.id.employee_id_external);
             viewHolder.txv_name = (TextView) convertView.findViewById(R.id.employee_name);
@@ -85,6 +99,7 @@ public class ListEmployeeAdapter extends BaseAdapter implements Filterable{
     }
 
     private class ViewHolder{
+        private ImageButton btn_for_printing;
         private TextView txv_id, txv_id_externo, txv_name, txv_departure_type;
     }
 }

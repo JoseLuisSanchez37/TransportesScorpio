@@ -35,10 +35,19 @@
             android:id="@+id/employee_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="70"
+            android:layout_weight="60"
             android:textColor="@color/text_color_dark"
             android:textSize="@dimen/text_size_14dp"
             android:text="0"/>
+
+        <ImageButton
+            android:id="@+id/btn_for_printing"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_touch_app"
+            android:background="@android:color/transparent"/>
 
     </LinearLayout>
 

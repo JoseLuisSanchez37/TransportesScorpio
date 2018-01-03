@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <AutoCompleteTextView
+        android:id="@+id/autocomplete_finder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_search_by"
+        android:layout_marginBottom="@dimen/margin_4dp"
+        android:inputType="textCapCharacters"
+        android:imeOptions="actionDone"
+        android:nextFocusUp="@id/autocomplete_finder"
+        android:nextFocusLeft="@id/autocomplete_finder"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/color_light_gray">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="14"
+            android:textColor="@color/text_color_dark"
+            android:textSize="@dimen/text_size_14dp"
+            android:text="ID"
+            android:gravity="center_horizontal|left"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="26"
+            android:textColor="@color/text_color_dark"
+            android:textSize="@dimen/text_size_14dp"
+            android:text="ID Externo"
+            android:gravity="center_horizontal|left"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="60"
+            android:textColor="@color/text_color_dark"
+            android:textSize="@dimen/text_size_14dp"
+            android:text="Nombre"
+            android:gravity="center_horizontal|left"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/list_employees"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="50"
+            android:layout_marginBottom="@dimen/margin_6dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_0dp"
+            android:layout_weight="50"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/list_employees_selected"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:id="@+id/empty_list_employees_selected"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/text_size_16dp"
+                android:textColor="@color/text_color_dark_gray"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:text="Tu lista de seleccionados esta vacia. Para agregar, \npresiona sobre un elemento de la lista."/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

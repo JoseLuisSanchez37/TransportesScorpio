@@ -2,15 +2,17 @@ package com.asociadosmonterrubio.admin.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.asociadosmonterrubio.admin.R;
@@ -21,7 +23,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -31,28 +32,34 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ActivityListEmployeesField extends AppCompatActivity implements AdapterView.OnItemClickListener, TextWatcher{
+public class ActivitySearchEmployeesForPrinting extends AppCompatActivity implements AdapterView.OnItemClickListener, TextWatcher{
 
 	private ProgressDialog progressDialog;
-	private ArrayList<Map<String, String>> employees;
-	private ListEmployeeAdapter listEmployeeAdapter;
+	private ArrayList<Map<String, String>> employees, employeesSelected;
+	private ListEmployeeAdapter listEmployeeAdapter, listEmployeesSelectedAdapter;
     private boolean isSpecialField = false;
     private String currentFieldPath = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_list_employees_field);
+		setContentView(R.layout.activity_search_layout_for_printing);
 		ButterKnife.bind(this);
 		employees = new ArrayList<>();
+		employeesSelected = new ArrayList<>();
 		initLoadingAnActionBar();
 		loadEmployeesFromField();
 	}
 
 	private void initLoadingAnActionBar(){
         if (getSupportActionBar() != null)
-            getSupportActionBar().setTitle(getString(R.string.subtitle_listado_empleados_campo) + " " + SingletonUser.getInstance().getUsuario().getCampo());
+            getSupportActionBar().setTitle(getString(R.string.subtitle_listado_empleados_impresion));
 
+		listEmployeesSelectedAdapter = new ListEmployeeAdapter(this, employeesSelected, ListEmployeeAdapter.PRINTING_TOUCH_TO_REMOVE);
+		list_employees_selected.setAdapter(listEmployeesSelectedAdapter);
+		list_employees_selected.setEmptyView(empty_list_selected);
+
+		list_employees_selected.setOnItemClickListener(this);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Descargando...");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -101,7 +108,7 @@ public class ActivityListEmployeesField extends AppCompatActivity implements Ada
 							progressDialog.dismiss();
 
 						if (employees.isEmpty())
-							Toast.makeText(ActivityListEmployeesField.this, "La lista de empleados esta vacia", Toast.LENGTH_SHORT).show();
+							Toast.makeText(ActivitySearchEmployeesForPrinting.this, "La lista de empleados esta vacia", Toast.LENGTH_SHORT).show();
 						else {
                             Collections.sort(employees, new Comparator<Map<String, String>>() {
                                 @Override
@@ -110,12 +117,12 @@ public class ActivityListEmployeesField extends AppCompatActivity implements Ada
                                 }
                             });
                             Collections.reverse(employees);
-							listEmployeeAdapter = new ListEmployeeAdapter(ActivityListEmployeesField.this, employees, ListEmployeeAdapter.NONE);
+							listEmployeeAdapter = new ListEmployeeAdapter(ActivitySearchEmployeesForPrinting.this, employees, ListEmployeeAdapter.PRINTING_TOUCH_TO_ADD);
 							list_employees.setAdapter(listEmployeeAdapter);
-                            list_employees.setOnItemClickListener(ActivityListEmployeesField.this);
+                            list_employees.setOnItemClickListener(ActivitySearchEmployeesForPrinting.this);
 
                             auto_complete_finder.setAdapter(listEmployeeAdapter);
-                            auto_complete_finder.addTextChangedListener(ActivityListEmployeesField.this);
+                            auto_complete_finder.addTextChangedListener(ActivitySearchEmployeesForPrinting.this);
 						}
 					}
 
@@ -124,7 +131,7 @@ public class ActivityListEmployeesField extends AppCompatActivity implements Ada
 						if (progressDialog != null)
 							progressDialog.dismiss();
 						onBackPressed();
-						Toast.makeText(ActivityListEmployeesField.this, "Ocurrio un error al descargar la lista de empleados", Toast.LENGTH_SHORT).show();
+						Toast.makeText(ActivitySearchEmployeesForPrinting.this, "Ocurrio un error al descargar la lista de empleados", Toast.LENGTH_SHORT).show();
 					}
 				});
 			}
@@ -134,7 +141,7 @@ public class ActivityListEmployeesField extends AppCompatActivity implements Ada
 				if (progressDialog != null)
 					progressDialog.dismiss();
 				onBackPressed();
-				Toast.makeText(ActivityListEmployeesField.this, "Ocurrio un error al descargar la lista de empleados", Toast.LENGTH_SHORT).show();
+				Toast.makeText(ActivitySearchEmployeesForPrinting.this, "Ocurrio un error al descargar la lista de empleados", Toast.LENGTH_SHORT).show();
 			}
 		});
 
@@ -149,10 +156,18 @@ public class ActivityListEmployeesField extends AppCompatActivity implements Ada
 
     @Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-	    Intent intent = new Intent(this, ActivityUpdateInfoEmployee.class);
-        intent.putExtra("employeeData", (Serializable) employees.get(position));
-        intent.putExtra("path", currentFieldPath + "/" + employees.get(position).get("ID"));
-        startActivity(intent);
+        Log.d("item","dasda");
+		if (parent.getAdapter().equals(list_employees)){
+			if (!employeesSelected.contains(employees.get(position))){
+				employeesSelected.add(employees.get(position));
+			}else
+				Toast.makeText(this, "Elemento agregado previamente", Toast.LENGTH_SHORT).show();
+
+
+		}else if (parent.getAdapter().equals(list_employees_selected)){
+			employeesSelected.remove(position);
+			listEmployeesSelectedAdapter.updateEmployeesList(employeesSelected);
+		}
 	}
 
     @Override
@@ -178,4 +193,6 @@ public class ActivityListEmployeesField extends AppCompatActivity implements Ada
 
     @Bind(R.id.autocomplete_finder) AutoCompleteTextView auto_complete_finder;
     @Bind(R.id.list_employees) ListView list_employees;
+    @Bind(R.id.list_employees_selected) ListView list_employees_selected;
+    @Bind(R.id.empty_list_employees_selected) TextView empty_list_selected;
 }

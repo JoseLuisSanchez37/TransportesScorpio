@@ -190,9 +190,10 @@ public class ActivityHome extends AppCompatActivity {
     }
 
     public void seleccionaModoCredencial(){
-        String [] items = new String[2];
+        String [] items = new String[3];
         items[0] = "Por salidas";
         items[1] = "Individual";
+        items[2] = "Por busqueda";
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Selecciona el modo de credencialización");
         builder.setCancelable(true);
@@ -207,6 +208,10 @@ public class ActivityHome extends AppCompatActivity {
                         break;
                     case 1:
                         intent = new Intent(ActivityHome.this, ActivityGenerateCredentialsIndividual.class);
+                        startActivity(intent);
+                        break;
+                    case 2:
+                        intent = new Intent(ActivityHome.this, ActivitySearchEmployeesForPrinting.class);
                         startActivity(intent);
                         break;
                 }
