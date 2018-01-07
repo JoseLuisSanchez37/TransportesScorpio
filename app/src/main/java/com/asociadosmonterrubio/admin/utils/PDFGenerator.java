@@ -316,7 +316,7 @@ public class PDFGenerator {
         String targetPdf = Environment.getExternalStorageDirectory() + "/TransportesScorpio";
         File filePath = new File(targetPdf);
         if (!filePath.exists()) filePath.mkdir();
-        String pathPDFile = SingletonUser.getInstance().getUsuario().getCampo()+pdfName + ".pdf";
+        String pathPDFile = SingletonUser.getInstance().getUsuario().getCampo()+"_"+pdfName + ".pdf";
         File pdfFile = new File(filePath, pathPDFile);
         if (pdfFile.exists()) pdfFile.delete();
         try{

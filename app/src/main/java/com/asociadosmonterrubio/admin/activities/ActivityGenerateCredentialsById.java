@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class ActivityGenerateCredentialsIndividual extends AppCompatActivity{
+public class ActivityGenerateCredentialsById extends AppCompatActivity{
 
 	private PdfDocument document;
 
@@ -78,11 +78,11 @@ public class ActivityGenerateCredentialsIndividual extends AppCompatActivity{
 
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
-								Toast.makeText(ActivityGenerateCredentialsIndividual.this, "Ocurrio un error al consultar la informacion", Toast.LENGTH_SHORT).show();
+								Toast.makeText(ActivityGenerateCredentialsById.this, "Ocurrio un error al consultar la informacion", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }else {
-                        Toast.makeText(ActivityGenerateCredentialsIndividual.this, "Ocurrio un error al consultar la información", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ActivityGenerateCredentialsById.this, "Ocurrio un error al consultar la información", Toast.LENGTH_SHORT).show();
                     }
                 }
 			}
@@ -124,7 +124,7 @@ public class ActivityGenerateCredentialsIndividual extends AppCompatActivity{
 			public void onCancelled(DatabaseError databaseError) {
 				if (progressDialog != null)
 					progressDialog.dismiss();
-				Toast.makeText(ActivityGenerateCredentialsIndividual.this, "Ocurrio un error al descargar la lista de empleados", Toast.LENGTH_SHORT).show();
+				Toast.makeText(ActivityGenerateCredentialsById.this, "Ocurrio un error al descargar la lista de empleados", Toast.LENGTH_SHORT).show();
 			}
 		});
 
@@ -167,7 +167,7 @@ public class ActivityGenerateCredentialsIndividual extends AppCompatActivity{
 				progressDialog.dismiss();
 
 			if (employees.isEmpty())
-				Toast.makeText(ActivityGenerateCredentialsIndividual.this, "La lista de empleados esta vacia", Toast.LENGTH_SHORT).show();
+				Toast.makeText(ActivityGenerateCredentialsById.this, "La lista de empleados esta vacia", Toast.LENGTH_SHORT).show();
 
 		}
 
@@ -175,7 +175,7 @@ public class ActivityGenerateCredentialsIndividual extends AppCompatActivity{
 		public void onCancelled(DatabaseError databaseError) {
 			if (progressDialog != null)
 				progressDialog.dismiss();
-			Toast.makeText(ActivityGenerateCredentialsIndividual.this, "Ocurrio un error al descargar la lista de empleados", Toast.LENGTH_SHORT).show();
+			Toast.makeText(ActivityGenerateCredentialsById.this, "Ocurrio un error al descargar la lista de empleados", Toast.LENGTH_SHORT).show();
 		}
 	};
 
@@ -229,7 +229,7 @@ public class ActivityGenerateCredentialsIndividual extends AppCompatActivity{
 					progressDialog.setMessage("Generando PDF...");
                     Map<String, String> emp = empleadosEncontrados.get(0);
                     String ID = emp.containsKey("IDExterno") ? emp.get("IDExterno") : emp.get("ID");
-					PDFGenerator pdfGenerator = new PDFGenerator(document, ActivityGenerateCredentialsIndividual.this, ID, empleadosEncontrados, imagenes);
+					PDFGenerator pdfGenerator = new PDFGenerator(document, ActivityGenerateCredentialsById.this, ID, empleadosEncontrados, imagenes);
 					pdfGenerator.makeCredentials();
                     empleadosEncontrados.clear();
                     imagenes.clear();
@@ -245,7 +245,7 @@ public class ActivityGenerateCredentialsIndividual extends AppCompatActivity{
 					progressDialog.setMessage("Generando PDF...");
                     Map<String, String> emp = empleadosEncontrados.get(0);
                     String ID = emp.containsKey("IDExterno") ? emp.get("IDExterno") : emp.get("ID");
-					PDFGenerator pdfGenerator = new PDFGenerator(document, ActivityGenerateCredentialsIndividual.this, ID, empleadosEncontrados, imagenes);
+					PDFGenerator pdfGenerator = new PDFGenerator(document, ActivityGenerateCredentialsById.this, ID, empleadosEncontrados, imagenes);
 					pdfGenerator.makeCredentials();
                     empleadosEncontrados.clear();
                     imagenes.clear();

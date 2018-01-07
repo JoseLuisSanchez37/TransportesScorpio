@@ -1,6 +1,7 @@
 package com.asociadosmonterrubio.admin.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.asociadosmonterrubio.admin.R;
@@ -64,20 +66,31 @@ public class ListEmployeeAdapter extends BaseAdapter implements Filterable{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
-        viewHolder = new ViewHolder();
+
         if (convertView == null) {
+            viewHolder = new ViewHolder();
 
             if (iconType == PRINTING_TOUCH_TO_REMOVE || iconType == PRINTING_TOUCH_TO_ADD) {
                 convertView = LayoutInflater.from(context).inflate(R.layout.item_list_employees_with_printing, parent, false);
-                if (iconType == PRINTING_TOUCH_TO_REMOVE)
-                    viewHolder.btn_for_printing.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_delete_forever));
             }else
                 convertView = LayoutInflater.from(context).inflate(R.layout.item_list_employees, parent, false);
 
             viewHolder.txv_id = (TextView) convertView.findViewById(R.id.employee_id);
             viewHolder.txv_id_externo = (TextView) convertView.findViewById(R.id.employee_id_external);
             viewHolder.txv_name = (TextView) convertView.findViewById(R.id.employee_name);
-            viewHolder.txv_departure_type = (TextView) convertView.findViewById(R.id.employee_departure_type);
+            if (iconType == NONE)
+                viewHolder.txv_departure_type = (TextView) convertView.findViewById(R.id.employee_departure_type);
+
+            if (iconType == PRINTING_TOUCH_TO_REMOVE || iconType == PRINTING_TOUCH_TO_ADD) {
+                viewHolder.btn_for_printing = (ImageView) convertView.findViewById(R.id.btn_for_printing);
+                int color = 0;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    color = iconType == PRINTING_TOUCH_TO_REMOVE ? context.getColor(R.color.panda) : context.getColor(R.color.yellow);
+                }else
+                    color = iconType == PRINTING_TOUCH_TO_REMOVE ? context.getResources().getColor(R.color.panda) : context.getResources().getColor(R.color.yellow);
+                convertView.setBackgroundColor(color);
+            }
+
             convertView.setTag(viewHolder);
         }else
             viewHolder = (ViewHolder) convertView.getTag();
@@ -87,7 +100,13 @@ public class ListEmployeeAdapter extends BaseAdapter implements Filterable{
         viewHolder.txv_id_externo.setText(employee.get("IDExterno"));
 		String fullName = employee.get("Nombre") + " " + employee.get("Apellido_Paterno") + " " + employee.get("Apellido_Materno");
         viewHolder.txv_name.setText(fullName);
-        viewHolder.txv_departure_type.setText(!TextUtils.isEmpty(employee.get("Modalidad")) ? employee.get("Modalidad") : "Camion");
+
+        if (iconType == NONE)
+            viewHolder.txv_departure_type.setText(!TextUtils.isEmpty(employee.get("Modalidad")) ? employee.get("Modalidad") : "Camion");
+
+        if (iconType == PRINTING_TOUCH_TO_REMOVE)
+            viewHolder.btn_for_printing.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_delete_forever));
+
         return convertView;
     }
 
@@ -99,7 +118,7 @@ public class ListEmployeeAdapter extends BaseAdapter implements Filterable{
     }
 
     private class ViewHolder{
-        private ImageButton btn_for_printing;
+        private ImageView btn_for_printing;
         private TextView txv_id, txv_id_externo, txv_name, txv_departure_type;
     }
 }

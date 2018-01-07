@@ -47,8 +47,10 @@
     <string name="press_again_to_exit">Presione nuevamente para Salir</string>
     <string name="exit">Salir</string>
     <string name="continue_workers_register">Seguir asignando</string>
+    <string name="continue_adding_workers">Seguir agregando</string>
     <string name="title_exit_dialog">¿Realmente desea Salir?</string>
     <string name="message_exit_dialog">Aun hay elementos que no se han asignado.</string>
+    <string name="message_exit_dialog_credentials">Se perdera la lista de seleccionados.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="title_black_list_user_found">El siguiente empleado se ha encontrado \nen la lista negra</string>
@@ -79,5 +81,7 @@
     <string name="black_list_observaciones">Observaciones</string>
     <string name="title_activity_search_employees">ActivitySearchEmployees</string>
     <string name="hint_search_by">Buscar por ID, nombre o apellidos...</string>
+
+    <string name="empty_list_employees_selected">Para agregar, presiona sobre un elemento de la lista \no \nmediante el buscador por nombre o ID.</string>
 
 </resources>

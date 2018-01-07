@@ -10,7 +10,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -41,7 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class ActivityGenerateCredentials extends AppCompatActivity implements AdapterView.OnItemClickListener{
+public class ActivityGenerateCredentialsByDeparture extends AppCompatActivity implements AdapterView.OnItemClickListener{
 
 	//This value cannot be more than 120. See java thread maximum
 	private static final int MAX_REQUEST_IN_QUEUE = 100;
@@ -110,7 +109,7 @@ public class ActivityGenerateCredentials extends AppCompatActivity implements Ad
 			public void onCancelled(DatabaseError databaseError) {
 				if (progressDialog != null)
 					progressDialog.dismiss();
-				Toast.makeText(ActivityGenerateCredentials.this, "Ocurrio un error al descargar la lista de empleados", Toast.LENGTH_SHORT).show();
+				Toast.makeText(ActivityGenerateCredentialsByDeparture.this, "Ocurrio un error al descargar la lista de empleados", Toast.LENGTH_SHORT).show();
 			}
 		});
 
@@ -164,11 +163,11 @@ public class ActivityGenerateCredentials extends AppCompatActivity implements Ad
 				progressDialog.dismiss();
 
 			if (employees.isEmpty())
-				Toast.makeText(ActivityGenerateCredentials.this, "La lista de empleados esta vacia", Toast.LENGTH_SHORT).show();
+				Toast.makeText(ActivityGenerateCredentialsByDeparture.this, "La lista de empleados esta vacia", Toast.LENGTH_SHORT).show();
 			else {
-				ListViajesAdapter viajesAdapter = new ListViajesAdapter(ActivityGenerateCredentials.this, fechasSalidas);
+				ListViajesAdapter viajesAdapter = new ListViajesAdapter(ActivityGenerateCredentialsByDeparture.this, fechasSalidas);
 				list_viajes.setAdapter(viajesAdapter);
-				list_viajes.setOnItemClickListener(ActivityGenerateCredentials.this);
+				list_viajes.setOnItemClickListener(ActivityGenerateCredentialsByDeparture.this);
 			}
 		}
 
@@ -176,7 +175,7 @@ public class ActivityGenerateCredentials extends AppCompatActivity implements Ad
 		public void onCancelled(DatabaseError databaseError) {
 			if (progressDialog != null)
 				progressDialog.dismiss();
-			Toast.makeText(ActivityGenerateCredentials.this, "Ocurrio un error al descargar la lista de empleados", Toast.LENGTH_SHORT).show();
+			Toast.makeText(ActivityGenerateCredentialsByDeparture.this, "Ocurrio un error al descargar la lista de empleados", Toast.LENGTH_SHORT).show();
 		}
 	};
 
@@ -198,7 +197,7 @@ public class ActivityGenerateCredentials extends AppCompatActivity implements Ad
 			public void onClick(DialogInterface dialogo1, int id) {
 				dialogo1.dismiss();
 
-                progressDialog = new ProgressDialog(ActivityGenerateCredentials.this);
+                progressDialog = new ProgressDialog(ActivityGenerateCredentialsByDeparture.this);
 				progressDialog.setMessage("Descargando fotografias...");
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 progressDialog.setProgress(0);
@@ -286,7 +285,7 @@ public class ActivityGenerateCredentials extends AppCompatActivity implements Ad
                             @Override
                             public void run() {
                                 progressDialog.setMessage("Generando PDF...");
-                                PDFGenerator pdfGenerator = new PDFGenerator(document, ActivityGenerateCredentials.this, fechaSeleccionada, empleadosEncontrados, imagenes);
+                                PDFGenerator pdfGenerator = new PDFGenerator(document, ActivityGenerateCredentialsByDeparture.this, fechaSeleccionada, empleadosEncontrados, imagenes);
                                 pdfGenerator.makeCredentials();
                                 progressDialog.dismiss();
                                 onBackPressed();
@@ -314,7 +313,7 @@ public class ActivityGenerateCredentials extends AppCompatActivity implements Ad
                                 @Override
                                 public void run() {
                                     progressDialog.setMessage("Generando PDF...");
-                                    PDFGenerator pdfGenerator = new PDFGenerator(document, ActivityGenerateCredentials.this, fechaSeleccionada, empleadosEncontrados, imagenes);
+                                    PDFGenerator pdfGenerator = new PDFGenerator(document, ActivityGenerateCredentialsByDeparture.this, fechaSeleccionada, empleadosEncontrados, imagenes);
                                     pdfGenerator.makeCredentials();
                                     progressDialog.dismiss();
                                     onBackPressed();
@@ -336,7 +335,7 @@ public class ActivityGenerateCredentials extends AppCompatActivity implements Ad
                             @Override
                             public void run() {
                                 progressDialog.setMessage("Generando PDF...");
-                                PDFGenerator pdfGenerator = new PDFGenerator(document, ActivityGenerateCredentials.this, fechaSeleccionada, empleadosEncontrados, imagenes);
+                                PDFGenerator pdfGenerator = new PDFGenerator(document, ActivityGenerateCredentialsByDeparture.this, fechaSeleccionada, empleadosEncontrados, imagenes);
                                 pdfGenerator.makeCredentials();
                                 progressDialog.dismiss();
                                 onBackPressed();
@@ -364,7 +363,7 @@ public class ActivityGenerateCredentials extends AppCompatActivity implements Ad
                                 @Override
                                 public void run() {
                                     progressDialog.setMessage("Generando PDF...");
-                                    PDFGenerator pdfGenerator = new PDFGenerator(document, ActivityGenerateCredentials.this, fechaSeleccionada, empleadosEncontrados, imagenes);
+                                    PDFGenerator pdfGenerator = new PDFGenerator(document, ActivityGenerateCredentialsByDeparture.this, fechaSeleccionada, empleadosEncontrados, imagenes);
                                     pdfGenerator.makeCredentials();
                                     progressDialog.dismiss();
                                     onBackPressed();

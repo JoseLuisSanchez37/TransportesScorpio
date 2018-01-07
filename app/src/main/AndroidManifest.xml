@@ -42,14 +42,14 @@
             android:name=".activities.ActivityLogin"
             android:theme="@style/NoActionBar" />
         <activity android:name=".activities.ActivityListEmployeesField" />
-        <activity android:name=".activities.ActivityGenerateCredentials" />
-        <activity android:name=".activities.ActivityGenerateCredentialsIndividual" />
+        <activity android:name=".activities.ActivityGenerateCredentialsByDeparture" />
+        <activity android:name=".activities.ActivityGenerateCredentialsById" />
         <activity android:name=".activities.ActivityGirosPrestamos" />
         <activity android:name=".activities.ActivitySupervisorCheckList" />
         <activity android:name=".activities.ActivityQuitEmployee" />
         <activity android:name=".activities.ActivityUploadImage" />
         <activity android:name=".activities.ActivityUpdateInfoEmployee" />
-        <activity android:name=".activities.ActivitySearchEmployeesForPrinting"/>
+        <activity android:name=".activities.ActivityGenerateCredentialsBySearch"/>
     </application>
 
 </manifest>

@@ -63,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="50"
-            android:layout_marginBottom="@dimen/margin_6dp"/>
+            android:layout_marginBottom="@dimen/margin_2dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -74,7 +74,7 @@
             <ListView
                 android:id="@+id/list_employees_selected"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
             <TextView
                 android:id="@+id/empty_list_employees_selected"
@@ -84,7 +84,7 @@
                 android:textColor="@color/text_color_dark_gray"
                 android:textStyle="bold"
                 android:gravity="center"
-                android:text="Tu lista de seleccionados esta vacia. Para agregar, \npresiona sobre un elemento de la lista."/>
+                android:text="@string/empty_list_employees_selected"/>
 
         </LinearLayout>
 

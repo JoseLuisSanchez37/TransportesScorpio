@@ -203,15 +203,15 @@ public class ActivityHome extends AppCompatActivity {
                 Intent intent;
                 switch (item){
                     case 0:
-                        intent = new Intent(ActivityHome.this, ActivityGenerateCredentials.class);
+                        intent = new Intent(ActivityHome.this, ActivityGenerateCredentialsByDeparture.class);
                         startActivity(intent);
                         break;
                     case 1:
-                        intent = new Intent(ActivityHome.this, ActivityGenerateCredentialsIndividual.class);
+                        intent = new Intent(ActivityHome.this, ActivityGenerateCredentialsById.class);
                         startActivity(intent);
                         break;
                     case 2:
-                        intent = new Intent(ActivityHome.this, ActivitySearchEmployeesForPrinting.class);
+                        intent = new Intent(ActivityHome.this, ActivityGenerateCredentialsBySearch.class);
                         startActivity(intent);
                         break;
                 }
