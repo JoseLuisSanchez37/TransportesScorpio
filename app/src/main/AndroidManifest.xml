@@ -49,7 +49,7 @@
         <activity android:name=".activities.ActivityQuitEmployee" />
         <activity android:name=".activities.ActivityUploadImage" />
         <activity android:name=".activities.ActivityUpdateInfoEmployee" />
-        <activity android:name=".activities.ActivityGenerateCredentialsBySearch"/>
+        <activity android:name=".activities.ActivityGenerateCredentialsBySearch" />
     </application>
 
 </manifest>

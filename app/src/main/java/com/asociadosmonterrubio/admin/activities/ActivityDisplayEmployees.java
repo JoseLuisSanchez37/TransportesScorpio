@@ -34,15 +34,15 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
 public class ActivityDisplayEmployees extends AppCompatActivity implements DialogConfirmTrip.ConfirmTrip{
 
-    @Bind(R.id.checkbox_select_all) CheckBox checkbox_select_all;
-    @Bind(R.id.empty) TextView empty;
-    @Bind(R.id.recycler_employees) RecyclerView recycler_employees;
+    @BindView(R.id.checkbox_select_all) CheckBox checkbox_select_all;
+    @BindView(R.id.empty) TextView empty;
+    @BindView(R.id.recycler_employees) RecyclerView recycler_employees;
 
     private boolean goBackDiscardChanges = false;
     private EmployeeAdapter employeeAdapter;

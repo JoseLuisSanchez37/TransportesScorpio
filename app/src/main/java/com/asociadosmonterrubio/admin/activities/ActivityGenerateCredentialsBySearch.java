@@ -2,9 +2,11 @@ package com.asociadosmonterrubio.admin.activities;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.pdf.PdfDocument;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -42,7 +44,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ActivityGenerateCredentialsBySearch extends AppCompatActivity implements AdapterView.OnItemClickListener, TextWatcher{
@@ -352,8 +354,8 @@ public class ActivityGenerateCredentialsBySearch extends AppCompatActivity imple
         dialogo.show();
     }
 
-    @Bind(R.id.autocomplete_finder) AutoCompleteTextView auto_complete_finder;
-    @Bind(R.id.list_employees) ListView list_employees;
-    @Bind(R.id.list_employees_selected) ListView list_employees_selected;
-    @Bind(R.id.empty_list_employees_selected) TextView empty_list_selected;
+    @BindView(R.id.autocomplete_finder) AutoCompleteTextView auto_complete_finder;
+    @BindView(R.id.list_employees) ListView list_employees;
+    @BindView(R.id.list_employees_selected) ListView list_employees_selected;
+    @BindView(R.id.empty_list_employees_selected) TextView empty_list_selected;
 }

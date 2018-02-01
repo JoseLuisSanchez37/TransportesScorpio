@@ -37,14 +37,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import butterknife.ButterKnife;
-import butterknife.Bind;
+import butterknife.BindView;
 
 public class ActivityLogin extends AppCompatActivity{
 
-    @Bind(R.id.input_email) EditText edt_email;
-    @Bind(R.id.input_password) EditText edt_password;
-    @Bind(R.id.btn_login) Button btn_login;
-    @Bind(R.id.checkbox_save_login) CheckBox checkbox_save_login;
+    @BindView(R.id.input_email) EditText edt_email;
+    @BindView(R.id.input_password) EditText edt_password;
+    @BindView(R.id.btn_login) Button btn_login;
+    @BindView(R.id.checkbox_save_login) CheckBox checkbox_save_login;
 
     private FirebaseAuth auth;
     private ProgressDialog progressDialog;

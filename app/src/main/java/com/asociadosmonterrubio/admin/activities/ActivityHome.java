@@ -36,7 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ActivityHome extends AppCompatActivity {
@@ -292,11 +292,11 @@ public class ActivityHome extends AppCompatActivity {
         });
     }
 
-    @Bind(R.id.txv_info_user_name) TextView txv_info_user_name;
-    @Bind(R.id.txv_info_user_rol) TextView txv_info_user_rol;
-    @Bind(R.id.txv_info_user_field_selected) TextView txv_info_user_field_selected;
-    @Bind(R.id.txv_info_user_sede) TextView txv_info_user_sede;
-    @Bind(R.id.txv_info_user_app_version) TextView txv_info_user_app_version;
-    @Bind(R.id.txv_info_user_environment) TextView txv_info_user_environment;
+    @BindView(R.id.txv_info_user_name) TextView txv_info_user_name;
+    @BindView(R.id.txv_info_user_rol) TextView txv_info_user_rol;
+    @BindView(R.id.txv_info_user_field_selected) TextView txv_info_user_field_selected;
+    @BindView(R.id.txv_info_user_sede) TextView txv_info_user_sede;
+    @BindView(R.id.txv_info_user_app_version) TextView txv_info_user_app_version;
+    @BindView(R.id.txv_info_user_environment) TextView txv_info_user_environment;
 
 }

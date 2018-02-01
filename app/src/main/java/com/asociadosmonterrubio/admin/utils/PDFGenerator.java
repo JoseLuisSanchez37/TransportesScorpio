@@ -198,10 +198,14 @@ public class PDFGenerator {
             Paint paintCampo = new Paint();
             paintCampo.setColor(Color.BLACK);
             paintCampo.setTextSize(15f);
-            String campo = SingletonUser.getInstance().getUsuario().getCampo();
-            if (campo.equalsIgnoreCase("NAZARIO"))
-                campo = "AGRICOLA EL NAZARIO";
-            canvas.drawText(campo, init_campo_x, init_campo_y, paintCampo);
+            String fieldName = SingletonUser.getInstance().getUsuario().getCampo();
+            if (fieldName.equalsIgnoreCase("NAZARIO"))
+                fieldName = "AGRICOLA EL NAZARIO";
+            else if (fieldName.equalsIgnoreCase("yamal"))
+                fieldName = "AGRICOLA NUEVO YAMAL";
+
+            fieldName = fieldName.toUpperCase();
+            canvas.drawText(fieldName, init_campo_x, init_campo_y, paintCampo);
 
             //Setting field NOMBRE
             Paint paintNombre = new Paint();

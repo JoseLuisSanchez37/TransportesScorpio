@@ -40,13 +40,13 @@ public class AndroidBarcodeView extends View {
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
         try {
-            testCODE39(canvas, number, init_x, init_y);
+            drawCODE39(canvas, number, init_x, init_y);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static void testCODE39(Canvas canvas, String number, int init_x, int init_y) throws Exception {
+    private static void drawCODE39(Canvas canvas, String number, int init_x, int init_y) throws Exception {
         Code39 barcode = new Code39();
 
         /*
@@ -60,14 +60,13 @@ public class AndroidBarcodeView extends View {
         */
         // Code39 encodes upper case chars only, for lower case chars, use Code 39 extension
         barcode.setData(number);
-
         barcode.setExtension(false);
-
         barcode.setAddCheckSum(false);
 
         // Code 39 Wide Narrow bar Ratio
         // Valid value is from 2.0 to 3.0 inclusive.
-        barcode.setN(3.0f);
+        barcode.setN(number.length() > 4 ? 2.7f : 3.0f);
+
         // The space between 2 characters in code 39; This a multiple of X; The default is 1.;
         // Valid value is from 1.0 (inclusive) to 5.3 (exclusive)
         barcode.setI(1.0f);

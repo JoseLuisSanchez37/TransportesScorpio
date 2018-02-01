@@ -39,7 +39,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
@@ -309,19 +309,19 @@ public class ActivityUpdateInfoEmployee extends AppCompatActivity implements Vie
         onBackPressed();
     }
 
-    @Bind(R.id.layout_departure_date) LinearLayout layout_departure_date;
-    @Bind(R.id.btn_take_picture) Button btn_take_picture;
-    @Bind(R.id.edt_employee_departure_date) EditText edt_employee_departure_date;
-    @Bind(R.id.img_took) ImageView img_took;
-    @Bind(R.id.edt_employee_key) EditText edt_employee_id;
-    @Bind(R.id.edt_employee_first_name) EditText edt_employee_first_name;
-    @Bind(R.id.edt_employee_last_name) EditText edt_employee_last_name;
-    @Bind(R.id.edt_employee_full_name) EditText edt_employee_full_name;
-    @Bind(R.id.edt_employee_origin) EditText edt_employee_origin;
-    @Bind(R.id.edt_employee_date_birth_day) EditText edt_employee_date_birth_day;
-    @Bind(R.id.edt_employee_date_birth_month) EditText edt_employee_date_birth_month;
-    @Bind(R.id.edt_employee_date_birth_year) EditText edt_employee_date_birth_year;
-    @Bind(R.id.edt_employee_activity) EditText edt_employee_activity;
-    @Bind(R.id.edt_employee_curp) EditText edt_employee_curp;
+    @BindView(R.id.layout_departure_date) LinearLayout layout_departure_date;
+    @BindView(R.id.btn_take_picture) Button btn_take_picture;
+    @BindView(R.id.edt_employee_departure_date) EditText edt_employee_departure_date;
+    @BindView(R.id.img_took) ImageView img_took;
+    @BindView(R.id.edt_employee_key) EditText edt_employee_id;
+    @BindView(R.id.edt_employee_first_name) EditText edt_employee_first_name;
+    @BindView(R.id.edt_employee_last_name) EditText edt_employee_last_name;
+    @BindView(R.id.edt_employee_full_name) EditText edt_employee_full_name;
+    @BindView(R.id.edt_employee_origin) EditText edt_employee_origin;
+    @BindView(R.id.edt_employee_date_birth_day) EditText edt_employee_date_birth_day;
+    @BindView(R.id.edt_employee_date_birth_month) EditText edt_employee_date_birth_month;
+    @BindView(R.id.edt_employee_date_birth_year) EditText edt_employee_date_birth_year;
+    @BindView(R.id.edt_employee_activity) EditText edt_employee_activity;
+    @BindView(R.id.edt_employee_curp) EditText edt_employee_curp;
 
 }

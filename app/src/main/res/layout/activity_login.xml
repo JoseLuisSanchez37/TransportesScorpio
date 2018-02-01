@@ -80,7 +80,7 @@
                 android:theme="@style/LoginEditTextTheme"
                 android:nextFocusUp="@id/input_password"
                 android:nextFocusLeft="@id/input_password"
-                android:text="nazario123"/>
+                android:text=""/>
 
         </android.support.design.widget.TextInputLayout>
 

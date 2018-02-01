@@ -28,7 +28,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ActivityListEmployeesField extends AppCompatActivity implements AdapterView.OnItemClickListener, TextWatcher{
@@ -176,6 +176,6 @@ public class ActivityListEmployeesField extends AppCompatActivity implements Ada
         }
     }
 
-    @Bind(R.id.autocomplete_finder) AutoCompleteTextView auto_complete_finder;
-    @Bind(R.id.list_employees) ListView list_employees;
+    @BindView(R.id.autocomplete_finder) AutoCompleteTextView auto_complete_finder;
+    @BindView(R.id.list_employees) ListView list_employees;
 }

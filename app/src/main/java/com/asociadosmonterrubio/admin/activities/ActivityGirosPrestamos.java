@@ -16,7 +16,7 @@ import com.asociadosmonterrubio.admin.firebase.FireBaseQuery;
 
 import java.util.Calendar;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ActivityGirosPrestamos extends AppCompatActivity implements View.OnClickListener{
@@ -110,8 +110,8 @@ public class ActivityGirosPrestamos extends AppCompatActivity implements View.On
         return calendar.get(Calendar.YEAR) +"-"+ (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH);
     }
 
-    @Bind(R.id.edt_loan_date) EditText edt_loan_date;
-    @Bind(R.id.edt_loan_id) EditText edt_loan_id;
-    @Bind(R.id.edt_loan_import) EditText edt_loan_import;
-    @Bind(R.id.btn_insert_loan) Button btn_insert_loan;
+    @BindView(R.id.edt_loan_date) EditText edt_loan_date;
+    @BindView(R.id.edt_loan_id) EditText edt_loan_id;
+    @BindView(R.id.edt_loan_import) EditText edt_loan_import;
+    @BindView(R.id.btn_insert_loan) Button btn_insert_loan;
 }

@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ActivityQuitEmployee extends AppCompatActivity{
@@ -193,8 +193,8 @@ public class ActivityQuitEmployee extends AppCompatActivity{
 
     }
 
-    @Bind(R.id.spinner_motivos) Spinner spinner_motivos;
-    @Bind(R.id.edt_id_employee) TextInputEditText edt_id_empleado;
-    @Bind(R.id.edt_notes) TextInputEditText edt_notes;
+    @BindView(R.id.spinner_motivos) Spinner spinner_motivos;
+    @BindView(R.id.edt_id_employee) TextInputEditText edt_id_empleado;
+    @BindView(R.id.edt_notes) TextInputEditText edt_notes;
 
 }

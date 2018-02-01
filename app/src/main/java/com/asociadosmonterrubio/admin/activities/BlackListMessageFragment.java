@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.asociadosmonterrubio.admin.R;
 import com.asociadosmonterrubio.admin.models.BlackListUser;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
@@ -61,12 +61,12 @@ public class BlackListMessageFragment extends DialogFragment {
         this.blackListUser = blackListUser;
     }
 
-    @Bind(R.id.black_list_observaciones) TextView black_list_observaciones;
-    @Bind(R.id.black_list_full_name) TextView black_list_full_name;
-    @Bind(R.id.black_list_fecha_nac) TextView black_list_fecha_nac;
-    @Bind(R.id.black_list_lugar_nac) TextView black_list_lugar_nac;
-    @Bind(R.id.black_list_motivo) TextView black_list_motivo;
-    @Bind(R.id.black_list_curp) TextView black_list_curp;
-    @Bind(R.id.btn_accept) Button btn_accept;
+    @BindView(R.id.black_list_observaciones) TextView black_list_observaciones;
+    @BindView(R.id.black_list_full_name) TextView black_list_full_name;
+    @BindView(R.id.black_list_fecha_nac) TextView black_list_fecha_nac;
+    @BindView(R.id.black_list_lugar_nac) TextView black_list_lugar_nac;
+    @BindView(R.id.black_list_motivo) TextView black_list_motivo;
+    @BindView(R.id.black_list_curp) TextView black_list_curp;
+    @BindView(R.id.btn_accept) Button btn_accept;
 
 }

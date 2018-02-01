@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -137,7 +138,7 @@ public class ActivityGenerateCredentialsByDeparture extends AppCompatActivity im
 				employee.put("Lugar_Nacimiento", childrenData.get("Lugar_Nacimiento"));
 
 				//Cuando un empleado proviene de un campo especial, este numero es indispensable
-				if (childrenData.containsKey("IDExterno"))
+				if (childrenData.containsKey("IDExterno") && !TextUtils.isEmpty(childrenData.get("IDExterno")))
 					employee.put("IDExterno", childrenData.get("IDExterno"));
 
 				//Este atributo nos indica si un empleado es solo, esta nos servira como referencia para determinar la fecha de inicio y fin
@@ -145,15 +146,15 @@ public class ActivityGenerateCredentialsByDeparture extends AppCompatActivity im
 					employee.put("Modalidad", childrenData.get("Modalidad"));
 
 				//Getting fecha de salida
-				boolean isFechaAdded = false;
+				boolean isDateAdded = false;
 				for (String fechaSalida : fechasSalidas){
 					if (employee.get("Fecha_Salida").equals(fechaSalida)){
-						isFechaAdded = true;
+                        isDateAdded = true;
 						break;
 					}
 				}
 
-				if (!isFechaAdded)
+				if (!isDateAdded)
 					fechasSalidas.add(employee.get("Fecha_Salida"));
 
 				employees.add(employee);
@@ -181,11 +182,9 @@ public class ActivityGenerateCredentialsByDeparture extends AppCompatActivity im
 
 	@Override
 	public void onBackPressed() {
+		if (databaseReferenceEmpleados != null && loadUsuarios != null)
+			databaseReferenceEmpleados.removeEventListener(loadUsuarios);
 		super.onBackPressed();
-		if (databaseReferenceEmpleados != null){
-			if (loadUsuarios != null)
-				databaseReferenceEmpleados.removeEventListener(loadUsuarios);
-		}
 	}
 
 	private void showConfirmation(){
