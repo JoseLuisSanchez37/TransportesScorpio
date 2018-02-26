@@ -114,7 +114,8 @@ public class ActivityCheckList extends AppCompatActivity implements EditText.OnE
                         calendar.get(Calendar.DAY_OF_MONTH))
                         .show();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(edt_check_list_single_date.getWindowToken(), 0);
+                if(imm != null)
+                    imm.hideSoftInputFromWindow(edt_check_list_single_date.getWindowToken(), 0);
 
                 break;
             case R.id.btn_send:

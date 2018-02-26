@@ -54,7 +54,7 @@
                 android:theme="@style/LoginEditTextTheme"
                 android:nextFocusUp="@id/input_email"
                 android:nextFocusLeft="@id/input_email"
-                android:text="cardiel200907@hotmail.com"/>
+                android:text=""/>
 
         </android.support.design.widget.TextInputLayout>
 

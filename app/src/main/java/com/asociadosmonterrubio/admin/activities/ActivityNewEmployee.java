@@ -87,7 +87,7 @@ public class ActivityNewEmployee extends AppCompatActivity implements View.OnCli
                     Employee employee = getEmployee();
                     employee = FireBaseQuery.pushNewEmployee(employee);
                     employee.setImage(picture_taken);
-                    SingletonEmployees.getInstance().add(employee);
+                    SingletonEmployees.getInstance().add(0, employee);
                     upLoadImage(employee.getKey());
                 }
                 return true;
@@ -222,7 +222,7 @@ public class ActivityNewEmployee extends AppCompatActivity implements View.OnCli
         employee.setContrato("90");
         Calendar calendar = Calendar.getInstance();
         String date = calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH) +1 )+"-"+calendar.get(Calendar.DAY_OF_MONTH);
-        employee.setFechaSalida(date);
+        employee.setFecha_Salida(date);
         return employee;
     }
 

@@ -45,7 +45,8 @@ public class Employee {
     private String Nombre;
     private Bitmap image;
     private String enganche;
-    private String fechaSalida;
+    private String Fecha_Salida;
+    private String Modalidad;
     private long ID;
 
     public Employee(){ }
@@ -146,11 +147,19 @@ public class Employee {
         this.enganche = enganche;
     }
 
-    public String getFechaSalida() {
-        return fechaSalida;
+    public String getModalidad() {
+        return Modalidad;
     }
 
-    public void setFechaSalida(String fechaSalida) {
-        this.fechaSalida = fechaSalida;
+    public void setModalidad(String modalidad) {
+        Modalidad = modalidad;
+    }
+
+    public String getFecha_Salida() {
+        return Fecha_Salida;
+    }
+
+    public void setFecha_Salida(String fecha_Salida) {
+        Fecha_Salida = fecha_Salida;
     }
 }

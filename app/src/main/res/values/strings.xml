@@ -18,7 +18,7 @@
     <string name="employee_activity">Actividad</string>
     <string name="employee_travel">Viaje</string>
     <string name="employee_bus">Camion</string>
-    <string name="employee_curp">CURP o \n CLABE</string>
+    <string name="employee_curp">CURP</string>
     <string name="employee_departure_date">Fecha Salida</string>
 
     <string name="employee_departure">Salida</string>

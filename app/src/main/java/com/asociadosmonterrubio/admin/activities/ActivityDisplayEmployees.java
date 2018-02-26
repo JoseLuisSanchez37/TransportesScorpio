@@ -33,6 +33,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,7 +55,7 @@ public class ActivityDisplayEmployees extends AppCompatActivity implements Dialo
     //La temporada nos indica el nombre de la temporada actual.
     private String temporadaActual = "";
     private boolean isCampoEspecial = false;
-    private DatabaseReference databaseReferenceIndex;
+    private DatabaseReference databaseReferenceIndex, databaseReferenceEmployees;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -131,9 +132,11 @@ public class ActivityDisplayEmployees extends AppCompatActivity implements Dialo
 
     @Override
     public void onBackPressed() {
-        if (employeeAdapter.isEmpty() || goBackDiscardChanges)
+        if (employeeAdapter.isEmpty() || goBackDiscardChanges) {
+            if (databaseReferenceEmployees != null)
+                databaseReferenceEmployees.removeEventListener(employeesValueEventListener);
             super.onBackPressed();
-        else
+        }else
             manageOnBackPressed();
     }
 
@@ -180,10 +183,9 @@ public class ActivityDisplayEmployees extends AppCompatActivity implements Dialo
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 temporadaActual = dataSnapshot.getValue().toString();
-                if (progressDialog != null)
-                    progressDialog.dismiss();
+                dismissProgress();
 
-                //Si es encargado de campo, entonces consultar si el tipo de asignación
+                //Si es encargado de campo, entonces consultar si el tipo de campo es especial o no
                 if (userRol.equals(Usuario.ROL_ENCARGADO_CAMPO)){
                     progressDialog.show();
                     FireBaseQuery.databaseReference
@@ -194,15 +196,17 @@ public class ActivityDisplayEmployees extends AppCompatActivity implements Dialo
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             isCampoEspecial = dataSnapshot.getValue(String.class).equals("true");
-                            if (progressDialog != null)
-                                progressDialog.dismiss();
+
+                            //Obtener los empleados precargados de el nodo de empleados
+                            databaseReferenceEmployees = FireBaseQuery.databaseReference.child(FireBaseQuery.EMPLEADOS);
+                            databaseReferenceEmployees.addValueEventListener(employeesValueEventListener);
                         }
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
-                            if (progressDialog != null)
-                                progressDialog.dismiss();
+                            dismissProgress();
                             Toast.makeText(ActivityDisplayEmployees.this, "OCURRIO UN ERROR AL OBTENER EL TIPO DE CAMPO",Toast.LENGTH_SHORT).show();
+                            onBackPressed();
                         }
                     });
 
@@ -211,9 +215,9 @@ public class ActivityDisplayEmployees extends AppCompatActivity implements Dialo
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                if (progressDialog != null)
-                    progressDialog.dismiss();
+                dismissProgress();
                 Toast.makeText(ActivityDisplayEmployees.this, "OCURRIO UN ERROR AL OBTENER LA TEMPORADA ACTUAL",Toast.LENGTH_SHORT).show();
+                onBackPressed();
             }
         });
     }
@@ -235,8 +239,7 @@ public class ActivityDisplayEmployees extends AppCompatActivity implements Dialo
         employeeAdapter.updateEmployees(SingletonEmployees.getInstance().getEmployees());
         employeesSelected.clear();
         refreshList();
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
+        dismissProgress();
         Toast.makeText(this, "LOS EMPLEADOS SOLOS SE HAN ASIGNADO CORRECTAMENTE",Toast.LENGTH_SHORT).show();
     }
 
@@ -294,9 +297,45 @@ public class ActivityDisplayEmployees extends AppCompatActivity implements Dialo
         }
     };
 
+    ValueEventListener employeesValueEventListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+            ArrayList<Employee> employees = new ArrayList<>();
+            for (DataSnapshot snapshot : children){
+                Employee employee = snapshot.getValue(Employee.class);
+                if (employee.getModalidad() != null) {
+                    if (employee.getModalidad().equalsIgnoreCase(Employee._MOD_SOLO)) {
+                        employee.setKey(snapshot.getKey());
+                        employees.add(employee);
+                    }
+                }
+            }
+            databaseReferenceEmployees.removeEventListener(this);
+            Collections.reverse(employees);
+            SingletonEmployees.getInstance().getEmployees().clear();
+            SingletonEmployees.getInstance().setEmployess(employees);
+            dismissProgress();
+            employeeAdapter.updateEmployees(SingletonEmployees.getInstance().getEmployees());
+            refreshList();
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            dismissProgress();
+            Toast.makeText(ActivityDisplayEmployees.this, "OCURRIO UN ERROR AL OBTENER LOS EMPLEADOS PRECARGADOS",Toast.LENGTH_SHORT).show();
+            onBackPressed();
+        }
+    };
+
     @Override
     public void OnConfirm(DialogFragment dialogFragment, String numberBus, String departureDate) {
         dialogFragment.dismiss();
         setTrip(numberBus, departureDate);
+    }
+
+    private void dismissProgress() {
+        if (progressDialog.isShowing())
+            progressDialog.dismiss();
     }
 }

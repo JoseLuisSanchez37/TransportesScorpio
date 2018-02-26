@@ -24,7 +24,7 @@ public class FirebaseStructure {
         map.put(Employee._FECHA_NAC, employee.getFecha_Nacimiento());
         map.put(Employee._LUGAR_NAC, employee.getLugar_Nacimiento());
         map.put(Employee._NOMBRE, employee.getNombre());
-        map.put(Employee._FECHA_SAL, employee.getFechaSalida());
+        map.put(Employee._FECHA_SAL, employee.getFecha_Salida());
         if (SingletonUser.getInstance().getUsuario().getRol().equals(Usuario.ROL_ENCARGADO_CAMPO)){
             map.put(Employee._MODALIDAD, Employee._MOD_SOLO);
             map.put(Employee._ENGANCHE, "0");

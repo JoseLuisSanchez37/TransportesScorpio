@@ -45,8 +45,12 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeVH> implements
         holder.checkBox_selected.setOnCheckedChangeListener(this);
         Employee employee = employees.get(position);
         holder.checkBox_selected.setTag(TAG_ID, employee.getKey());
-        holder.photo.setImageBitmap(employee.getImage());
-        holder.fullName.setText(employee.getNombre());
+        if (employee.getImage() != null)
+            holder.photo.setImageBitmap(employee.getImage());
+        else
+            holder.photo.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_missing_face));
+        String fullName = employee.getNombre()+" "+employee.getApellido_Paterno()+" "+employee.getApellido_Materno();
+        holder.fullName.setText(fullName);
         holder.curp.setText(employee.getCURP());
 
         boolean isSelected = employeesSelected.contains(String.valueOf(employee.getKey()));

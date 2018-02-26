@@ -22,6 +22,9 @@ public class SingletonEmployees {
     public void add(Employee employee){
         employees.add(employee);
     }
+    public void add(int index, Employee employee){
+        employees.add(index, employee);
+    }
 
     public ArrayList<Employee> getEmployees(){
         return employees;
