@@ -24,23 +24,23 @@ public class FireBaseQuery {
      * THIS ASSIGNATION CAN NOT BE CHANGED BECAUSE THEY ARE PART OF FIREBASE'S STRUCTURE.
      * PLEASE REFER TO THE OWN PROJECT TO MAKE CHANGES.
      */
-    public static final String EMPLEADOS = "empleados";
-    public static final String CAMPOS = "campos";
-    public static final String SALIDAS = "salidas";
-	private static final String SALIDAS_COPIA = "salidasCopia";
-    public static final String TEMPORADAS = "temporadas";
-    private static final String IMAGENES = "imagenes";
-    public static final String USUARIOS = "usuarios";
-    public static final String PASE_DE_LISTA = "pase_de_lista";
-    public static final String ASISTENCIAS = "asistencias";
-    private static final String REGISTROS_TRABAJADORES = "registros_trabajadores";
-	public static final String TEMPORADA_CAMPO = "temporada_campo";
-	public static final String TEMPORADAS_SEDES = "temporadas_sedes";
-	public static final String ASIGNACION_EMPLEADOS_CAMPO = "asignacion_empleados_campo";
-	public static final String MOTIVOS_BAJA = "motivos_baja";
-	private static final String BAJAS_PENDIENTES = "bajas_pendientes";
-    public static final String LISTA_NEGRA = "lista_negra";
-    public static final String INDEX = "index";
+    public static final String EMPLEADOS                    = "empleados";      //First place where new employees are stored
+    public static final String CAMPOS                       = "campos";     //Fields available for each sede
+    public static final String SALIDAS                      = "salidas";        // Bus Departures
+	private static final String SALIDAS_COPIA               = "salidasCopia";       //Copy of Bus Departures. This is used for some specific tasks
+    public static final String TEMPORADAS                   = "temporadas";     //Seasons, normally they took one year
+    private static final String IMAGENES                    = "imagenes";       //place where images are stored
+    public static final String USUARIOS                     = "usuarios";       //users of the app, roles
+    public static final String PASE_DE_LISTA                = "pase_de_lista";      // Check list
+    public static final String ASISTENCIAS                  = "asistencias";        //Check list of each employee
+    private static final String REGISTROS_TRABAJADORES      = "registros_trabajadores";     //Activity of each employee during his contract
+	public static final String TEMPORADA_CAMPO              = "temporada_campo";        //Seasons associated to a field
+	public static final String TEMPORADAS_SEDES             = "temporadas_sedes";       //Seasons associated to a sede
+	public static final String ASIGNACION_EMPLEADOS_CAMPO   = "asignacion_empleados_campo";     //Association employee - field
+	public static final String MOTIVOS_BAJA                 = "motivos_baja";       //Quits
+	private static final String BAJAS_PENDIENTES            = "bajas_pendientes";       //Pending quits
+    public static final String LISTA_NEGRA                  = "lista_negra";        //Black list, employees that can not return again into the business
+    public static final String INDEX                        = "index";      //Index used to increment each new row inserted in the database when is assigned
 
     //Firebase references
     public static DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -186,7 +186,13 @@ public class FireBaseQuery {
         return FireBaseQuery.databaseReference.child(path);
     }
 
+    //----These methods below are deprecated. They still are there for knowledge purposes.
+
     @Deprecated
+    /**
+     * Attention don't use this method. It still is here for knowledge purposes.
+     * How to add new profile. Just add items as many as you need and push them.
+     */
     public static void pushPerfilTrabajadores(){
         ArrayList<String> perfilTrabajadores = new ArrayList<>();
         perfilTrabajadores.add("Jornalero");
@@ -196,6 +202,10 @@ public class FireBaseQuery {
     }
 
     @Deprecated
+    /**
+     * Attention don't use this method. It still is here for knowledge purposes.
+     * How to push a new "sede" item. Just add items as many as you need and push them.
+     */
     public static void pushSedes(){
         ArrayList<String> sedes = new ArrayList<>();
         sedes.add("Torreon");
@@ -204,6 +214,10 @@ public class FireBaseQuery {
     }
 
     @Deprecated
+    /**
+     * Attention don't use this method. It still is here for knowledge purposes.
+     * How to push a relation field - season
+     */
     public static void pushTemporadaCampo(){
         String sede = "Torreon"; // Este valor sera dinamico en base a la sede que tiene el usuario
         String nombreTemporada = "Enero - Marzo 2019";
@@ -212,6 +226,10 @@ public class FireBaseQuery {
     }
 
     @Deprecated
+    /**
+     * Attention don't use this method. It still is here for knowledge purposes.
+     * How to create "motivos_baja" node. Just add items as many as you need and push them.
+     */
     public static void pushReasonsToFire(){
         ArrayList<String> motivos = new ArrayList<>();
         motivos.add("Consumo de drogas");
@@ -222,83 +240,14 @@ public class FireBaseQuery {
     }
 
     @Deprecated
+    /**
+     * Attention don't use this method. It still is here for knowledge purposes.
+     * How to remove a employee from his charge
+     */
     public static void pushFire(Map<String, String> params){
-        DatabaseReference ref = databaseReference.child(BAJAS_PENDIENTES).child(params.get("ID"));
-        params.remove("ID");
+        DatabaseReference ref = databaseReference.child(BAJAS_PENDIENTES).child(params.get(Employee._DEF_ID));
+        params.remove(Employee._DEF_ID);
         ref.setValue(params);
-    }
-
-    @Deprecated
-    public static void pushAsignacionEmpleados(){
-
-        /***
-         * *************Esta seccion es para insertar los datos de empleado en su respectivo campo.**************
-         */
-
-        //Nodo raiz a insertar
-        String nodoRaiz = "asignacion_empleados_campo";
-
-        /**
-         * La sede a donde se insertara la información. Este valor sera dinamico en base a la sede que tiene el usuario que esta en session dando de alta las asignaciones en web.
-         */
-        String sede = "Torreon";
-
-        /**
-         * PushKey del empleado este ID lo genero firebase cuando se dio de alta al empleado
-         */
-        String pushKeyEmpleado = "ok0909kb0f0";
-
-        /**
-         * Para consultar este valor, se tiene que ir al nodo raiz  "temporada_sede/{sede}" se obtiene el nonbre de la temporada actual.
-         */
-        String temporadaActual = "Temporada Actual de Prueba";
-
-        /**
-         * Nombre del campo a donde se asignara el empleado. Para obtener la lista de los campos actuales se debe ir al nodo raiz "temporada_campo/{temporadaActual}/{nombrCcampoSeleccionado}".
-         */
-        String nombreCampoSeleccionado = "CampoAtlapexco";
-
-        /**
-         * ID que se genero para el empleado, para obtener el proximo ID a usar se debe usar el valor index que esta en la raiz (INDEX)
-         */
-        String ID = "5";
-
-        /**
-         * A este nivel se va a guardar la informacion completa del empleado.
-         * Como habiamos comentado anteriormente, toda la información del empleado se va a tener alojada en otro nodo para
-         * evitar la sobrecarga de los nodos. Inicialmente se almacena en el nodo de "empleados", pero cuando llega
-         * el momento de asignar el empleado a un campo, todos los atributos que tiene en su objeto se migran a  esta nueva rama.
-         *
-         * La ruta a guardar tendra la siguiente nomenclatura:  "asignacion_empleados_campo/{sede}/{temporadaActual}/{campo}/{ID}"
-         *
-         */
-        String pathEmpleadoAsignado = nodoRaiz + "/" + sede + "/" + temporadaActual + "/" + nombreCampoSeleccionado + "/" + ID;
-
-        Employee employee = new Employee();
-
-        //Como podemos ver el pushKey pasa a ser parte un atributo del empleado y la
-        // referencia que ahora tomara su lugar sera el ID que se le asigno en base al index de los trabajadores asignado previamente
-        employee.setKey(pushKeyEmpleado);
-
-        //Los demas atributos ya conocidos del empleado provenientes del nodo empleados.
-        employee.setNombre("mi nombre...");
-        employee.setActividad("Jornalero");
-
-        //Insertar informacion del empleado
-        databaseReference.child(pathEmpleadoAsignado).setValue(employee);
-
-        /***
-         * *************Esta seccion es para insertar los datos del empleado en el apartado del pase de lista.**************
-         * Este nodo guardara la información light del empleado para su pase de lista diario, en ella solo se guardaran los siguientes valores ID y perfil
-         * La ruta a guardar tendra la siguiente nomenclatura:  "asignacion_empleados_campo/{sede}/{campo}/{ID}"
-         */
-
-        //Nodo raiz a insertar
-        String nodoRaizPaseDeLista = "pase_de_lista";
-
-        String pathPaseDeLista = nodoRaizPaseDeLista + "/" + sede + "/" + nombreCampoSeleccionado;
-        databaseReference.child(pathPaseDeLista).child(ID).setValue(employee.getActividad()); //actividad es el perfil del empleado "Jornalero, campero, etc.".
-
     }
 
 }

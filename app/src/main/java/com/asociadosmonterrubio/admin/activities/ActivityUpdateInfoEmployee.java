@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.asociadosmonterrubio.admin.R;
 import com.asociadosmonterrubio.admin.firebase.FireBaseQuery;
+import com.asociadosmonterrubio.admin.models.Employee;
 import com.asociadosmonterrubio.admin.utils.Util;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -51,7 +52,7 @@ public class ActivityUpdateInfoEmployee extends AppCompatActivity implements Vie
     private Map<String, String> employeeSelected;
     private String currentFieldPath;
     private Calendar calendar = Calendar.getInstance();
-    private boolean isRenovacion = false;
+    private boolean isDepartureDateEditable = false;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -60,12 +61,12 @@ public class ActivityUpdateInfoEmployee extends AppCompatActivity implements Vie
         setContentView(R.layout.layout_update_info_employee);
         ButterKnife.bind(this);
         btn_take_picture.setOnClickListener(this);
-        if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("employeeData"))
-            employeeSelected = (Map<String, String>) getIntent().getExtras().getSerializable("employeeData");
-        currentFieldPath = getIntent().getExtras().getString("path");
+        if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(ActivityListEmployeesField._EXTRA_EMPLOYEE_DATA))
+            employeeSelected = (Map<String, String>) getIntent().getExtras().getSerializable(ActivityListEmployeesField._EXTRA_EMPLOYEE_DATA);
+        currentFieldPath = getIntent().getExtras().getString(ActivityListEmployeesField._EXTRA_EMPLOYEE_PATH);
 
         if (getSupportActionBar() != null) {
-            String ID = !employeeSelected.get("IDExterno").isEmpty() ? employeeSelected.get("IDExterno") : employeeSelected.get("ID");
+            String ID = !employeeSelected.get(Employee._ID_EXTERNO).isEmpty() ? employeeSelected.get(Employee._ID_EXTERNO) : employeeSelected.get(Employee._DEF_ID);
             String subtitle = getString(R.string.subtitle_update_worker) + " " + ID;
             getSupportActionBar().setTitle(subtitle);
         }
@@ -87,23 +88,27 @@ public class ActivityUpdateInfoEmployee extends AppCompatActivity implements Vie
     }
 
     private void fillEmployeeData(){
-        edt_employee_activity.setText(employeeSelected.get("Actividad"));
+        edt_employee_activity.setText(employeeSelected.get(Employee._ACTIVIDAD));
         edt_employee_activity.setEnabled(false);
-        edt_employee_curp.setText(employeeSelected.get("CURP"));
-        edt_employee_full_name.setText(employeeSelected.get("Nombre"));
-        edt_employee_first_name.setText(employeeSelected.get("Apellido_Paterno"));
-        edt_employee_last_name.setText(employeeSelected.get("Apellido_Materno"));
-        edt_employee_origin.setText(employeeSelected.get("Lugar_Nacimiento"));
-        String[] fechaNacimiento = employeeSelected.get("Fecha_Nacimiento").split("/");
+        edt_employee_curp.setText(employeeSelected.get(Employee._CURP));
+        edt_employee_name.setText(employeeSelected.get(Employee._NOMBRE));
+        edt_employee_first_name.setText(employeeSelected.get(Employee._APELLIDO_P));
+        edt_employee_last_name.setText(employeeSelected.get(Employee._APELLIDO_M));
+        edt_employee_origin.setText(employeeSelected.get(Employee._LUGAR_NAC));
+        String[] fechaNacimiento = employeeSelected.get(Employee._FECHA_NAC).split("/");
         edt_employee_date_birth_day.setText(fechaNacimiento[0]);
         edt_employee_date_birth_month.setText(fechaNacimiento[1]);
         edt_employee_date_birth_year.setText(fechaNacimiento[2]);
     }
 
     private void checkIfUserHasDepartureDate(){
-        if (employeeSelected != null && employeeSelected.containsKey("Modalidad") && employeeSelected.get("Modalidad").equalsIgnoreCase("Renovacion")) {
+        if (employeeSelected != null &&
+                employeeSelected.containsKey(Employee._MODALIDAD) &&
+                (employeeSelected.get(Employee._MODALIDAD).equalsIgnoreCase(Employee._MOD_RENOV) ||
+                employeeSelected.get(Employee._MODALIDAD).equalsIgnoreCase(Employee._MOD_SOLO))) {
+
             layout_departure_date.setVisibility(View.VISIBLE);
-            String[] departure_date = employeeSelected.get("Fecha_Salida").split("-");
+            String[] departure_date = employeeSelected.get(Employee._FECHA_SAL).split("-");
             int year = Integer.parseInt(departure_date[0]);
             int month = Integer.parseInt(departure_date[1]);
             int day = Integer.parseInt(departure_date[2]);
@@ -111,7 +116,7 @@ public class ActivityUpdateInfoEmployee extends AppCompatActivity implements Vie
             calendar.set(Calendar.MONTH, month - 1);
             calendar.set(Calendar.DAY_OF_MONTH, day);
             edt_employee_departure_date.setText(getCurrentFormattedDate());
-            isRenovacion = true;
+            isDepartureDateEditable = true;
         }else
             layout_departure_date.setVisibility(View.GONE);
     }
@@ -137,7 +142,7 @@ public class ActivityUpdateInfoEmployee extends AppCompatActivity implements Vie
                     progressDialog = ProgressDialog.show(this, "Guardando información", "Espere porfavor...", true, false);
                     FireBaseQuery.updateInfoEmployee(currentFieldPath, getInfoEmployeeToUpdate());
                     if (picture_taken != null)
-                        upLoadImage(employeeSelected.get("pushId"));
+                        upLoadImage(employeeSelected.get(Employee._PUSH_ID));
                     else
                         onBack();
                 }
@@ -202,7 +207,7 @@ public class ActivityUpdateInfoEmployee extends AppCompatActivity implements Vie
         ArrayList<EditText> fields = new ArrayList<>();
         fields.add(edt_employee_first_name);
         fields.add(edt_employee_last_name);
-        fields.add(edt_employee_full_name);
+        fields.add(edt_employee_name);
         fields.add(edt_employee_origin);
         fields.add(edt_employee_date_birth_day);
         fields.add(edt_employee_date_birth_month);
@@ -251,14 +256,14 @@ public class ActivityUpdateInfoEmployee extends AppCompatActivity implements Vie
                 edt_employee_date_birth_year.getText().toString();
 
         Map<String, String> employee = new HashMap<>();
-        employee.put("Nombre", edt_employee_full_name.getText().toString());
-        employee.put("Apellido_Paterno", edt_employee_first_name.getText().toString());
-        employee.put("Apellido_Materno", edt_employee_last_name.getText().toString());
-        employee.put("Fecha_Nacimiento", birthDay);
-        employee.put("Lugar_Nacimiento", edt_employee_origin.getText().toString());
-        employee.put("CURP", edt_employee_curp.getText().toString());
-        if (isRenovacion)
-            employee.put("Fecha_Salida", getCurrentFormattedDate());
+        employee.put(Employee._NOMBRE, edt_employee_name.getText().toString());
+        employee.put(Employee._APELLIDO_P, edt_employee_first_name.getText().toString());
+        employee.put(Employee._APELLIDO_M, edt_employee_last_name.getText().toString());
+        employee.put(Employee._FECHA_NAC, birthDay);
+        employee.put(Employee._LUGAR_NAC, edt_employee_origin.getText().toString());
+        employee.put(Employee._CURP, edt_employee_curp.getText().toString());
+        if (isDepartureDateEditable)
+            employee.put(Employee._FECHA_SAL, getCurrentFormattedDate());
         return employee;
     }
 
@@ -316,7 +321,7 @@ public class ActivityUpdateInfoEmployee extends AppCompatActivity implements Vie
     @BindView(R.id.edt_employee_key) EditText edt_employee_id;
     @BindView(R.id.edt_employee_first_name) EditText edt_employee_first_name;
     @BindView(R.id.edt_employee_last_name) EditText edt_employee_last_name;
-    @BindView(R.id.edt_employee_full_name) EditText edt_employee_full_name;
+    @BindView(R.id.edt_employee_name) EditText edt_employee_name;
     @BindView(R.id.edt_employee_origin) EditText edt_employee_origin;
     @BindView(R.id.edt_employee_date_birth_day) EditText edt_employee_date_birth_day;
     @BindView(R.id.edt_employee_date_birth_month) EditText edt_employee_date_birth_month;

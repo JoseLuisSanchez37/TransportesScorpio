@@ -6,8 +6,8 @@ android {
         applicationId "com.asociadosmonterrubio.admin"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 1
-        versionName "2.7"
+        versionCode 3
+        versionName "2.8.1"
     }
     buildTypes {
         release {

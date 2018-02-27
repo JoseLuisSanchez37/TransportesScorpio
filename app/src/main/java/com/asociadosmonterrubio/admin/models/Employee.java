@@ -16,11 +16,13 @@ public class Employee {
     //Definition
     public static final String _JORNALERO   = "Jornalero";
     public static final String _MOD_SOLO    = "Solo";
+    public static final String _MOD_RENOV   = "Renovacion";
 
     //Attributes DON`T CHANGE THEM
+    public static final String _DEF_ID      = "ID"; //Default ID which was associated when and employee was assigned to a field. Provided by Index's node
     public static final String _ACTIVIDAD   = "Actividad";
     public static final String _APELLIDO_P  = "Apellido_Paterno";
-    public static final String _APELLID_M   = "Apellido_Materno";
+    public static final String _APELLIDO_M  = "Apellido_Materno";
     public static final String _CURP        = "CURP";
     public static final String _CAMION      = "Camion";
     public static final String _CONTRATO    = "Contrato";
@@ -33,6 +35,7 @@ public class Employee {
     public static final String _PUSH_ID     = "pushId";
     public static final String _SEDE        = "sede";
     public static final String _MODALIDAD   = "Modalidad";
+    public static final String _ID_EXTERNO  = "IDExterno"; //External ID associated to employees who belong to a special fields where their owners assigned to them special ID's
 
     private String key;
     private String Actividad;

@@ -17,7 +17,7 @@ public class FirebaseStructure {
         Map<String, String> map = new HashMap<>();
         map.put(Employee._ACTIVIDAD, employee.getActividad());
         map.put(Employee._APELLIDO_P, employee.getApellido_Paterno());
-        map.put(Employee._APELLID_M, employee.getApellido_Materno());
+        map.put(Employee._APELLIDO_M, employee.getApellido_Materno());
         map.put(Employee._CURP, employee.getCURP());
         map.put(Employee._CONTRATO, employee.getContrato());
         map.put(Employee._ENGANCHE, employee.getEnganche());

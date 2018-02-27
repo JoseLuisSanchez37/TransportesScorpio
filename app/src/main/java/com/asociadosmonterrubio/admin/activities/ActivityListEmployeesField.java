@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.asociadosmonterrubio.admin.R;
 import com.asociadosmonterrubio.admin.adapters.ListEmployeeAdapter;
 import com.asociadosmonterrubio.admin.firebase.FireBaseQuery;
+import com.asociadosmonterrubio.admin.models.Employee;
 import com.asociadosmonterrubio.admin.utils.SingletonUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,6 +33,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ActivityListEmployeesField extends AppCompatActivity implements AdapterView.OnItemClickListener, TextWatcher{
+
+	public static final String _EXTRA_EMPLOYEE_DATA = "employeeData";
+	public static final String _EXTRA_EMPLOYEE_PATH = "path";
 
 	private ProgressDialog progressDialog;
 	private ArrayList<Map<String, String>> employees;
@@ -79,20 +83,20 @@ public class ActivityListEmployeesField extends AppCompatActivity implements Ada
 						for (DataSnapshot children : dataSnapshot.getChildren()){
 							Map<String, String> childrenData = (Map<String, String>) children.getValue();
 							Map<String, String> employee = new HashMap<>();
-							employee.put("ID", children.getKey());
-							employee.put("Nombre", childrenData.get("Nombre") != null ? childrenData.get("Nombre") : "");
-							employee.put("Apellido_Paterno", childrenData.get("Apellido_Paterno") != null ? childrenData.get("Apellido_Paterno") : "");
-							employee.put("Apellido_Materno", childrenData.get("Apellido_Materno") != null ? childrenData.get("Apellido_Materno") : "");
-                            if (childrenData.containsKey("IDExterno"))
+							employee.put(Employee._DEF_ID, children.getKey());
+							employee.put(Employee._NOMBRE, childrenData.get(Employee._NOMBRE) != null ? childrenData.get(Employee._NOMBRE) : "");
+							employee.put(Employee._APELLIDO_P, childrenData.get(Employee._APELLIDO_P) != null ? childrenData.get(Employee._APELLIDO_P) : "");
+							employee.put(Employee._APELLIDO_M, childrenData.get(Employee._APELLIDO_M) != null ? childrenData.get(Employee._APELLIDO_M) : "");
+                            if (childrenData.containsKey(Employee._ID_EXTERNO))
                                 isSpecialField = true;
-							employee.put("IDExterno",  childrenData.containsKey("IDExterno") ? childrenData.get("IDExterno") : "");
-                            employee.put("pushId", childrenData.get("pushId"));
-                            employee.put("Fecha_Nacimiento", childrenData.get("Fecha_Nacimiento"));
-                            employee.put("Lugar_Nacimiento", childrenData.get("Lugar_Nacimiento"));
-                            employee.put("CURP", childrenData.get("CURP"));
-                            employee.put("Actividad", childrenData.get("Actividad"));
-                            employee.put("Fecha_Salida", childrenData.containsKey("Fecha_Salida") ? childrenData.get("Fecha_Salida") : "");
-                            employee.put("Modalidad", childrenData.containsKey("Modalidad") ? childrenData.get("Modalidad") : "");
+							employee.put(Employee._ID_EXTERNO,  childrenData.containsKey(Employee._ID_EXTERNO) ? childrenData.get(Employee._ID_EXTERNO) : "");
+                            employee.put(Employee._PUSH_ID, childrenData.get(Employee._PUSH_ID));
+                            employee.put(Employee._FECHA_NAC, childrenData.get(Employee._FECHA_NAC));
+                            employee.put(Employee._LUGAR_NAC, childrenData.get(Employee._LUGAR_NAC));
+                            employee.put(Employee._CURP, childrenData.get(Employee._CURP));
+                            employee.put(Employee._ACTIVIDAD, childrenData.get(Employee._ACTIVIDAD));
+                            employee.put(Employee._FECHA_SAL, childrenData.containsKey(Employee._FECHA_SAL) ? childrenData.get(Employee._FECHA_SAL) : "");
+                            employee.put(Employee._MODALIDAD, childrenData.containsKey(Employee._MODALIDAD) ? childrenData.get(Employee._MODALIDAD) : "");
 
 							employees.add(employee);
 						}
@@ -106,7 +110,7 @@ public class ActivityListEmployeesField extends AppCompatActivity implements Ada
                             Collections.sort(employees, new Comparator<Map<String, String>>() {
                                 @Override
                                 public int compare(Map<String, String> map1, Map<String, String> map2) {
-                                    return isSpecialField ? map1.get("IDExterno").compareToIgnoreCase(map2.get("IDExterno")) : map1.get("ID").compareToIgnoreCase(map2.get("ID"));
+                                    return isSpecialField ? map1.get(Employee._ID_EXTERNO).compareToIgnoreCase(map2.get(Employee._ID_EXTERNO)) : map1.get(Employee._DEF_ID).compareToIgnoreCase(map2.get(Employee._DEF_ID));
                                 }
                             });
                             Collections.reverse(employees);
@@ -150,8 +154,8 @@ public class ActivityListEmployeesField extends AppCompatActivity implements Ada
     @Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 	    Intent intent = new Intent(this, ActivityUpdateInfoEmployee.class);
-        intent.putExtra("employeeData", (Serializable) employees.get(position));
-        intent.putExtra("path", currentFieldPath + "/" + employees.get(position).get("ID"));
+        intent.putExtra(_EXTRA_EMPLOYEE_DATA, (Serializable) employees.get(position));
+        intent.putExtra(_EXTRA_EMPLOYEE_PATH, currentFieldPath + "/" + employees.get(position).get(Employee._DEF_ID));
         startActivity(intent);
 	}
 
