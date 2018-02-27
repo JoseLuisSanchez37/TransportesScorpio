@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
+import com.asociadosmonterrubio.admin.firebase.FireBaseQuery;
 import com.google.firebase.database.FirebaseDatabase;
 
 /**
@@ -18,7 +19,12 @@ public class AppController extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        FirebaseDatabase.getInstance().getReference(FireBaseQuery.ASISTENCIAS).keepSynced(true);
+        FirebaseDatabase.getInstance().getReference(FireBaseQuery.EMPLEADOS).keepSynced(true);
+        FirebaseDatabase.getInstance().getReference(FireBaseQuery.SALIDAS).keepSynced(true);
+        FirebaseDatabase.getInstance().getReference(FireBaseQuery.INDEX).keepSynced(true);
     }
 
     @Override

@@ -135,6 +135,8 @@ public class ActivityDisplayEmployees extends AppCompatActivity implements Dialo
         if (employeeAdapter.isEmpty() || goBackDiscardChanges) {
             if (databaseReferenceEmployees != null)
                 databaseReferenceEmployees.removeEventListener(employeesValueEventListener);
+            if (databaseReferenceIndex != null)
+                databaseReferenceIndex.removeEventListener(indexValueEventListener);
             super.onBackPressed();
         }else
             manageOnBackPressed();
@@ -281,7 +283,7 @@ public class ActivityDisplayEmployees extends AppCompatActivity implements Dialo
     ValueEventListener indexValueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
-            databaseReferenceIndex.removeEventListener(this);
+            databaseReferenceIndex.removeEventListener(indexValueEventListener);
             String pathEmployees = FireBaseQuery.ASIGNACION_EMPLEADOS_CAMPO + "/" +
                     SingletonUser.getInstance().getUsuario().getSede() + "/" +
                     temporadaActual + "/" + //<--Esta es la temporada actual
@@ -300,6 +302,8 @@ public class ActivityDisplayEmployees extends AppCompatActivity implements Dialo
     ValueEventListener employeesValueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
+            databaseReferenceEmployees.removeEventListener(employeesValueEventListener);
+
             Iterable<DataSnapshot> children = dataSnapshot.getChildren();
             ArrayList<Employee> employees = new ArrayList<>();
             for (DataSnapshot snapshot : children){
@@ -311,7 +315,7 @@ public class ActivityDisplayEmployees extends AppCompatActivity implements Dialo
                     }
                 }
             }
-            databaseReferenceEmployees.removeEventListener(this);
+
             Collections.reverse(employees);
             SingletonEmployees.getInstance().getEmployees().clear();
             SingletonEmployees.getInstance().setEmployess(employees);
