@@ -41,6 +41,8 @@ import butterknife.ButterKnife;
 
 public class ActivityHome extends AppCompatActivity {
 
+    private static final String APP_ID = "com.asociadosmonterrubio.admin"; //Production applicationId
+
     private boolean isPaseDeListaAvailable = true;
     ArrayList<String> campos;
     String sede;
@@ -268,8 +270,15 @@ public class ActivityHome extends AppCompatActivity {
         txv_info_user_name.setText("Nombre: ".concat(SingletonUser.getInstance().getUsuario().getNombre()));
         txv_info_user_rol.setText("Rol: ".concat(SingletonUser.getInstance().getUsuario().getRol()));
         txv_info_user_sede.setText("Sede: ".concat(SingletonUser.getInstance().getUsuario().getSede()));
-        txv_info_user_environment.setText("Ambiente: ".concat(BuildConfig.APPLICATION_ID.equalsIgnoreCase("com.asociadosmonterrubio.admin.test") ? "PRUEBAS" : "PRODUCCION"));
         txv_info_user_app_version.setText("Version: ".concat(BuildConfig.VERSION_NAME));
+
+        if (BuildConfig.APPLICATION_ID.equals(APP_ID)){
+            txv_info_user_environment.setText("Ambiente: PRODUCCION");
+            txv_info_user_environment.setTextColor(getResources().getColor(R.color.green));
+        }else {
+            txv_info_user_environment.setText("Ambiente: PRUEBAS");
+            txv_info_user_environment.setTextColor(getResources().getColor(R.color.red));
+        }
     }
 
     private void getBlackList(){
